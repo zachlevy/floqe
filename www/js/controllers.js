@@ -50,7 +50,7 @@ angular.module('starter.controllers', [])
 // search screen
 .controller('TagsSearchController', function($scope, $state, tagsFactory, allTags) {
   // reset global allTags value to make sure they're up to date
-  allTags.tags = tagsFactory.all();
+  tagsFactory.refreshTags();
 
   // default tags
   searchTags = [];
@@ -87,18 +87,10 @@ angular.module('starter.controllers', [])
 })
 
 .controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, post_api_search, current_user, allTags) {
+  tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
-  console.log($stateParams.tag_ids);
-  searchedTags = [
-    {
-      "id" : 1,
-      "name" : "Motor rallies"
-    },
-    {
-      "id" : 2,
-      "name" : "Motor"
-    }
-  ];
+
+  searchedTags = tagsFactory.tagsFromIdsList($stateParams.tag_ids, tagsFactory);
   $scope.me = current_user;
   $scope.tagNames = tagsFactory.namesList(searchedTags);
   users = post_api_search['result']['users'];

@@ -31,7 +31,7 @@ angular.module('starter.factories', [])
 })
 
 
-.factory('tagsFactory', function($http){
+.factory('tagsFactory', function($http, allTags){
   var suggested = function() {
     return [
       {
@@ -45,17 +45,26 @@ angular.module('starter.factories', [])
     ];
   };
   return {
-    // returns the tag based on id
-    // implement
-    idsFromList: function (tag_ids) {
+    refreshTags: function () {
+      allTags.tags = this.all();
+    },
+    // returns tag objects based on ids string like 1,2,3,4
+    tagsFromIdsList: function (tag_ids, tagsFactory) {
       tags = [];
-      angular.forEach(tag_ids.split(','), function (value, key) {
-        this.push('');
-      }, tags);
+      tag_ids.split(',').map(function(tag_id) {
+        tags.push(tagsFactory.getTag(tag_id));
+      });
+      return tags;
     },
+    // get tag object from tag id
     getTag: function (id) {
-      return null;
+      //return allTags;
+      var results = allTags.tags.filter(function(tag) {
+        return tag.id == id;
+      });
+      return results[0];
     },
+    // returns tag ids like 1,2,3,4 from tag objects
     idsList: function (tags) {
       text = [];
       angular.forEach(tags, function (value, key) {
@@ -63,7 +72,7 @@ angular.module('starter.factories', [])
       }, text);
       return text.join(',');
     },
-    // takes in an array of tags, returns the names in csv
+    // returns tag names like basketball,hockey from tag objects
     namesList: function(tags) {
       text = [];
       angular.forEach(tags, function (value, key) {
