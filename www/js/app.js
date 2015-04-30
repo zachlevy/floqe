@@ -29,6 +29,19 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     templateUrl: "templates/menu.html",
     controller: 'AppCtrl'
   })
+  // start floqe
+
+  .state('app.tags', {
+    url: "/tags",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/tags.html",
+        controller: 'TagsController'
+      }
+    }
+  })
+
+  // end floqe
 
   .state('app.search', {
     url: "/search",
@@ -67,5 +80,5 @@ angular.module('starter', ['ionic', 'starter.controllers'])
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/playlists');
+  $urlRouterProvider.otherwise('/app/tags');
 });

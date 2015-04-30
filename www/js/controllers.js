@@ -45,4 +45,35 @@ angular.module('starter.controllers', [])
 })
 
 .controller('PlaylistCtrl', function($scope, $stateParams) {
-});
+})
+
+.controller('TagsController', function($scope) {
+  $scope.search = "Search Value";
+  $scope.tags = [
+    {
+      "id" : 1,
+      "name" : "Motor rallies"
+    },
+    {
+      "id" : 2,
+      "name" : "Motor"
+    },
+    {
+      "id" : 3,
+      "name" : "Volleyball"
+    },
+    {
+      "id" : 4,
+      "name" : "Horses"
+    },
+    {
+      "id" : 5,
+      "name" : "Dog Walking"
+    }
+  ];
+})
+
+
+
+
+; // ends chaining
