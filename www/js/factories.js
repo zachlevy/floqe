@@ -89,9 +89,22 @@ angular.module('starter.factories', [])
 
 
 // development
+// current_user
+.value(
+  'current_user',
+  {
+    "id" : 3,
+    "name" : "Boaz",
+    "photo" : "http://placehold.it/100x100",
+    "description" : null,
+    "gender" : 1,
+    "age" : 23
+  }
+)
+
 // GET /api/tags
 .value(
-  'get_api/tags',
+  'get_api_tags',
   [
     {
       "id" : 1,
@@ -117,7 +130,7 @@ angular.module('starter.factories', [])
 )
 // POST /api/search
 .value(
-  'post_api/search',
+  'post_api_search',
   {
     "success" : true,
     "result" : {
@@ -137,7 +150,7 @@ angular.module('starter.factories', [])
           "id" : 1,
           "name" : "Jake",
           "description" : "pickup",
-          "photo" : "http://s3.aws.com/image1.png",
+          "photo" : "http://placehold.it/100x100",
           "friend" : true,
           "gender" : 0,
           "distance" : 2.1,
@@ -148,7 +161,7 @@ angular.module('starter.factories', [])
           "id" : 2,
           "name" : "Alex",
           "description" : "Scrim",
-          "photo" : "http://s3.aws.com/image2.png",
+          "photo" : "http://placehold.it/100x100",
           "friend" : false,
           "gender" : 1,
           "distance" : 5,
@@ -161,21 +174,21 @@ angular.module('starter.factories', [])
 )
 // POST /api/search/description
 .value(
-  'post_api/search/description',
+  'post_api_search_description',
   {
     "success" : true
   }
 )
 // POST /api/match/me
 .value(
-  'post_api/match/me',
+  'post_api_match_me',
   {
     "success" : true
   }
 )
 // POST /api/match/mine
 .value(
-  'post_api/match/mine',
+  'post_api_match_mine',
   {
     "success" : true,
     "result" : [
@@ -191,7 +204,7 @@ angular.module('starter.factories', [])
           {
             "id" : 1,
             "name" : "Jake",
-            "photo" : "http://s3.aws.com/image1.png",
+            "photo" : "http://placehold.it/100x100",
             "friend" : true,
           }
         ],
@@ -207,14 +220,14 @@ angular.module('starter.factories', [])
 )
 // POST /api/invite
 .value(
-  'post_api/invite',
+  'post_api_invite',
   {
     "success": true
   }
 )
 // POST /api/message/read
 .value(
-  'post_api/message/read',
+  'post_api_message_read',
   {
     "success" : true
   }

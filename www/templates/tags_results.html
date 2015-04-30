@@ -1,17 +1,43 @@
-<ion-view view-title="{{ title }}">
+<ion-view view-title="{{ tagNames }}">
   <ion-content>
-    <div data-ng-tags="">
-      
-      <input data-ng-model="search" />
-      
-      <button class="button button-block button-calm" data-ng-click="submitTags()">
-        <i class="fa fa-search"></i>
-      </button>
+    <div class="list">
+        <a class="item item-avatar" href="#">
+          <img data-ng-src="{{ me.photo }}">
+          <h2>{{ me.name }}</h2>
+          <p data-ng-if="me.description !== null">{{ me.description }}</p>
+          <p data-ng-if="me.description === null">Add a description</p>
+        </a>
+        <div class="item item-divider">
+          Matches
+        </div>
+        <a class="item item-avatar" href="#" data-ng-repeat="user in users | filter:filterUsers">
+          <img data-ng-src="{{ user.photo }}">
+          <h2 style="float: right">{{ user.distance }} km</h2>
+          <h2>{{ user.name }} <i class="fa fa-user"></i></h2>
+          <p>{{ user.description }}</p>
+        </a>
 
-      <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
-        {{ tag.name }}
-      </button>
+
+
+        <ion-checkbox data-ng-model="filters.male">Male</ion-checkbox>
+        <ion-checkbox data-ng-model="filters.female">Female</ion-checkbox>
+        <div class="item range range-positive">
+          <p>{{ filters.proximity }} km</p>
+          <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
+        </div>
+
+        <div class="item range range-positive">
+          <p>{{ ageFilterMin }}</p>
+          <input type="range" name="age" min="0" max="100" value="{{ filters.ageMax }}" data-ng-model="filters.ageMax">
+          <p>{{ filters.ageMax }}</p>
+        </div>
+
+        <!--
+        <button class="button button-block button-calm" data-ng-click="submitFilters()">
+          Apply Filters
+        </button>
+        -->
+
     </div>
-
   </ion-content>
 </ion-view>

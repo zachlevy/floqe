@@ -82,7 +82,7 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('TagsResultsController', function($scope, tagsFactory) {
+.controller('TagsResultsController', function($scope, tagsFactory, post_api_search, current_user) {
   searchedTags = [
     {
       "id" : 1,
@@ -93,7 +93,40 @@ angular.module('starter.controllers', [])
       "name" : "Motor"
     }
   ];
-  $scope.title = tagsFactory.namesList(searchedTags);
+  $scope.me = current_user;
+  $scope.tagNames = tagsFactory.namesList(searchedTags);
+  users = post_api_search['result']['users'];
+  $scope.users = users;
+
+  // filters
+
+  $scope.filters = {};
+
+  // default filters
+  $scope.filters.proximity = 5;
+  $scope.filters.ageMin = 18;
+  $scope.filters.ageMax = 44;
+  $scope.filters.male = true;
+  $scope.filters.female = true;
+
+  // handle apply filters button
+  $scope.submitFilters = function () {
+    
+  };
+
+  // custom filter for age, proximity, gender
+  $scope.filterUsers = function(user){
+    return user.age >= $scope.filters.ageMin &&
+    user.distance <= $scope.filters.proximity &&
+    user.age <= $scope.filters.ageMax &&
+    (
+      (user.gender === 0 && $scope.filters.male) ||
+      (user.gender === 1 && $scope.filters.female)
+    )
+    ;
+    // return user;
+  };
+
 })
 
 
