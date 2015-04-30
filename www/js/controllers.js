@@ -48,7 +48,7 @@ angular.module('starter.controllers', [])
 })
 
 // search screen
-.controller('TagsController', function($scope, tagsFactory) {
+.controller('TagsSearchController', function($scope, tagsFactory) {
   // default tags
   searchTags = [];
   updateSearch();
@@ -98,30 +98,18 @@ angular.module('starter.controllers', [])
   users = post_api_search['result']['users'];
   $scope.users = users;
 
-  // filters
-
-  $scope.filters = {};
-
   // default filters
+  $scope.filters = {};
   $scope.filters.proximity = 5;
   $scope.filters.ageMin = 18;
   $scope.filters.ageMax = 44;
   $scope.filters.male = true;
   $scope.filters.female = true;
 
-  /*
-  savedFilters = {
-    "ageMin" : $scope.filters.ageMin,
-    "ageMax" : $scope.filters.ageMax,
-    "proximity" : $scope.filters.proximity,
-    "male" : $scope.filters.male,
-    "female" : $scope.filters.female
-  };
-  */
-
+  // by default, hide the filter list
   $scope.hideFilter = true;
 
-  // handle apply filters button
+  // handle add/hide filters button
   $scope.hideFilters = function () {
     $scope.hideFilter = true;
   };
@@ -144,7 +132,6 @@ angular.module('starter.controllers', [])
       return user;
     }
   };
-
 })
 
 

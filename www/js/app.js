@@ -31,12 +31,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories'])
   })
   // start floqe
 
-  .state('app.tags', {
-    url: "/tags",
+  .state('app.tagsSearch', {
+    url: "/tags/search",
     views: {
       'menuContent': {
-        templateUrl: "templates/tags.html",
-        controller: 'TagsController'
+        templateUrl: "templates/tags_search.html",
+        controller: 'TagsSearchController'
       }
     }
   })
@@ -89,5 +89,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories'])
     }
   });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags');
+  $urlRouterProvider.otherwise('/app/tags/search');
 });

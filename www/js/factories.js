@@ -32,7 +32,20 @@ angular.module('starter.factories', [])
 
 
 .factory('tagsFactory', function($http){
+  var suggested = function() {
+    return [
+      {
+        "id" : 1,
+        "name" : "Motor rallies"
+      },
+      {
+        "id" : 2,
+        "name" : "Motor"
+      },
+    ];
+  };
   return {
+    // takes in an array of tags, returns the names in csv
     namesList: function(tags) {
       text = [];
       angular.forEach(tags, function (value, key) {
@@ -40,19 +53,8 @@ angular.module('starter.factories', [])
       }, text);
       return text.join(', ');
     },
-    suggested: function() {
-
-      return [
-        {
-          "id" : 1,
-          "name" : "Motor rallies"
-        },
-        {
-          "id" : 2,
-          "name" : "Motor"
-        },
-      ];
-    },
+    // get suggested tags for tag search screen
+    suggested: suggested,
     all: function() {
       return [
         {
