@@ -45,6 +45,18 @@ angular.module('starter.factories', [])
     ];
   };
   return {
+    // returns the tag based on id
+    // implement
+    getTag: function (id) {
+      return null;
+    },
+    idsList: function (tags) {
+      text = [];
+      angular.forEach(tags, function (value, key) {
+      this.push(value.id);
+      }, text);
+      return text.join(',');
+    },
     // takes in an array of tags, returns the names in csv
     namesList: function(tags) {
       text = [];

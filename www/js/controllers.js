@@ -48,7 +48,7 @@ angular.module('starter.controllers', [])
 })
 
 // search screen
-.controller('TagsSearchController', function($scope, tagsFactory) {
+.controller('TagsSearchController', function($scope, $state, tagsFactory) {
   // default tags
   searchTags = [];
   updateSearch();
@@ -69,6 +69,8 @@ angular.module('starter.controllers', [])
   $scope.submitTags = function () {
     console.log("submitTags");
     console.log(searchTags);
+    searchTagsText = tagsFactory.idsList(searchTags);
+    $state.go('app.tagsResults', {tag_ids: searchTagsText});
   };
 
   // output the names of search tags
@@ -82,7 +84,9 @@ angular.module('starter.controllers', [])
 
 })
 
-.controller('TagsResultsController', function($scope, tagsFactory, post_api_search, current_user) {
+.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, post_api_search, current_user) {
+  console.log('TagsResultsController');
+  console.log($stateParams.tag_ids);
   searchedTags = [
     {
       "id" : 1,
