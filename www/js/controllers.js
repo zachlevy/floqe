@@ -109,22 +109,40 @@ angular.module('starter.controllers', [])
   $scope.filters.male = true;
   $scope.filters.female = true;
 
+  /*
+  savedFilters = {
+    "ageMin" : $scope.filters.ageMin,
+    "ageMax" : $scope.filters.ageMax,
+    "proximity" : $scope.filters.proximity,
+    "male" : $scope.filters.male,
+    "female" : $scope.filters.female
+  };
+  */
+
+  $scope.hideFilter = true;
+
   // handle apply filters button
-  $scope.submitFilters = function () {
-    
+  $scope.hideFilters = function () {
+    $scope.hideFilter = true;
+  };
+  $scope.showFilters = function () {
+    $scope.hideFilter = false;
   };
 
   // custom filter for age, proximity, gender
   $scope.filterUsers = function(user){
-    return user.age >= $scope.filters.ageMin &&
-    user.distance <= $scope.filters.proximity &&
-    user.age <= $scope.filters.ageMax &&
-    (
-      (user.gender === 0 && $scope.filters.male) ||
-      (user.gender === 1 && $scope.filters.female)
-    )
-    ;
-    // return user;
+    if ($scope.showFilters) {
+      return user.age >= $scope.filters.ageMin &&
+      user.distance <= $scope.filters.proximity &&
+      user.age <= $scope.filters.ageMax &&
+      (
+        (user.gender === 0 && $scope.filters.male) ||
+        (user.gender === 1 && $scope.filters.female)
+      )
+      ;
+    } else {
+      return user;
+    }
   };
 
 })
