@@ -47,13 +47,19 @@ angular.module('starter.factories', [])
   return {
     // returns the tag based on id
     // implement
+    idsFromList: function (tag_ids) {
+      tags = [];
+      angular.forEach(tag_ids.split(','), function (value, key) {
+        this.push('');
+      }, tags);
+    },
     getTag: function (id) {
       return null;
     },
     idsList: function (tags) {
       text = [];
       angular.forEach(tags, function (value, key) {
-      this.push(value.id);
+        this.push(value.id);
       }, text);
       return text.join(',');
     },
@@ -98,7 +104,12 @@ angular.module('starter.factories', [])
   'baseUrl',
   'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
-
+.value(
+  'allTags',
+  {
+    'tags' : []
+  }
+)
 
 
 
