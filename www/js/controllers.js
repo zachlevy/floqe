@@ -47,9 +47,43 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-.controller('TagsController', function($scope) {
-  $scope.search = "Search Value";
-  $scope.tags = [
+// search screen
+.controller('TagsController', function($scope, tagsFactory) {
+  // default tags
+  searchTags = [];
+  updateSearch();
+  // get all tags
+  $scope.suggestedTags = tagsFactory.suggested();
+  $scope.allTags = tagsFactory.all();
+
+  // add a tag
+  $scope.addTag = function(tagId) {
+    var selectedTag = $scope.allTags.filter(function(tag) {
+      return tag.id == tagId;
+    });
+    searchTags.push(selectedTag[0]);
+    updateSearch();
+  };
+
+  // process search
+  $scope.submitTags = function () {
+    console.log("submitTags");
+    console.log(searchTags);
+  };
+
+  // output the names of search tags
+  function updateSearch() {
+    console.log("updateSearch");
+    $scope.search = [];
+    angular.forEach(searchTags, function (value, key) {
+      this.push(value.name);
+    }, $scope.search);
+  }
+
+})
+
+.controller('TagsResultsController', function($scope, tagsFactory) {
+  searchedTags = [
     {
       "id" : 1,
       "name" : "Motor rallies"
@@ -57,22 +91,10 @@ angular.module('starter.controllers', [])
     {
       "id" : 2,
       "name" : "Motor"
-    },
-    {
-      "id" : 3,
-      "name" : "Volleyball"
-    },
-    {
-      "id" : 4,
-      "name" : "Horses"
-    },
-    {
-      "id" : 5,
-      "name" : "Dog Walking"
     }
   ];
+  $scope.title = tagsFactory.namesList(searchedTags);
 })
-
 
 
 
