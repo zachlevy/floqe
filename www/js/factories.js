@@ -30,8 +30,26 @@ angular.module('starter.factories', [])
   };
 })
 
+.factory('usersFactory', function ($http){
+  // factory vars
+
+  // factory functions
+  return {
+    getUser: function (id, users) {
+      var results = users.filter(function(user) {
+        return user.id == id;
+      });
+      return results[0];
+    },
+    // send a swipe to API server
+    sendSwipe: function (user_id) {
+
+    }
+  };
+})
 
 .factory('tagsFactory', function($http, allTags){
+  // factory vars
   var suggested = function() {
     return [
       {
@@ -44,6 +62,7 @@ angular.module('starter.factories', [])
       },
     ];
   };
+  // factory functions
   return {
     refreshTags: function () {
       allTags.tags = this.all();
@@ -59,7 +78,6 @@ angular.module('starter.factories', [])
     },
     // get tag object from tag id
     getTag: function (id) {
-      //return allTags;
       var results = allTags.tags.filter(function(tag) {
         return tag.id == id;
       });
@@ -109,7 +127,23 @@ angular.module('starter.factories', [])
     }
   };
 })
+// generic application helper for common js functions
+.factory('appHelper', function(){
+  // factory vars
 
+  // factory functions
+  return {
+    // array add
+    addIfNotExists: function (item, array) {
+      
+    },
+    // array remove
+    removeIfExists: function (item, array) {
+
+    }
+  };
+})
+// API base url
 .value(
   'baseUrl',
   'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
@@ -123,7 +157,7 @@ angular.module('starter.factories', [])
 
 
 
-// development
+// development helpers
 // current_user
 .value(
   'current_user',
@@ -246,9 +280,38 @@ angular.module('starter.factories', [])
         "matched_for" : [
           {
             "id" : 1,
-              "name" : "Hockey"
+            "name" : "Hockey",
+            "time" : "2015-04-22T01:11:21Z"
            }
          ],
+      },
+      {
+        "id": 2,
+        "last_message" : null,
+        "users" : [
+          {
+            "id" : 1,
+            "name" : "Jake",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : true,
+          },
+          {
+            "id" : 2,
+            "name" : "Alex",
+            "description" : "Scrim",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : false,
+          }
+        ],
+        "matched_for" : {
+          "time" : "2015-04-25T02:15:31Z",
+          "tags" : [
+            {
+              "id" : 1,
+              "name" : "Hockey",
+            }
+          ]
+        }
       }
     ]
   }

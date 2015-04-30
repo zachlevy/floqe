@@ -87,10 +87,11 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, post_api_search, current_user, allTags) {
+.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate) {
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
+  // init
   searchedTags = tagsFactory.tagsFromIdsList($stateParams.tag_ids, tagsFactory);
   $scope.me = current_user;
   $scope.tagNames = tagsFactory.namesList(searchedTags);
@@ -133,11 +134,38 @@ angular.module('starter.controllers', [])
   };
 
   // swiping
-  $scope.onSwipeRight = function() {
+  $scope.swipedUserIds = [];
+
+  $scope.onSwipeRight = function(user_id) {
     console.log("Swiped Right");
+    if ($scope.swipedUserIds.indexOf(user_id) == -1) {
+      $scope.swipedUserIds.push(user_id);
+    }
+    // send to API 
+    // implement
+    console.log($scope.swipedUserIds);
+  };
+
+  $scope.onSwipeLeft = function(user_id) {
+    console.log("Swiped Left");
+    var index = $scope.swipedUserIds.indexOf(user_id);
+    if (index > -1) {
+      $scope.swipedUserIds.splice(index, 1);
+    }
+    // send to API 
+    // implement
+    console.log($scope.swipedUserIds);
   };
 })
 
-
+// Matches Screen
+.controller('MatchesController', function($scope, $state, usersFactory, allTags, post_api_match_mine) {
+  console.log('MatchesController');
+  $scope.matches = post_api_match_mine['result'];
+  $scope.onMatchSelect = function(match_id){
+    console.log('match selected');
+    console.log(match_id);
+  };
+})
 
 ; // ends chaining

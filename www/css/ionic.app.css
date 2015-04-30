@@ -7679,3 +7679,6 @@ a.button {
   display: none;
   visibility: hidden; }
 
+.tags-results-screen .swiped {
+  background-color: #E5FFE5; }
+
