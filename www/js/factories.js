@@ -49,6 +49,7 @@ angular.module('starter.factories', [])
       allTags.tags = this.all();
     },
     // returns tag objects based on ids string like 1,2,3,4
+    // requires its own factory because super this unaccessible
     tagsFromIdsList: function (tag_ids, tagsFactory) {
       tags = [];
       tag_ids.split(',').map(function(tag_id) {

@@ -47,7 +47,7 @@ angular.module('starter.controllers', [])
 .controller('PlaylistCtrl', function($scope, $stateParams) {
 })
 
-// search screen
+// Tags Search Screen
 .controller('TagsSearchController', function($scope, $state, tagsFactory, allTags) {
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
@@ -86,6 +86,7 @@ angular.module('starter.controllers', [])
   }
 })
 
+// Tags Search Results Screen
 .controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, post_api_search, current_user, allTags) {
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
@@ -129,6 +130,11 @@ angular.module('starter.controllers', [])
     } else {
       return user;
     }
+  };
+
+  // swiping
+  $scope.onSwipeRight = function() {
+    console.log("Swiped Right");
   };
 })
 
