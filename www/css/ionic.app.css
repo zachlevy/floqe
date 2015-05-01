@@ -7679,6 +7679,14 @@ a.button {
   display: none;
   visibility: hidden; }
 
+.pull-right {
+  float: right; }
+
+.pull-left {
+  float: right; }
+
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
+.matches-screen .swiped {
+  background-color: #E5FFE5; }

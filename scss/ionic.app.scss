@@ -21,11 +21,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
-
+// HELPER START
 .hidden {
   display: none;
   visibility: hidden;
 }
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: right;
+}
+// HELPER END
 // TAGS RESULTS SCREEN
 .tags-results-screen {
   .search-results-list {
@@ -44,3 +51,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 }
 // TAGS SEARCH SCREEN END
+.matches-screen {
+  .swiped {
+    background-color: #E5FFE5;
+  }
+}
+
+

@@ -159,12 +159,41 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $state, usersFactory, allTags, post_api_match_mine) {
+.controller('MatchesController', function($scope, $state, post_api_match_mine) {
   console.log('MatchesController');
   $scope.matches = post_api_match_mine['result'];
   $scope.onMatchSelect = function(match_id){
     console.log('match selected');
     console.log(match_id);
+  };
+})
+
+// Invite Matches Screen
+.controller('MatchesInviteController', function($scope, $state, $stateParams, post_api_match_mine) {
+  console.log('InviteMatchesController');
+  $scope.matches = post_api_match_mine['result'];
+  
+
+  // swiping
+  $scope.selectedMatchIds = [];
+
+  // when match selected
+  $scope.onMatchSelect = function(match_id){
+    console.log('match selected');
+    if ($scope.selectedMatchIds.indexOf(match_id) == -1) {
+      $scope.selectedMatchIds.push(match_id);
+    } else if ($scope.selectedMatchIds.indexOf(match_id) > -1) {
+      $scope.selectedMatchIds.splice($scope.selectedMatchIds.indexOf(match_id), 1);
+    }
+    console.log($scope.selectedMatchIds);
+  };
+
+  // when invite button clicked
+  $scope.onInvite = function(){
+    // go back to convo screen
+    console.log($scope.selectedMatchIds);
+    // send to API 
+    // implement
   };
 })
 

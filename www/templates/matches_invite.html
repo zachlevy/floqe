@@ -7,6 +7,9 @@
         <div class="pull-right">
           <h2 data-ng-if="match.last_message == null">{{ match.matched_for.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
           <h2 data-ng-if="match.last_message != null">{{ match.last_message.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
+
+          <i class="fa fa-check-square-o pull-right" data-ng-if="(selectedMatchIds.indexOf(match.id) > -1)"></i>
+          <i class="fa fa-square-o pull-right" data-ng-if="(selectedMatchIds.indexOf(match.id) == -1)"></i>
         </div>
 
         <h2>{{ match.users | namesFilter }} <i class="fa fa-user" data-ng-if="user.friend"></i></h2>
@@ -15,5 +18,8 @@
         <p data-ng-if="match.last_message != null">{{ match.last_message.message }}</p>
       </a>
     </div>
+    <button class="button button-block button-calm" data-ng-click="onInvite()">
+        Invite Users
+    </button>
   </ion-content>
 </ion-view>

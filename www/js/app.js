@@ -58,6 +58,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       }
     }
   })
+  .state('app.matchesInvite', {
+    url: "/matches/invite",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/matches_invite.html",
+        controller: 'MatchesInviteController'
+      }
+    }
+  })
   // FLOQUE END
 
   .state('app.search', {
@@ -99,5 +108,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/search');
+  $urlRouterProvider.otherwise('/app/matches/invite');
 });
