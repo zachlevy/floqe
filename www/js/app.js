@@ -59,7 +59,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     }
   })
   .state('app.matchesInvite', {
-    url: "/matches/invite",
+    url: "/matches/invite/{match_id}",
     views: {
       'menuContent': {
         templateUrl: "templates/matches_invite.html",

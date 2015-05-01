@@ -92,10 +92,12 @@ angular.module('starter.controllers', [])
   console.log('TagsResultsController');
 
   // init
-  searchedTags = tagsFactory.tagsFromIdsList($stateParams.tag_ids, tagsFactory);
+  // hit API server for results
+  users = post_api_search['result']['users'];
+  searchedTags = post_api_search['result']['tags'];
   $scope.me = current_user;
   $scope.tagNames = tagsFactory.namesList(searchedTags);
-  users = post_api_search['result']['users'];
+  
   $scope.users = users;
 
   // default filters
@@ -144,6 +146,7 @@ angular.module('starter.controllers', [])
     // send to API 
     // implement
     console.log($scope.swipedUserIds);
+    console.log($stateParams.search_id);
   };
 
   $scope.onSwipeLeft = function(user_id) {
@@ -155,11 +158,12 @@ angular.module('starter.controllers', [])
     // send to API 
     // implement
     console.log($scope.swipedUserIds);
+    console.log($stateParams.search_id);
   };
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $state, post_api_match_mine) {
+.controller('MatchesController', function($scope, $state, $stateParams, post_api_match_mine) {
   console.log('MatchesController');
   $scope.matches = post_api_match_mine['result'];
   $scope.onMatchSelect = function(match_id){
@@ -173,6 +177,8 @@ angular.module('starter.controllers', [])
   console.log('InviteMatchesController');
   $scope.matches = post_api_match_mine['result'];
   
+  // for match
+  console.log();
 
   // swiping
   $scope.selectedMatchIds = [];
@@ -191,6 +197,7 @@ angular.module('starter.controllers', [])
   // when invite button clicked
   $scope.onInvite = function(){
     // go back to convo screen
+    console.log($stateParams.match_id);
     console.log($scope.selectedMatchIds);
     // send to API 
     // implement
