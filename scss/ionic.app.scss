@@ -48,7 +48,24 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // TAGS RESULTS SCREEN END
 // TAGS SEARCH SCREEN
 .tags-search-screen {
-
+  .search-title {
+    color: $calm;
+    text-align: center;
+    font-size:2em;
+    margin: 2em 0 1em;
+  }
+  .search-box {
+    background-color: transparent; 
+    border-style: solid; 
+    border-width: 0px 0px 2px 0px; 
+    border-color: $calm;
+    width: 90%;
+    margin-left: 5%;
+    padding-left: 0.5em;
+    color: #666;
+    font-size: 3em;
+    margin-bottom: 1em;
+  }
 }
 // TAGS SEARCH SCREEN END
 // MATCHES SCREEN AND INVITE SCREEN START
