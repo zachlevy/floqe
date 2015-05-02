@@ -5,10 +5,6 @@
       <button class="button button-block button-calm" data-ng-click="submitTags()">
         <i class="fa fa-search"></i>
       </button>
-
-      <h2 class='header'>Tagging</h2>
-      <select id="selectize-tags-search"></select>
-
       <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
         {{ tag.name }}
       </button>

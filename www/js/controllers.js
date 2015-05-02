@@ -60,21 +60,8 @@ angular.module('starter.controllers', [])
   $scope.allTags = tagsFactory.all();
 
 
-  // jquery selectize
-  $timeout(function () {
-    jQuery('.search-title').hide();
-    options = {
-      create: false,
-      openOnFocus: true,
-      closeAfterSelect: true,
-      remove_button: true,
-      maxItems: 2,
-      valueField: 'id',
-      labelField: 'name',
-      options: $scope.allTags
-    };
-    jQuery('#selectize-tags-search').selectize(options);
-  });
+  // 
+  
 
 
   // add a tag
