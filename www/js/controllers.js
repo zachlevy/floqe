@@ -59,10 +59,13 @@ angular.module('starter.controllers', [])
   $scope.suggestedTags = tagsFactory.suggested();
   $scope.allTags = tagsFactory.all();
 
-
-  // 
+  // auto complete
+  $scope.searchAutoComplete = null;
   
-
+  $scope.options = ["Text", "Markdown", "HTML", "PHP", "Python",
+                  "Java", "JavaScript", "Ruby", "VHDL",
+                  "Verilog", "C#", "C/C++"];
+  $scope.tags = ["Markdown", "Ruby"];
 
   // add a tag
   $scope.addTag = function(tagId) {

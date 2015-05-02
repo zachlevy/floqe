@@ -2,9 +2,16 @@
   <ion-content class="tags-search-screen">
     <h1 class="search-title">What do you want to do?</h1>
       <input data-ng-model="search" class="search-box" />
+      <input data-ng-model="searchAutoComplete" class="search-box" />
       <button class="button button-block button-calm" data-ng-click="submitTags()">
         <i class="fa fa-search"></i>
       </button>
+      <div data-ng-model="searchedtags" class="searched-tags">
+        <button class="button button-block button-calm" data-ng-repeat="tag in searchedTags" data-ng-click="removeTag()">
+          <i class="fa fa-search"></i>
+        </button>
+      </div>
+      <tagger ng-model="tags" options="options"/>
       <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
         {{ tag.name }}
       </button>
