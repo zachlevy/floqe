@@ -48,7 +48,7 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags) {
+.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout) {
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
 
@@ -58,6 +58,24 @@ angular.module('starter.controllers', [])
   // get all tags
   $scope.suggestedTags = tagsFactory.suggested();
   $scope.allTags = tagsFactory.all();
+
+
+  // jquery selectize
+  $timeout(function () {
+    jQuery('.search-title').hide();
+    options = {
+      create: false,
+      openOnFocus: true,
+      closeAfterSelect: true,
+      remove_button: true,
+      maxItems: 2,
+      valueField: 'id',
+      labelField: 'name',
+      options: $scope.allTags
+    };
+    jQuery('#selectize-tags-search').selectize(options);
+  });
+
 
   // add a tag
   $scope.addTag = function(tagId) {
@@ -84,6 +102,26 @@ angular.module('starter.controllers', [])
       this.push(value.name);
     }, $scope.search);
   }
+
+  // selectize
+  $scope.selectedTags = null;
+  $scope.selectedTagsChanged = function () {
+    console.log('selectedTagsChanged');
+  };
+  $scope.selectizeSearchConfig = {
+    create: false,
+    openOnFocus: true,
+    closeAfterSelect: true,
+    remove_button: true,
+    maxItems: 10,
+    valueField: 'id',
+    labelField: 'name',
+    delimiter: ',',
+    placeholder: '...',
+    onInitialize: function(selectize){
+      // receives the selectize object as an argument
+    }
+  };
 })
 
 // Tags Search Results Screen
