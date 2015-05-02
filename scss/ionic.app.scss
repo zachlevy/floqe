@@ -73,17 +73,14 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   
 }
 // MATCHES SCREEN AND INVITE SCREEN END
-
-
-
-
+// START ANGULAR TAGGER
 .angular-tagger {
   border: 1px solid #ccc;
   display: inline-block;
   border-radius: 2px;
-  min-width: 100px;
-  max-width: 300px;
+  width: 100%;
 }
+
 .angular-tagger__holder {
   display: inline-block;
 }
@@ -155,3 +152,4 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .angular-tagger--single .angular-tagger-tag__delete {
   float: right;
 }
+// END ANGULAR TAGGER

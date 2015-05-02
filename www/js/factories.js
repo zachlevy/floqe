@@ -91,6 +91,14 @@ angular.module('starter.factories', [])
       }, text);
       return text.join(',');
     },
+    // returns tag ids like [1,2,3,4] from tag objects
+    idsArray: function (tags) {
+      ids_array = [];
+      angular.forEach(tags, function (value, key) {
+        this.push(value.id);
+      }, ids_array);
+      return ids_array;
+    },
     // returns tag names like basketball,hockey from tag objects
     namesList: function(tags) {
       text = [];

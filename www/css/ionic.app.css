@@ -7709,8 +7709,7 @@ a.button {
   border: 1px solid #ccc;
   display: inline-block;
   border-radius: 2px;
-  min-width: 100px;
-  max-width: 300px; }
+  width: 100%; }
 
 .angular-tagger__holder {
   display: inline-block; }
