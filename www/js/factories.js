@@ -1,5 +1,6 @@
 angular.module('starter.factories', [])
 
+// any function related to accessing the api
 .factory('appApi', function ($http, baseUrl) {
   // data is an object like {'foo':'bar'}
   // endpoint is a string
@@ -30,6 +31,7 @@ angular.module('starter.factories', [])
   };
 })
 
+// any function related to users
 .factory('usersFactory', function ($http){
   // factory vars
 
@@ -48,6 +50,7 @@ angular.module('starter.factories', [])
   };
 })
 
+// any function related to tags
 .factory('tagsFactory', function($http, allTags){
   // factory vars
   var suggested = function() {
@@ -135,6 +138,7 @@ angular.module('starter.factories', [])
     }
   };
 })
+
 // generic application helper for common js functions
 .factory('appHelper', function(){
   // factory vars
@@ -156,19 +160,19 @@ angular.module('starter.factories', [])
     }
   };
 })
+// global helper values
 // API base url
 .value(
   'baseUrl',
   'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
+// all tags preloaded, can be refreshed with tagsFactory.refreshTags()
 .value(
   'allTags',
   {
     'tags' : []
   }
 )
-
-
 
 // development helpers
 // current_user
@@ -184,6 +188,7 @@ angular.module('starter.factories', [])
   }
 )
 
+// sample API responses
 // GET /api/tags
 .value(
   'get_api_tags',

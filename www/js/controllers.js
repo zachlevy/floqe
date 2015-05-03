@@ -60,6 +60,7 @@ angular.module('starter.controllers', [])
   $scope.allTags = tagsFactory.all();
 
   // tagger
+  $scope.maxTags = 2;
   $scope.taggerTags = $scope.suggestedTags;
   $scope.showTagName = function (tag) {
     return tag.name;
@@ -70,7 +71,9 @@ angular.module('starter.controllers', [])
 
   // add a tag
   $scope.addTag = function(tagId) {
-    appHelper.addIfNotExists(tagsFactory.getTag(tagId), $scope.searchTags);
+    if ($scope.searchTags.length < $scope.maxTags) {
+      appHelper.addIfNotExists(tagsFactory.getTag(tagId), $scope.searchTags);
+    }
   };
 
   // process search
