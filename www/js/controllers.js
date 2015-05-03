@@ -57,6 +57,7 @@ angular.module('starter.controllers', [])
   updateSearch();
   // get all tags
   $scope.suggestedTags = tagsFactory.suggested();
+  //console.log($scope.suggestedTags);
   $scope.allTags = tagsFactory.all();
 
   $scope.taggerAllTags = $scope.allTags;
@@ -72,11 +73,8 @@ angular.module('starter.controllers', [])
 
   // add a tag
   $scope.addTag = function(tagId) {
-    var selectedTag = $scope.allTags.filter(function(tag) {
-      return tag.id == tagId;
-    });
-    searchTags.push(selectedTag[0]);
-    updateSearch();
+    searchTags.push(tagsFactory.getTag(tagId));
+    console.log();
   };
 
   // process search

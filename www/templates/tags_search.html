@@ -7,10 +7,12 @@
         <i class="fa fa-search"></i>
       </button>
 
-      <tagger ng-model="taggerTags" options="taggerAllTags" data-disable-new data-limit="2" display-fun="showTagName" create-fun="createTagName" />
 
       <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
         {{ tag.name }}
       </button>
+
+
+      <tagger ng-model="search" options="allTags" data-disable-new data-limit="2" display-fun="showTagName" create-fun="createTagName"></tagger>
   </ion-content>
 </ion-view>
