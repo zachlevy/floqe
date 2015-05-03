@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css);
 /*
 To customize the look and feel of Ionic, you can override the variables
 in ionic's _variables.scss file.
@@ -7685,6 +7686,25 @@ a.button {
 .pull-left {
   float: right; }
 
+.tags-results-screen .search-filters-list .checkbox-button {
+  /* to hide the checkbox itself */
+  /* space between checkbox and label */
+  /* allow space for check mark */ }
+  .tags-results-screen .search-filters-list .checkbox-button label {
+    font-size: 20px; }
+  .tags-results-screen .search-filters-list .checkbox-button input {
+    display: none; }
+  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+    font-family: FontAwesome;
+    display: inline-block; }
+  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+    letter-spacing: 10px; }
+  .tags-results-screen .search-filters-list .checkbox-button input:checked + label:before {
+    letter-spacing: 5px; }
+.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox] + label:before {
+  content: "\f221"; }
+.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox]:checked + label:before {
+  content: "\f221"; }
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
@@ -7835,3 +7855,59 @@ slider, [slider] {
         display: inline-block; }
       slider div.bubble.limit, [slider] div.bubble.limit {
         color: #777; }
+
+.button.button-female {
+  border-color: #e633ab;
+  background-color: #d81a99;
+  color: #fff; }
+  .button.button-female:hover {
+    color: #fff;
+    text-decoration: none; }
+  .button.button-female.active, .button.button-female.activated {
+    border-color: #e633ab;
+    background-color: #e633ab;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+  .button.button-female.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #d81a99; }
+  .button.button-female.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-female.button-outline {
+    border-color: #d81a99;
+    background: transparent;
+    color: #d81a99; }
+    .button.button-female.button-outline.active, .button.button-female.button-outline.activated {
+      background-color: #d81a99;
+      box-shadow: none;
+      color: #fff; }
+
+.button.button-male {
+  border-color: #226bdc;
+  background-color: #085bdb;
+  color: #fff; }
+  .button.button-male:hover {
+    color: #fff;
+    text-decoration: none; }
+  .button.button-male.active, .button.button-male.activated {
+    border-color: #226bdc;
+    background-color: #226bdc;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+  .button.button-male.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #085bdb; }
+  .button.button-male.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-male.button-outline {
+    border-color: #085bdb;
+    background: transparent;
+    color: #085bdb; }
+    .button.button-male.button-outline.active, .button.button-male.button-outline.activated {
+      background-color: #085bdb;
+      box-shadow: none;
+      color: #fff; }

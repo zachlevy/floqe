@@ -19,8 +19,17 @@
 
     <div class="list search-filters-list">
       <div class="filters-wrap" data-ng-class="{hidden:hideFilter}">
-        <ion-checkbox data-ng-model="filters.male">Male</ion-checkbox>
-        <ion-checkbox data-ng-model="filters.female">Female</ion-checkbox>
+        <div class="item checkbox-button">
+            <input id="filter-male" type="checkbox" data-ng-model="filters.male">
+            <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
+              <i class="fa fa-mars"></i> Males
+            </label>
+            <input id="filter-female" type="checkbox" data-ng-model="filters.female">
+            <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
+              <i class="fa fa-venus"></i> Females
+            </label>
+        </div>
+
         <div class="item range range-positive">
           <p>{{ filters.proximity }} km</p>
           <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">

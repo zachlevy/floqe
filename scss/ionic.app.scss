@@ -21,6 +21,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+// font awesome
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css);
+
 // HELPER START
 .hidden {
   display: none;
@@ -40,7 +43,39 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
   }
   .search-filters-list {
+    // checkboxes start
+    .checkbox-button {
+      label {
+        font-size: 20px;
+      }
+      input {
+        display:none;
+      } /* to hide the checkbox itself */
+      input + label:before {
+        font-family: FontAwesome;
+        display: inline-block;
+      }
+      input + label:before {
+        letter-spacing: 10px;
+        } /* space between checkbox and label */
+      input:checked + label:before {
+        letter-spacing: 5px;
+        } /* allow space for check mark */
+    }
+    .checkbox-male {
 
+    }
+    .checkbox-female {
+      // unchecked icon
+      input[type=checkbox] + label:before {
+        content: "\f221";
+      }
+      // checked icon
+      input[type=checkbox]:checked + label:before {
+        content: "\f221";
+      }
+    }
+    // checkboxes end
   }
   .swiped {
     background-color: #E5FFE5;
@@ -77,7 +112,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 // MATCHES SCREEN AND INVITE SCREEN END
 
-// START ANGULAR TAGGER
+// ANGULAR TAGGER START
 .angular-tagger {
   border: 1px solid #ccc;
   display: inline-block;
@@ -156,8 +191,8 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .angular-tagger--single .angular-tagger-tag__delete {
   float: right;
 }
-// END ANGULAR TAGGER
-// START MULTIRANGE SLIDER
+// ANGULAR TAGGER END
+// MULTIRANGE SLIDER START
 $height: 7px;
 slider, [slider] {
   display: inline-block;
@@ -234,4 +269,85 @@ slider, [slider] {
   }
 }
 
-// END MULTIRANGE SLIDER
+// MULTIRANGE SLIDER END
+
+// CUSTOM BUTTONS START
+// female
+$female-secondary: #e633ab;
+$female-primary: #d81a99;
+.button.button-female {
+  border-color: $female-secondary;
+  background-color: $female-primary;
+  color: #fff;
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+  &.active,
+  &.activated {
+    border-color: $female-secondary;
+    background-color: $female-secondary;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  &.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: $female-primary;
+  }
+  &.button-icon {
+    border-color: transparent;
+    background: none;
+  }
+  &.button-outline {
+    border-color: $female-primary;
+    background: transparent;
+    color: $female-primary;
+    &.active,
+    &.activated {
+      background-color: $female-primary;
+      box-shadow: none;
+      color: #fff;
+    }
+  }
+}
+// male
+$male-secondary: #226bdc;
+$male-primary: #085bdb;
+.button.button-male {
+  border-color: $male-secondary;
+  background-color: $male-primary;
+  color: #fff;
+  &:hover {
+    color: #fff;
+    text-decoration: none;
+  }
+  &.active,
+  &.activated {
+    border-color: $male-secondary;
+    background-color: $male-secondary;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1);
+  }
+  &.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: $male-primary;
+  }
+  &.button-icon {
+    border-color: transparent;
+    background: none;
+  }
+  &.button-outline {
+    border-color: $male-primary;
+    background: transparent;
+    color: $male-primary;
+    &.active,
+    &.activated {
+      background-color: $male-primary;
+      box-shadow: none;
+      color: #fff;
+    }
+  }
+}
+// CUSTOM BUTTONS END
