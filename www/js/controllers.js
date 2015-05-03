@@ -54,16 +54,13 @@ angular.module('starter.controllers', [])
 
   // default tags
   searchTags = [];
-  updateSearch();
   // get all tags
   $scope.suggestedTags = tagsFactory.suggested();
   //console.log($scope.suggestedTags);
   $scope.allTags = tagsFactory.all();
 
-  $scope.taggerAllTags = $scope.allTags;
-
   // tagger
-  $scope.taggerTags = [];
+  $scope.taggerTags = $scope.suggestedTags;
   $scope.showTagName = function (tag) {
     return tag.name;
   };
@@ -83,35 +80,6 @@ angular.module('starter.controllers', [])
     console.log(searchTags);
     searchTagsText = tagsFactory.idsList(searchTags);
     $state.go('app.tagsResults', {tag_ids: searchTagsText});
-  };
-
-  // output the names of search tags
-  function updateSearch() {
-    console.log("updateSearch");
-    $scope.search = [];
-    angular.forEach(searchTags, function (value, key) {
-      this.push(value.name);
-    }, $scope.search);
-  }
-
-  // selectize
-  $scope.selectedTags = null;
-  $scope.selectedTagsChanged = function () {
-    console.log('selectedTagsChanged');
-  };
-  $scope.selectizeSearchConfig = {
-    create: false,
-    openOnFocus: true,
-    closeAfterSelect: true,
-    remove_button: true,
-    maxItems: 10,
-    valueField: 'id',
-    labelField: 'name',
-    delimiter: ',',
-    placeholder: '...',
-    onInitialize: function(selectize){
-      // receives the selectize object as an argument
-    }
   };
 })
 

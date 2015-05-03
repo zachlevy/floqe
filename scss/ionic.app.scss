@@ -33,6 +33,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   float: right;
 }
 // HELPER END
+
 // TAGS RESULTS SCREEN
 .tags-results-screen {
   .search-results-list {
@@ -46,6 +47,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   }
 }
 // TAGS RESULTS SCREEN END
+
 // TAGS SEARCH SCREEN
 .tags-search-screen {
   .search-title {
@@ -63,16 +65,18 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
     margin-left: 5%;
     padding-left: 0.5em;
     color: #666;
-    font-size: 3em;
+    //font-size: 3em;
     margin-bottom: 1em;
   }
 }
 // TAGS SEARCH SCREEN END
+
 // MATCHES SCREEN AND INVITE SCREEN START
 .matches-screen {
   
 }
 // MATCHES SCREEN AND INVITE SCREEN END
+
 // START ANGULAR TAGGER
 .angular-tagger {
   border: 1px solid #ccc;
@@ -80,7 +84,6 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   border-radius: 2px;
   width: 100%;
 }
-
 .angular-tagger__holder {
   display: inline-block;
 }
@@ -88,12 +91,13 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   vertical-align: middle;
 }
 .angular-tagger__tag {
-  background: #571e93;
+  background: $calm;
   padding: 5px;
   margin: 1px;
   display: inline-block;
   color: white;
   border-radius: 2px;
+  cursor: pointer;
 }
 .angular-tagger-tag__delete {
   cursor: pointer;
@@ -140,7 +144,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   cursor: pointer;
 }
 .angular-tagger__matching-item--selected {
-  background: #571e93;
+  background: $calm;
   color: #fff;
 }
 .angular-tagger--single .angular-tagger__tag {

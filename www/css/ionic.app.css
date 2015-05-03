@@ -7702,7 +7702,6 @@ a.button {
   margin-left: 5%;
   padding-left: 0.5em;
   color: #666;
-  font-size: 3em;
   margin-bottom: 1em; }
 
 .angular-tagger {
@@ -7718,12 +7717,13 @@ a.button {
   vertical-align: middle; }
 
 .angular-tagger__tag {
-  background: #571e93;
+  background: #11c1f3;
   padding: 5px;
   margin: 1px;
   display: inline-block;
   color: white;
-  border-radius: 2px; }
+  border-radius: 2px;
+  cursor: pointer; }
 
 .angular-tagger-tag__delete {
   cursor: pointer; }
@@ -7770,7 +7770,7 @@ a.button {
   cursor: pointer; }
 
 .angular-tagger__matching-item--selected {
-  background: #571e93;
+  background: #11c1f3;
   color: #fff; }
 
 .angular-tagger--single .angular-tagger__tag {
