@@ -1,0 +1,19 @@
+<ion-view view-title="Matches">
+  <ion-content class="Matches-screen">
+    <div class="list matches-list">
+      <a class="item item-avatar" href="#" data-ng-repeat="match in matches" data-ng-click="onMatchSelect(match.id)">
+        <img data-ng-src="{{ match.users[0].photo }}">
+
+        <div class="pull-right">
+          <h2 data-ng-if="match.last_message == null">{{ match.matched_for.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
+          <h2 data-ng-if="match.last_message != null">{{ match.last_message.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
+        </div>
+
+        <h2>{{ match.users | namesFilter }} <i class="fa fa-user" data-ng-if="user.friend"></i></h2>
+
+        <p data-ng-if="match.last_message == null">Matched for {{ match.matched_for.tags | namesFilter }}</p>
+        <p data-ng-if="match.last_message != null">{{ match.last_message.message }}</p>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

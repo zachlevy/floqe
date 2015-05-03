@@ -21,3 +21,139 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // Include all of Ionic
 @import "www/lib/ionic/scss/ionic";
 
+// HELPER START
+.hidden {
+  display: none;
+  visibility: hidden;
+}
+.pull-right {
+  float: right;
+}
+.pull-left {
+  float: right;
+}
+// HELPER END
+
+// TAGS RESULTS SCREEN
+.tags-results-screen {
+  .search-results-list {
+
+  }
+  .search-filters-list {
+
+  }
+  .swiped {
+    background-color: #E5FFE5;
+  }
+}
+// TAGS RESULTS SCREEN END
+
+// TAGS SEARCH SCREEN
+.tags-search-screen {
+  .search-title {
+    color: $calm;
+    text-align: center;
+    font-size:2em;
+    margin: 2em 0 1em;
+  }
+  .search-box {
+    background-color: transparent; 
+    border-style: solid; 
+    border-width: 0px 0px 2px 0px; 
+    border-color: $calm;
+    width: 90%;
+    margin-left: 5%;
+    padding-left: 0.5em;
+    color: #666;
+    //font-size: 3em;
+    margin-bottom: 1em;
+  }
+}
+// TAGS SEARCH SCREEN END
+
+// MATCHES SCREEN AND INVITE SCREEN START
+.matches-screen {
+  
+}
+// MATCHES SCREEN AND INVITE SCREEN END
+
+// START ANGULAR TAGGER
+.angular-tagger {
+  border: 1px solid #ccc;
+  display: inline-block;
+  border-radius: 2px;
+  width: 100%;
+}
+.angular-tagger__holder {
+  display: inline-block;
+}
+.angular-tagger__wrapper {
+  vertical-align: middle;
+}
+.angular-tagger__tag {
+  background: $calm;
+  padding: 5px;
+  margin: 1px;
+  display: inline-block;
+  color: white;
+  border-radius: 2px;
+  cursor: pointer;
+}
+.angular-tagger-tag__delete {
+  cursor: pointer;
+}
+.angular-tagger__input {
+  border: none;
+  background: none;
+  outline: none;
+  width: auto;
+  min-width: 1px;
+  display: inline-block;
+  height: 20px;
+  line-height: 20px;
+  padding: 1px 0 1px 3px;
+  vertical-align: middle;
+}
+.angular-tagger__input:empty:not(:focus):before {
+  content: attr(placeholder);
+}
+.angular-tagger__hook {
+  width: 100%;
+  clear: both;
+  height: 0;
+  position: relative;
+}
+.angular-tagger__matching {
+  position: absolute;
+  z-index: 10;
+  min-width: 100px;
+  width: 100%;
+  top: 0px;
+  left: -1;
+  border: 1px solid #eee;
+  padding: 0;
+  margin: 0;
+  background: #fff;
+}
+.angular-tagger__matching-item {
+  list-style: none;
+  padding: 3px 5px;
+  background: #fff;
+}
+.angular-tagger__matching-item:hover {
+  cursor: pointer;
+}
+.angular-tagger__matching-item--selected {
+  background: $calm;
+  color: #fff;
+}
+.angular-tagger--single .angular-tagger__tag {
+  display: block;
+}
+.angular-tagger--single .angular-tagger__holder {
+  display: block;
+}
+.angular-tagger--single .angular-tagger-tag__delete {
+  float: right;
+}
+// END ANGULAR TAGGER

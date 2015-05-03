@@ -1,0 +1,14 @@
+<ion-view view-title="Search">
+  <ion-content class="tags-search-screen">
+    <h1 class="search-title">What do you want to do?</h1>
+      <!--<input data-ng-model="search" class="search-box" />-->
+      <tagger class="search-box" ng-model="searchTags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
+      <button class="button button-block button-calm" data-ng-click="submitTags()">
+        <i class="fa fa-search"></i>
+      </button>
+      <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
+        {{ tag.name }}
+      </button>
+      <pre>{{ searchTags }}</pre>
+  </ion-content>
+</ion-view>
