@@ -160,6 +160,7 @@ angular.module('starter.factories', [])
     }
   };
 })
+
 // global helper values
 // API base url
 .value(

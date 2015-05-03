@@ -4,9 +4,7 @@
       <a class="item item-avatar" href="#" data-ng-click="meClick()">
         <img data-ng-src="{{ me.photo }}">
         <h2>{{ me.name }}</h2>
-        <input data-ng-if="showDescriptionInput" type="text" data-ng-model="myDescription"/>
-        <p data-ng-if="!showDescriptionInput && me.description !== null">{{ me.description }}</p>
-        <p data-ng-if="!showDescriptionInput && me.description === null">Add a description</p>
+        <input type="text" data-ng-model="myDescription" data-ng-blur="updateDescription()" placeholder="Add a description"/>
       </a>
       <div class="item item-divider">
         Matches

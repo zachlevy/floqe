@@ -155,15 +155,12 @@ angular.module('starter.controllers', [])
     console.log($stateParams.search_id);
   };
 
-  // updating description
-  $scope.showDescriptionInput = false;
-  $scope.meClick = function() {
-    console.log("meClick");
+  $scope.updateDescription = function() {
+    console.log('updateDescription');
+    // send to API
+    // implement
     console.log($scope.myDescription);
-    $scope.showDescriptionInput = true;
   };
-  // capture focus off and send to api
-  // implement
   
 })
 
