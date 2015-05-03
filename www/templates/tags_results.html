@@ -26,11 +26,12 @@
           <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
         </div>
 
-        <div class="item range range-positive">
-          <p>{{ ageFilterMin }}</p>
-          <input type="range" name="age" min="0" max="100" value="{{ filters.ageMax }}" data-ng-model="filters.ageMax">
+        <div class="item">
+          <p>{{ filters.ageMin }}</p>
+          <slider floor="14" ceiling="70" ng-model-low="filters.ageMin" ng-model-high="filters.ageMax"></slider>
           <p>{{ filters.ageMax }}</p>
         </div>
+
       </div>
       <button class="button button-block button-calm" data-ng-click="hideFilters()" data-ng-class="{hidden:hideFilter}">
         Hide Filters

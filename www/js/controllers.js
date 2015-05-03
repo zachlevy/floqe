@@ -155,11 +155,13 @@ angular.module('starter.controllers', [])
     console.log($stateParams.search_id);
   };
 
+  // udpate self description for search
   $scope.updateDescription = function() {
     console.log('updateDescription');
     // send to API
     // implement
     console.log($scope.myDescription);
+    // search id
   };
   
 })
