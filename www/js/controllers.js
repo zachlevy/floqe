@@ -92,11 +92,11 @@ angular.module('starter.controllers', [])
 
   // init
   // hit API server for results
-  users = post_api_search['result']['users'];
-  searchedTags = post_api_search['result']['tags'];
+  users = post_api_search.result.users;
+  searchedTags = post_api_search.result.tags;
+  $scope.myDescription = post_api_search.result.me.description;
   $scope.me = current_user;
   $scope.tagNames = tagsFactory.namesList(searchedTags);
-  
   $scope.users = users;
 
   // default filters
@@ -154,12 +154,23 @@ angular.module('starter.controllers', [])
     console.log($scope.swipedUserIds);
     console.log($stateParams.search_id);
   };
+
+  // updating description
+  $scope.showDescriptionInput = false;
+  $scope.meClick = function() {
+    console.log("meClick");
+    console.log($scope.myDescription);
+    $scope.showDescriptionInput = true;
+  };
+  // capture focus off and send to api
+  // implement
+  
 })
 
 // Matches Screen
 .controller('MatchesController', function($scope, $state, $stateParams, post_api_match_mine) {
   console.log('MatchesController');
-  $scope.matches = post_api_match_mine['result'];
+  $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(match_id){
     console.log('match selected');
     console.log(match_id);
@@ -169,7 +180,7 @@ angular.module('starter.controllers', [])
 // Invite Matches Screen
 .controller('MatchesInviteController', function($scope, $state, $stateParams, post_api_match_mine) {
   console.log('InviteMatchesController');
-  $scope.matches = post_api_match_mine['result'];
+  $scope.matches = post_api_match_mine.result;
   
   // for match
   console.log();

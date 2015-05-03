@@ -222,6 +222,9 @@ angular.module('starter.factories', [])
     "success" : true,
     "result" : {
       "id" : 1,
+      "me" : {
+        "description" : "scrim"
+      },
       "tags" : [
         {
           "id" : 1,

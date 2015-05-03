@@ -1,11 +1,12 @@
 <ion-view view-title="{{ tagNames }}">
   <ion-content class="tags-results-screen">
     <div class="list search-results-list">
-      <a class="item item-avatar" href="#">
+      <a class="item item-avatar" href="#" data-ng-click="meClick()">
         <img data-ng-src="{{ me.photo }}">
         <h2>{{ me.name }}</h2>
-        <p data-ng-if="me.description !== null">{{ me.description }}</p>
-        <p data-ng-if="me.description === null">Add a description</p>
+        <input data-ng-if="showDescriptionInput" type="text" data-ng-model="myDescription"/>
+        <p data-ng-if="!showDescriptionInput && me.description !== null">{{ me.description }}</p>
+        <p data-ng-if="!showDescriptionInput && me.description === null">Add a description</p>
       </a>
       <div class="item item-divider">
         Matches
