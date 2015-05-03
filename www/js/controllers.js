@@ -48,12 +48,12 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout) {
+.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout, appHelper) {
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
 
   // default tags
-  searchTags = [];
+  $scope.searchTags = [];
   // get all tags
   $scope.suggestedTags = tagsFactory.suggested();
   //console.log($scope.suggestedTags);
@@ -70,21 +70,20 @@ angular.module('starter.controllers', [])
 
   // add a tag
   $scope.addTag = function(tagId) {
-    searchTags.push(tagsFactory.getTag(tagId));
-    console.log();
+    appHelper.addIfNotExists(tagsFactory.getTag(tagId), $scope.searchTags);
   };
 
   // process search
   $scope.submitTags = function () {
     console.log("submitTags");
     console.log(searchTags);
-    searchTagsText = tagsFactory.idsList(searchTags);
+    searchTagsText = tagsFactory.idsList($scope.searchTags);
     $state.go('app.tagsResults', {tag_ids: searchTagsText});
   };
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate) {
+.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
@@ -137,9 +136,7 @@ angular.module('starter.controllers', [])
 
   $scope.onSwipeRight = function(user_id) {
     console.log("Swiped Right");
-    if ($scope.swipedUserIds.indexOf(user_id) == -1) {
-      $scope.swipedUserIds.push(user_id);
-    }
+    appHelper.addIfNotExists(user_id, $scope.swipedUserIds);
     // send to API 
     // implement
     console.log($scope.swipedUserIds);
@@ -148,10 +145,7 @@ angular.module('starter.controllers', [])
 
   $scope.onSwipeLeft = function(user_id) {
     console.log("Swiped Left");
-    var index = $scope.swipedUserIds.indexOf(user_id);
-    if (index > -1) {
-      $scope.swipedUserIds.splice(index, 1);
-    }
+    appHelper.removeIfExists(user_id, $scope.swipedUserIds);
     // send to API 
     // implement
     console.log($scope.swipedUserIds);

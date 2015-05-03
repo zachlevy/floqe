@@ -67,7 +67,7 @@ angular.module('starter.factories', [])
     refreshTags: function () {
       allTags.tags = this.all();
     },
-    // returns tag objects based on ids string like 1,2,3,4
+    // returns tag objects based on ids string like "1,2,3,4"
     // requires its own factory because super this unaccessible
     tagsFromIdsList: function (tag_ids, tagsFactory) {
       tags = [];
@@ -83,7 +83,7 @@ angular.module('starter.factories', [])
       });
       return results[0];
     },
-    // returns tag ids like 1,2,3,4 from tag objects
+    // returns tag ids like "1,2,3,4" from tag objects
     idsList: function (tags) {
       text = [];
       angular.forEach(tags, function (value, key) {
@@ -143,11 +143,16 @@ angular.module('starter.factories', [])
   return {
     // array add
     addIfNotExists: function (item, array) {
-      
+      if (array.indexOf(item) == -1) {
+        array.push(item);
+      }
     },
     // array remove
     removeIfExists: function (item, array) {
-
+      var index = array.indexOf(item);
+      if (index > -1) {
+        array.splice(index, 1);
+      }
     }
   };
 })
