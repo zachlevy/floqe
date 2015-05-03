@@ -35,16 +35,17 @@
           <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
         </div>
 
-        <div class="item">
+        <div class="item multi-slider-item">
+          <label class="filter-name">Age</label>
           <div class="row">
             <div class="col">
-              {{ filters.ageMin }}
+              <p>{{ filters.ageMin }}</p>
             </div>
             <div class="col col-80">
               <slider floor="14" ceiling="70" ng-model-low="filters.ageMin" ng-model-high="filters.ageMax"></slider>
             </div>
             <div class="col">
-              {{ filters.ageMax }}
+              <p>{{ filters.ageMax }}</p>
             </div>
           </div>
         </div>

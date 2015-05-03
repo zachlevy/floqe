@@ -7686,6 +7686,10 @@ a.button {
 .pull-left {
   float: right; }
 
+.tags-results-screen .search-filters-list label.filter-name {
+  margin-left: 1em; }
+.tags-results-screen .search-filters-list .multi-slider-item {
+  padding: 0.5em 0; }
 .tags-results-screen .search-filters-list .checkbox-button {
   /* to hide the checkbox itself */
   /* space between checkbox and label */
@@ -7805,9 +7809,9 @@ a.button {
 slider, [slider] {
   display: inline-block;
   position: relative;
-  height: 7px;
+  height: 2px;
   width: 100%;
-  margin: 25px 5px 25px 5px;
+  margin: 0px 5px 0px 5px;
   vertical-align: middle; }
   slider div, [slider] div {
     white-space: nowrap;
@@ -7815,23 +7819,25 @@ slider, [slider] {
     slider div.slider-bar, [slider] div.slider-bar {
       width: 100%;
       height: 100%;
-      border-radius: 7px;
-      background: #444;
+      background: #cccccc;
       overflow: hidden; }
       slider div.slider-bar .selection, [slider] div.slider-bar .selection {
         width: 0%;
         height: 100%;
-        background: #13b6ff; }
+        background: #387ef5; }
     slider div.handle, [slider] div.handle {
       cursor: pointer;
-      width: 20px;
-      height: 20px;
-      top: -8px;
+      width: 30px;
+      height: 30px;
+      top: -12px;
       background-color: #fff;
-      border: 1px solid #000;
+      border: 1px solid #c1c1c1;
       z-index: 2;
-      border-radius: 100%; }
-      slider div.handle:after, [slider] div.handle:after {
+      border-radius: 100%;
+      box-shadow: 0px 2px 15px -6px black;
+      /*
+      // left in for debugging
+      &:after {
         content: '';
         background-color: #777;
         width: 8px;
@@ -7839,17 +7845,22 @@ slider, [slider] {
         position: absolute;
         top: 6px;
         left: 6px;
-        border-radius: 100%; }
-        slider div.handle:after:hover, [slider] div.handle:after:hover {
-          background-color: #000; }
+        border-radius: 100%;
+
+        &:hover {
+          background-color: #000;
+        }
+      }
+      */ }
       slider div.handle.active:after, [slider] div.handle.active:after {
         background-color: #f00; }
     slider div.bubble, [slider] div.bubble {
       display: none;
+      line-height: 0;
       cursor: default;
       top: -22px;
       padding: 1px 3px 1px 3px;
-      font-size: 0.7em;
+      font-size: 0em;
       font-family: sans-serif; }
       slider div.bubble.active, [slider] div.bubble.active {
         display: inline-block; }
