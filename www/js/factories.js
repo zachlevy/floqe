@@ -352,5 +352,78 @@ angular.module('starter.factories', [])
     "success" : true
   }
 )
+// POST /api/v1/messages/check
+.value (
+  'post_api_message_check',
+  {
+    "success" : true,
+    "messages_count" : 3,
+    "last_message" : {
+      "user_id" : 1,
+      "message" : "Cya there bro",
+      "time" : "2015-04-26T00:00:00Z",
+      "unread" : true
+    },
+  }
+)
+// POST /messages
+.value (
+  'post_api_messages',
+  {
+    "success" : true,
+    "search": {
+      "id": 1,
+      "tags": [
+        {
+          "id": 1,
+          "name": "Hockey"
+        },
+        {
+          "id": 2,
+          "name": "Basketball"
+        }
+      ]
+    },
+    "messages":[
+      {
+        "id": 1,
+        "text": "cool story bro, see you there",
+        "time" : "2015-04-25T12:32:54Z",
+        "read_count" : 4,
+        "user" : {
+          "id" : 1,
+          "name" : "Jake",
+          "photo" : "http://placehold.it/100x100",
+          "friend" : true,
+        },
+      },
+      {
+        "id": 2,
+        "text": "cool story bro, see you there",
+        "time" : "2015-04-25T18:32:01Z",
+        "read_count" : 4,
+        "user" : {
+          "id" : 2,
+          "name" : "Alex",
+          "description" : "Scrim",
+          "photo" : "http://placehold.it/100x100",
+          "friend" : false,
+        }
+      },
+      {
+        "id": 3,
+        "text": "cool story bro, see you there",
+        "time" : "2015-04-26T02:30:00Z",
+        "read_count" : 4,
+        "user" : {
+          "id" : 1,
+          "name" : "Jake",
+          "photo" : "http://placehold.it/100x100",
+          "friend" : true,
+        },
+      }
+    ]
+  }
+)
 
 ; // end chaining
