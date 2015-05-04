@@ -191,7 +191,7 @@ angular.module('starter', ['ionic', 'firebase', 'starter.controllers', 'starter.
 })
 
 .state('tab.chat', {
-  url: '/chat',
+  url: '/chat/:roomId',
   views: {
     'tab-chat': {
       templateUrl: 'templates/tab-chat.html',
