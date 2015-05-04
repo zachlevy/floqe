@@ -284,7 +284,7 @@ angular.module('starter.factories', [])
     "success" : true,
     "result" : [
       {
-        "id": 1,
+        "conversation_id": 1,
         "last_message" : {
           "user_id" : 1,
           "message" : "Cya there bro",

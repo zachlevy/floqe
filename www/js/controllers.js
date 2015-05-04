@@ -170,13 +170,9 @@ angular.module('starter.controllers', [])
 .controller('MatchesController', function($scope, $state, $stateParams, post_api_match_mine) {
   console.log('MatchesController');
   $scope.matches = post_api_match_mine.result;
-  $scope.onMatchSelect = function(match_id){
+  $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
-    console.log(match_id);
-  };
-
-  $scope.convoSelected = function () {
-    console.log('convoSelected');
+    $state.go('app.conversation', {conversation_id: conversation_id});
   };
 })
 
