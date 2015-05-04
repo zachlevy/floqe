@@ -171,10 +171,10 @@ angular.module('starter.services', ['firebase'])
 
 // Simple Service which returns Rooms collection as Array
 // from Salesforce & binds to the Scope in Controller
-.factory('Rooms', function ($firebase) {
+.factory('Rooms', function ($firebaseArray) {
   // Might use a resource here that returns a JSON array
   var ref = new Firebase(firebaseUrl);
-  var rooms = $firebase(ref.child('rooms')).$asArray();
+  var rooms = $firebaseArray(ref.child('rooms'));
 
   return {
     all: function () {
@@ -186,7 +186,7 @@ angular.module('starter.services', ['firebase'])
     }
   };
 })
-.factory('Chats', function ($firebase, Rooms) {
+.factory('Chats', function ($firebaseArray, Rooms) {
 
   var selectedRoomId;
 
@@ -225,7 +225,7 @@ angular.module('starter.services', ['firebase'])
       console.log("selecting the room with id: " + roomId);
       selectedRoomId = roomId;
       if (!isNaN(roomId)) {
-        chats = $firebase(ref.child('rooms').child(selectedRoomId).child('chats')).$asArray();
+        chats = $firebaseArray(ref.child('rooms').child(selectedRoomId).child('chats'));
       }
     },
     send: function (from, message) {
