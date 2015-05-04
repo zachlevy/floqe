@@ -181,8 +181,19 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($scope, $state, $stateParams, post_api_messages) {
+.controller('ConversationController', function($scope, $state, $stateParams, post_api_messages, current_user) {
   $scope.messages = post_api_messages.messages;
+  $scope.current_user = current_user;
+
+  // send message
+  $scope.newMessage = null;
+  $scope.sendMessage = function (form) {
+    console.log('sendMessage');
+    console.log($scope.newMessage);
+    // send to API
+    // implement
+  };
+
 })
 
 // Invite Matches Screen

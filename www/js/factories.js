@@ -180,7 +180,7 @@ angular.module('starter.factories', [])
 .value(
   'current_user',
   {
-    "id" : 3,
+    "id" : 2,
     "name" : "Boaz",
     "photo" : "http://placehold.it/100x100",
     "description" : null,
