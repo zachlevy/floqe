@@ -67,6 +67,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
       }
     }
   })
+  .state('app.conversation', {
+    url: "/conversation/{conversation_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/conversation.html",
+        controller: 'ConversationController'
+      }
+    }
+  })
   // FLOQUE END
 
   .state('app.search', {

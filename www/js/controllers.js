@@ -174,6 +174,15 @@ angular.module('starter.controllers', [])
     console.log('match selected');
     console.log(match_id);
   };
+
+  $scope.convoSelected = function () {
+    console.log('convoSelected');
+  };
+})
+
+// Conversation Screen
+.controller('ConversationController', function($scope, $state, $stateParams, post_api_messages) {
+  $scope.messages = post_api_messages.messages;
 })
 
 // Invite Matches Screen

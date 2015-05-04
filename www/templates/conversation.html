@@ -1,0 +1,18 @@
+<ion-view view-title="Conversation">
+  <ion-content class="conversation-screen">
+    <div class="list messages-list">
+      <a class="item item-avatar" href="#" data-ng-repeat="message in messages">
+        <img data-ng-src="{{ message.user.photo }}">
+
+        <div class="pull-right">
+          <p>{{ message.time }}</p>
+        </div>
+
+        <h2>{{ match.users | namesFilter }} <i class="fa fa-user" data-ng-if="user.friend"></i></h2>
+
+        <p data-ng-if="match.last_message == null">Matched for {{ match.matched_for.tags | namesFilter }}</p>
+        <p data-ng-if="match.last_message != null">{{ match.last_message.message }}</p>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>
