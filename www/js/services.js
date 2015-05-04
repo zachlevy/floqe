@@ -1,4 +1,4 @@
-angular.module('starter.factories', ['firebase'])
+angular.module('starter.services', ['firebase'])
 
 // any function related to accessing the api
 .factory('appApi', function ($http, baseUrl) {
@@ -162,7 +162,7 @@ angular.module('starter.factories', ['firebase'])
 })
 
 // firebase start
-.factory("Auth", ["$firebaseAuth", "$rootScope",
+.factory('Auth', ["$firebaseAuth", "$rootScope",
   function ($firebaseAuth, $rootScope) {
     var ref = new Firebase(firebaseUrl);
     return $firebaseAuth(ref);
@@ -243,6 +243,12 @@ angular.module('starter.factories', ['firebase'])
     }
   };
 })
+/*
+.value(
+  'firebaseUrl',
+  'https://floqe.firebaseio.com'
+)
+*/
 // firebase end
 
 // global helper values
