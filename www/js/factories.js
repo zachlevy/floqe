@@ -102,14 +102,6 @@ angular.module('starter.factories', [])
       }, ids_array);
       return ids_array;
     },
-    // returns tag names like basketball,hockey from tag objects
-    namesList: function(tags) {
-      text = [];
-      angular.forEach(tags, function (value, key) {
-      this.push(value.name);
-      }, text);
-      return text.join(', ');
-    },
     // get suggested tags for tag search screen
     suggested: suggested,
     all: function() {
@@ -157,7 +149,16 @@ angular.module('starter.factories', [])
       if (index > -1) {
         array.splice(index, 1);
       }
-    }
+    },
+    // returns names from objects like "basketball, hockey"
+    // from objects like [{name:"basketball"},{name:"hockey"}]
+    namesList: function(tags) {
+      text = [];
+      angular.forEach(tags, function (value, key) {
+      this.push(value.name);
+      }, text);
+      return text.join(', ');
+    },
   };
 })
 
@@ -366,9 +367,9 @@ angular.module('starter.factories', [])
     },
   }
 )
-// POST /messages
-.value (
-  'post_api_messages',
+// POST /conversation
+.value(
+  'post_api_conversation',
   {
     "success" : true,
     "search": {
@@ -384,10 +385,33 @@ angular.module('starter.factories', [])
         }
       ]
     },
+    "users" : [
+      {
+        "id" : 1,
+        "name" : "Jake",
+        "description" : null,
+        "photo" : "http://placehold.it/100x100",
+        "friend" : true,
+      },
+      {
+        "id" : 2,
+        "name" : "Alex",
+        "description" : "Scrim",
+        "photo" : "http://placehold.it/100x100",
+        "friend" : false,
+      }
+    ]
+  }
+)
+// POST /messages
+.value (
+  'post_api_messages',
+  {
+    "success" : true,
     "messages":[
       {
         "id": 1,
-        "text": "cool story bro, see you there",
+        "text": "wanna meet up?",
         "time" : "2015-04-25T12:32:54Z",
         "read_count" : 4,
         "user" : {
@@ -399,13 +423,12 @@ angular.module('starter.factories', [])
       },
       {
         "id": 2,
-        "text": "cool story bro, see you there",
+        "text": "yeah man, tomorrow 2pm at the area?",
         "time" : "2015-04-25T18:32:01Z",
         "read_count" : 4,
         "user" : {
           "id" : 2,
           "name" : "Alex",
-          "description" : "Scrim",
           "photo" : "http://placehold.it/100x100",
           "friend" : false,
         }

@@ -7686,6 +7686,16 @@ a.button {
 .pull-left {
   float: right; }
 
+.multi-bar .bar .title {
+  line-height: 15px;
+  top: 4px; }
+
+.multi-title-top {
+  font-size: 15px; }
+
+.multi-title-bottom {
+  font-size: 12px; }
+
 .tags-results-screen .search-filters-list label.filter-name {
   margin-left: 1em; }
 .tags-results-screen .search-filters-list .multi-slider-item {

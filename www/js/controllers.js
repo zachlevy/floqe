@@ -96,7 +96,7 @@ angular.module('starter.controllers', [])
   searchedTags = post_api_search.result.tags;
   $scope.myDescription = post_api_search.result.me.description;
   $scope.me = current_user;
-  $scope.tagNames = tagsFactory.namesList(searchedTags);
+  $scope.tagNames = appHelper.namesList(searchedTags);
   $scope.users = users;
 
   // default filters
@@ -168,6 +168,9 @@ angular.module('starter.controllers', [])
 
 // Matches Screen
 .controller('MatchesController', function($scope, $state, $stateParams, post_api_match_mine) {
+  // multilined header bar
+  $rootScope.multiBar = false;
+
   console.log('MatchesController');
   $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
@@ -177,10 +180,43 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($scope, $state, $stateParams, post_api_messages, current_user) {
+.controller('ConversationController', function(
+  $scope,
+  $state,
+  $stateParams,
+  post_api_messages,
+  post_api_conversation,
+  current_user,
+  $ionicNavBarDelegate,
+  appHelper,
+  $rootScope
+) {
   $scope.messages = post_api_messages.messages;
   $scope.current_user = current_user;
+  console.log(post_api_conversation.users.length);
 
+  // multilined header bar, make sure to turn this off on all screens visited after
+  $rootScope.multiBar = true;
+
+  // build the nav title
+  function navTitle () {
+    names = appHelper.namesList(post_api_conversation.users);
+    description = post_api_conversation.users[0].description;
+    tags = appHelper.namesList(post_api_conversation.search.tags);
+    if (post_api_conversation.users.length == 1) {
+      // 1v1 convo
+      title_top = names + " for " + tags;
+      title_bottom = description;
+    } else {
+      // group convo
+      title_top = names;
+      title_bottom = tags;
+    }
+    return "<span class=\"multi-title-top\">" + title_top + "</span><br /><span class=\"multi-title-bottom\">For " + title_bottom + "</span>";
+  }
+
+  $scope.navTitle = navTitle();
+  
   // send message
   $scope.newMessage = null;
   $scope.sendMessage = function (form) {
@@ -194,6 +230,9 @@ angular.module('starter.controllers', [])
 
 // Invite Matches Screen
 .controller('MatchesInviteController', function($scope, $state, $stateParams, post_api_match_mine) {
+  // multilined header bar
+  $rootScope.multiBar = false;
+
   console.log('InviteMatchesController');
   $scope.matches = post_api_match_mine.result;
   

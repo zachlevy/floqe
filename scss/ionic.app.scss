@@ -35,9 +35,26 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .pull-left {
   float: right;
 }
+// header
+.multi-bar .bar .title {
+  line-height: 15px;
+  top: 4px;
+}
+.multi-title-top {
+  font-size: 15px;
+}
+.multi-title-bottom {
+  font-size: 12px;
+}
 // HELPER END
 
-// TAGS RESULTS SCREEN
+// CONVERSATION SCREEN START
+.conversation-screen {
+
+}
+// CONVERSATION SCREEN END
+
+// TAGS RESULTS SCREEN START
 .tags-results-screen {
   .search-results-list {
 
@@ -89,7 +106,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 }
 // TAGS RESULTS SCREEN END
 
-// TAGS SEARCH SCREEN
+// TAGS SEARCH SCREEN START
 .tags-search-screen {
   .search-title {
     color: $calm;
@@ -362,7 +379,7 @@ $male-primary: #085bdb;
   }
 }
 // CUSTOM BUTTONS END
-// CHAT START
+// CHAT TEMPLATE START
 .conversation-screen-wrapper {
   .bar-footer {
     overflow: visible !important;
@@ -553,4 +570,4 @@ $male-primary: #085bdb;
     font-size: 64px;
   }  
 }
-// CHAT END
+// CHAT TEMPLATE END
