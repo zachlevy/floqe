@@ -79,7 +79,7 @@ angular.module('starter.controllers', [])
   // process search
   $scope.submitTags = function () {
     console.log("submitTags");
-    console.log(searchTags);
+    console.log($scope.searchTags);
     searchTagsText = tagsFactory.idsList($scope.searchTags);
     $state.go('app.tagsResults', {tag_ids: searchTagsText});
   };
@@ -96,7 +96,7 @@ angular.module('starter.controllers', [])
   searchedTags = post_api_search.result.tags;
   $scope.myDescription = post_api_search.result.me.description;
   $scope.me = current_user;
-  $scope.tagNames = tagsFactory.namesList(searchedTags);
+  $scope.tagNames = appHelper.namesList(searchedTags);
   $scope.users = users;
 
   // default filters
@@ -155,32 +155,97 @@ angular.module('starter.controllers', [])
     console.log($stateParams.search_id);
   };
 
-  // updating description
-  $scope.showDescriptionInput = false;
-  $scope.meClick = function() {
-    console.log("meClick");
+  // udpate self description for search
+  $scope.updateDescription = function() {
+    console.log('updateDescription');
+    // send to API
+    // implement
     console.log($scope.myDescription);
-    $scope.showDescriptionInput = true;
+    // search id
   };
-  // capture focus off and send to api
-  // implement
   
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $state, $stateParams, post_api_match_mine) {
+.controller('MatchesController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine) {
+  // convoinvite
+  $rootScope.showInvite = false;
+  // multilined header bar
+  $rootScope.multiBar = false;
+
   console.log('MatchesController');
   $scope.matches = post_api_match_mine.result;
-  $scope.onMatchSelect = function(match_id){
+  $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
-    console.log(match_id);
+    $state.go('app.conversation', {conversation_id: conversation_id});
   };
 })
 
+// Conversation Screen
+.controller('ConversationController', function(
+  $scope,
+  $rootScope,
+  $state,
+  $stateParams,
+  post_api_messages,
+  post_api_conversation,
+  current_user,
+  $ionicNavBarDelegate,
+  appHelper
+) {
+  $scope.messages = post_api_messages.result.messages;
+  $scope.current_user = current_user;
+
+  // multilined header bar, make sure to turn this off on all screens visited after
+  $rootScope.multiBar = true;
+  // convoinvite
+  $rootScope.showInvite = true;
+
+  // build the nav title
+  function navTitle () {
+    names = appHelper.namesList(post_api_conversation.result.users);
+    description = post_api_conversation.result.users[0].description;
+    tags = appHelper.namesList(post_api_conversation.result.search.tags);
+    if (post_api_conversation.result.users.length == 1) {
+      // 1v1 convo
+      title_top = names + " for " + tags;
+      title_bottom = description;
+    } else {
+      // group convo
+      title_top = names;
+      title_bottom = tags;
+    }
+    return "<span class=\"multi-title-top\">" + title_top + "</span><br /><span class=\"multi-title-bottom\">For " + title_bottom + "</span>";
+  }
+  $scope.navTitle = navTitle();
+
+  // when invite is clicked
+  $rootScope.inviteClick = function () {
+    console.log('onInviteClick');
+    console.log($stateParams.conversation_id);
+    $state.go('app.matchesInvite', {conversation_id: $stateParams.conversation_id});
+  };
+  
+  // send message
+  $scope.newMessage = null;
+  $scope.sendMessage = function (form) {
+    console.log('sendMessage');
+    console.log($scope.newMessage);
+    // send to API
+    // implement
+  };
+
+})
+
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $state, $stateParams, post_api_match_mine) {
+.controller('MatchesInviteController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
+  // convoinvite
+  $rootScope.showInvite = false;
+  // multilined header bar
+  $rootScope.multiBar = false;
+
   console.log('InviteMatchesController');
-  $scope.matches = post_api_match_mine.result;
+  $scope.matches = post_api_conversations_invite.result;
   
   // for match
   console.log();
@@ -202,7 +267,7 @@ angular.module('starter.controllers', [])
   // when invite button clicked
   $scope.onInvite = function(){
     // go back to convo screen
-    console.log($stateParams.match_id);
+    console.log($stateParams.conversation_id);
     console.log($scope.selectedMatchIds);
     // send to API 
     // implement

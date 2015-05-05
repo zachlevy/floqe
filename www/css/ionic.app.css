@@ -1,4 +1,5 @@
 @charset "UTF-8";
+@import url(//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css);
 /*
 To customize the look and feel of Ionic, you can override the variables
 in ionic's _variables.scss file.
@@ -7685,6 +7686,39 @@ a.button {
 .pull-left {
   float: right; }
 
+.multi-bar .bar .title {
+  line-height: 15px;
+  top: 4px; }
+
+.multi-title-top {
+  font-size: 15px; }
+
+.multi-title-bottom {
+  font-size: 12px; }
+
+.tags-results-screen .search-filters-list label.filter-name {
+  margin-left: 1em; }
+.tags-results-screen .search-filters-list .multi-slider-item {
+  padding: 0.5em 0; }
+.tags-results-screen .search-filters-list .checkbox-button {
+  /* to hide the checkbox itself */
+  /* space between checkbox and label */
+  /* allow space for check mark */ }
+  .tags-results-screen .search-filters-list .checkbox-button label {
+    font-size: 20px; }
+  .tags-results-screen .search-filters-list .checkbox-button input {
+    display: none; }
+  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+    font-family: FontAwesome;
+    display: inline-block; }
+  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+    letter-spacing: 10px; }
+  .tags-results-screen .search-filters-list .checkbox-button input:checked + label:before {
+    letter-spacing: 5px; }
+.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox] + label:before {
+  content: "\f221"; }
+.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox]:checked + label:before {
+  content: "\f221"; }
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
@@ -7781,3 +7815,253 @@ a.button {
 
 .angular-tagger--single .angular-tagger-tag__delete {
   float: right; }
+
+slider, [slider] {
+  display: inline-block;
+  position: relative;
+  height: 2px;
+  width: 100%;
+  margin: 0px 5px 0px 5px;
+  vertical-align: middle; }
+  slider div, [slider] div {
+    white-space: nowrap;
+    position: absolute; }
+    slider div.slider-bar, [slider] div.slider-bar {
+      width: 100%;
+      height: 100%;
+      background: #cccccc;
+      overflow: hidden; }
+      slider div.slider-bar .selection, [slider] div.slider-bar .selection {
+        width: 0%;
+        height: 100%;
+        background: #387ef5; }
+    slider div.handle, [slider] div.handle {
+      cursor: pointer;
+      width: 30px;
+      height: 30px;
+      top: -12px;
+      background-color: #fff;
+      border: 1px solid #c1c1c1;
+      z-index: 2;
+      border-radius: 100%;
+      box-shadow: 0px 2px 15px -6px black;
+      /*
+      // left in for debugging
+      &:after {
+        content: '';
+        background-color: #777;
+        width: 8px;
+        height: 8px;
+        position: absolute;
+        top: 6px;
+        left: 6px;
+        border-radius: 100%;
+
+        &:hover {
+          background-color: #000;
+        }
+      }
+      */ }
+      slider div.handle.active:after, [slider] div.handle.active:after {
+        background-color: #f00; }
+    slider div.bubble, [slider] div.bubble {
+      display: none;
+      line-height: 0;
+      cursor: default;
+      top: -22px;
+      padding: 1px 3px 1px 3px;
+      font-size: 0em;
+      font-family: sans-serif; }
+      slider div.bubble.active, [slider] div.bubble.active {
+        display: inline-block; }
+      slider div.bubble.limit, [slider] div.bubble.limit {
+        color: #777; }
+
+.button.button-female {
+  border-color: #e633ab;
+  background-color: #d81a99;
+  color: #fff; }
+  .button.button-female:hover {
+    color: #fff;
+    text-decoration: none; }
+  .button.button-female.active, .button.button-female.activated {
+    border-color: #e633ab;
+    background-color: #e633ab;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+  .button.button-female.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #d81a99; }
+  .button.button-female.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-female.button-outline {
+    border-color: #d81a99;
+    background: transparent;
+    color: #d81a99; }
+    .button.button-female.button-outline.active, .button.button-female.button-outline.activated {
+      background-color: #d81a99;
+      box-shadow: none;
+      color: #fff; }
+
+.button.button-male {
+  border-color: #226bdc;
+  background-color: #085bdb;
+  color: #fff; }
+  .button.button-male:hover {
+    color: #fff;
+    text-decoration: none; }
+  .button.button-male.active, .button.button-male.activated {
+    border-color: #226bdc;
+    background-color: #226bdc;
+    box-shadow: inset 0 1px 4px rgba(0, 0, 0, 0.1); }
+  .button.button-male.button-clear {
+    border-color: transparent;
+    background: none;
+    box-shadow: none;
+    color: #085bdb; }
+  .button.button-male.button-icon {
+    border-color: transparent;
+    background: none; }
+  .button.button-male.button-outline {
+    border-color: #085bdb;
+    background: transparent;
+    color: #085bdb; }
+    .button.button-male.button-outline.active, .button.button-male.button-outline.activated {
+      background-color: #085bdb;
+      box-shadow: none;
+      color: #fff; }
+
+.conversation-screen-wrapper {
+  /* fixes an ios bug bear */
+  /* add this to keep your footer buttons down 
+  at the bottom as the textarea resizes */
+  /* loading */ }
+  .conversation-screen-wrapper .bar-footer {
+    overflow: visible !important; }
+  .conversation-screen-wrapper .bar-footer textarea {
+    resize: none;
+    height: 25px; }
+  .conversation-screen-wrapper button.ion-android-send {
+    padding-top: 2px; }
+  .conversation-screen-wrapper .footer-btn-wrap {
+    position: relative;
+    height: 100%;
+    width: 50px;
+    top: 7px; }
+  .conversation-screen-wrapper .footer-btn {
+    position: absolute !important;
+    bottom: 0; }
+  .conversation-screen-wrapper img.profile-pic {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    position: absolute;
+    bottom: 10px; }
+  .conversation-screen-wrapper img.profile-pic.left {
+    left: 10px; }
+  .conversation-screen-wrapper img.profile-pic.right {
+    right: 10px; }
+  .conversation-screen-wrapper .ion-email {
+    float: right;
+    font-size: 32px;
+    vertical-align: middle; }
+  .conversation-screen-wrapper .message {
+    font-size: 14px; }
+  .conversation-screen-wrapper .message-detail {
+    white-space: nowrap;
+    font-size: 14px; }
+  .conversation-screen-wrapper .bar.item-input-inset .item-input-wrapper input {
+    width: 100% !important; }
+  .conversation-screen-wrapper .message-wrapper {
+    position: relative; }
+  .conversation-screen-wrapper .message-wrapper:last-child {
+    margin-bottom: 10px; }
+  .conversation-screen-wrapper .chat-bubble {
+    border-radius: 5px;
+    display: inline-block;
+    padding: 10px 18px;
+    position: relative;
+    margin: 10px;
+    max-width: 80%; }
+  .conversation-screen-wrapper .chat-bubble:before {
+    content: "\00a0";
+    display: block;
+    height: 16px;
+    width: 9px;
+    position: absolute;
+    bottom: -7.5px; }
+  .conversation-screen-wrapper .chat-bubble.left {
+    background-color: #e6e5eb;
+    float: left;
+    margin-left: 55px; }
+  .conversation-screen-wrapper .chat-bubble.left:before {
+    background-color: #e6e5eb;
+    left: 10px;
+    -webkit-transform: rotate(70deg) skew(5deg); }
+  .conversation-screen-wrapper .chat-bubble.right {
+    background-color: #158ffe;
+    color: #fff;
+    float: right;
+    margin-right: 55px; }
+  .conversation-screen-wrapper .chat-bubble.right:before {
+    background-color: #158ffe;
+    right: 10px;
+    -webkit-transform: rotate(118deg) skew(-5deg); }
+  .conversation-screen-wrapper .chat-bubble.right a.autolinker {
+    color: #fff;
+    font-weight: bold; }
+  .conversation-screen-wrapper .user-messages-top-icon {
+    font-size: 28px;
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -3px;
+    right: 5px; }
+  .conversation-screen-wrapper .msg-header-username {
+    display: inline-block;
+    vertical-align: middle;
+    position: relative;
+    top: -3px; }
+  .conversation-screen-wrapper input, .conversation-screen-wrapper textarea, .conversation-screen-wrapper .item-input, .conversation-screen-wrapper .item-input-wrapper {
+    background-color: #f4f4f4 !important; }
+  .conversation-screen-wrapper .bold {
+    font-weight: bold; }
+  .conversation-screen-wrapper .cf {
+    clear: both !important; }
+  .conversation-screen-wrapper a.autolinker {
+    color: #3b88c3;
+    text-decoration: none; }
+  .conversation-screen-wrapper .loader-center {
+    height: 100%;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-direction: normal;
+    -moz-box-direction: normal;
+    -webkit-box-orient: horizontal;
+    -moz-box-orient: horizontal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+    -webkit-flex-wrap: nowrap;
+    -ms-flex-wrap: nowrap;
+    flex-wrap: nowrap;
+    -webkit-box-pack: center;
+    -moz-box-pack: center;
+    -webkit-justify-content: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    -webkit-align-content: stretch;
+    -ms-flex-line-pack: stretch;
+    align-content: stretch;
+    -webkit-box-align: center;
+    -moz-box-align: center;
+    -webkit-align-items: center;
+    -ms-flex-align: center;
+    align-items: center; }
+  .conversation-screen-wrapper .loader .ion-loading-c {
+    font-size: 64px; }

@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 'starter.filters', 'tagger'])
+angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 'starter.filters', 'tagger', 'ui.slider', 'angularMoment'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -59,11 +59,20 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     }
   })
   .state('app.matchesInvite', {
-    url: "/matches/invite/{match_id}",
+    url: "/matches/invite/{conversation_id}",
     views: {
       'menuContent': {
         templateUrl: "templates/matches_invite.html",
         controller: 'MatchesInviteController'
+      }
+    }
+  })
+  .state('app.conversation', {
+    url: "/conversations/{conversation_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/conversation.html",
+        controller: 'ConversationController'
       }
     }
   })
@@ -108,5 +117,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/results/1');
+  $urlRouterProvider.otherwise('/app/conversations/1');
 });
