@@ -11,7 +11,7 @@ angular.module('starter.filters', [])
   };
 })
 
-// chat filter
+// chat filter, takes new lines and makes them <br/>s
 .filter('nl2br', ['$filter',
   function($filter) {
     return function(data) {
@@ -20,7 +20,7 @@ angular.module('starter.filters', [])
     };
   }
 ])
-
+// takes an array of tags and returns tags w/ relative % column_size widths
 .filter('tagColumns', function() {
   return function (tags) {
     // get total chars

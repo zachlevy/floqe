@@ -46,6 +46,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .multi-title-bottom {
   font-size: 12px;
 }
+// columns
+$i: 1;
+@while $i < 100 {
+  .col-#{$i} {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0 0 #{$i}#{"%"};
+    -moz-box-flex: 0;
+    -moz-flex: 0 0 #{$i}#{"%"};
+    -ms-flex: 0 0 #{$i}#{"%"};
+    flex: 0 0 #{$i}#{"%"};
+    max-width: #{$i}#{"%"};
+  }
+  $i: $i + 1;
+}
 // HELPER END
 
 // CONVERSATION SCREEN START
@@ -111,15 +125,16 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
   .row {
     padding-left: 0;
     padding-right: 0;
-    .col.button {
+    .col {
+      padding: 0;
+      margin-right: 5px;
+    }
+    &:last-child {
+      margin-right: 0;
+    }
+    .button {
       padding-left: 0;
       padding-right: 0;
-      &:last-child {
-        margin-left: 5px;
-      }
-      &:first-child {
-        margin-right: 5px;
-      }
     }
   }
   .search-title {

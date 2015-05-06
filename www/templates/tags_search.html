@@ -7,9 +7,11 @@
         <i class="fa fa-search"></i>
       </button>
       <div class="row" data-ng-repeat="tagGroup in suggestedTags">
-          <button class="button button-block button-calm col col-{{ tag.column_size }}" data-ng-repeat="tag in tagGroup | tagColumns" data-ng-click="addTag(tag.id)">
+        <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in tagGroup | tagColumns">
+          <button class="button button-block button-calm" data-ng-click="addTag(tag.id)">
             {{ tag.name }}
           </button>
+        </div>
       </div>
 
   </ion-content>
