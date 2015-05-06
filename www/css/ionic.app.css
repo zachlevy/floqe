@@ -8587,29 +8587,36 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
-.tags-results-screen .search-filters-list label.filter-name {
-  margin-left: 1em; }
-.tags-results-screen .search-filters-list .multi-slider-item {
-  padding: 0.5em 0; }
-.tags-results-screen .search-filters-list .checkbox-button {
-  /* to hide the checkbox itself */
-  /* space between checkbox and label */
-  /* allow space for check mark */ }
-  .tags-results-screen .search-filters-list .checkbox-button label {
-    font-size: 20px; }
-  .tags-results-screen .search-filters-list .checkbox-button input {
-    display: none; }
-  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
-    font-family: FontAwesome;
-    display: inline-block; }
-  .tags-results-screen .search-filters-list .checkbox-button input + label:before {
-    letter-spacing: 10px; }
-  .tags-results-screen .search-filters-list .checkbox-button input:checked + label:before {
-    letter-spacing: 5px; }
-.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox] + label:before {
-  content: "\f221"; }
-.tags-results-screen .search-filters-list .checkbox-female input[type=checkbox]:checked + label:before {
-  content: "\f221"; }
+.tags-results-screen .search-filters-list {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #f5f5f5; }
+  .tags-results-screen .search-filters-list .item {
+    background: #f5f5f5; }
+  .tags-results-screen .search-filters-list label.filter-name {
+    margin-left: 1em; }
+  .tags-results-screen .search-filters-list .multi-slider-item {
+    padding: 0.5em 0; }
+  .tags-results-screen .search-filters-list .checkbox-button {
+    /* to hide the checkbox itself */
+    /* space between checkbox and label */
+    /* allow space for check mark */ }
+    .tags-results-screen .search-filters-list .checkbox-button label {
+      font-size: 20px; }
+    .tags-results-screen .search-filters-list .checkbox-button input {
+      display: none; }
+    .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+      font-family: FontAwesome;
+      display: inline-block; }
+    .tags-results-screen .search-filters-list .checkbox-button input + label:before {
+      letter-spacing: 10px; }
+    .tags-results-screen .search-filters-list .checkbox-button input:checked + label:before {
+      letter-spacing: 5px; }
+  .tags-results-screen .search-filters-list .checkbox-female input[type=checkbox] + label:before {
+    content: "\f221"; }
+  .tags-results-screen .search-filters-list .checkbox-female input[type=checkbox]:checked + label:before {
+    content: "\f221"; }
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
