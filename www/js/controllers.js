@@ -48,14 +48,15 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout, appHelper) {
+.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
 
   // default tags
   $scope.searchTags = [];
   // get all tags
-  $scope.suggestedTags = tagsFactory.suggested();
+  // $scope.suggestedTags = tagsFactory.suggestedTags
+  $scope.suggestedTags = post_api_tags_suggested.result;
   //console.log($scope.suggestedTags);
   $scope.allTags = tagsFactory.all();
 

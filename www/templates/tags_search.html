@@ -6,9 +6,11 @@
       <button class="button button-block button-calm" data-ng-click="submitTags()">
         <i class="fa fa-search"></i>
       </button>
-      <button class="button button-block button-calm" data-ng-repeat="tag in suggestedTags" data-ng-click="addTag(tag.id)">
-        {{ tag.name }}
-      </button>
-      <pre>{{ searchTags }}</pre>
+      <div class="row" data-ng-repeat="tagGroup in suggestedTags">
+          <button class="button button-block button-calm col col-{{ tag.column_size }}" data-ng-repeat="tag in tagGroup | tagColumns" data-ng-click="addTag(tag.id)">
+            {{ tag.name }}
+          </button>
+      </div>
+
   </ion-content>
 </ion-view>

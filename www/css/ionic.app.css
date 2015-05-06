@@ -7722,6 +7722,16 @@ a.button {
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
+.tags-search-screen .row {
+  padding-left: 0;
+  padding-right: 0; }
+  .tags-search-screen .row .col.button {
+    padding-left: 0;
+    padding-right: 0; }
+    .tags-search-screen .row .col.button:last-child {
+      margin-left: 5px; }
+    .tags-search-screen .row .col.button:first-child {
+      margin-right: 5px; }
 .tags-search-screen .search-title {
   color: #11c1f3;
   text-align: center;

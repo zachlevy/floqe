@@ -108,6 +108,20 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 
 // TAGS SEARCH SCREEN START
 .tags-search-screen {
+  .row {
+    padding-left: 0;
+    padding-right: 0;
+    .col.button {
+      padding-left: 0;
+      padding-right: 0;
+      &:last-child {
+        margin-left: 5px;
+      }
+      &:first-child {
+        margin-right: 5px;
+      }
+    }
+  }
   .search-title {
     color: $calm;
     text-align: center;

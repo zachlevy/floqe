@@ -514,4 +514,53 @@ angular.module('starter.factories', [])
     ]
   }
 )
+// Response POST /tags/suggested
+// add to api docs
+.value(
+  'post_api_tags_suggested',
+  {
+    "success" : true,
+    "result" : {
+      "trending" : [
+        {
+          "id" : 1,
+          "name" : "Motor rallies"
+        },
+        {
+          "id" : 2,
+          "name" : "Motor"
+        },
+      ],
+      "suggested" : [
+        {
+          "id" : 3,
+          "name" : "Volleyball"
+        },
+        {
+          "id" : 4,
+          "name" : "Horses"
+        },
+        {
+          "id" : 5,
+          "name" : "Dog Walking"
+        }
+      ],
+      "popular" : [
+        {
+          "id" : 1,
+          "name" : "Motor rallies"
+        },
+        {
+          "id" : 4,
+          "name" : "Horses"
+        },
+        {
+          "id" : 2,
+          "name" : "Motor"
+        },
+      ],
+    }
+  }
+)
+
 ; // end chaining
