@@ -60,6 +60,12 @@ $i: 1;
   }
   $i: $i + 1;
 }
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
 // HELPER END
 
 // CONVERSATION SCREEN START
@@ -131,18 +137,23 @@ $i: 1;
 // TAGS SEARCH SCREEN START
 .tags-search-screen {
   .row {
-    padding-left: 0;
-    padding-right: 0;
+    padding: 7px 0;
     .col {
       padding: 0;
-      margin-right: 5px;
-    }
-    &:last-child {
-      margin-right: 0;
+      padding-right: 5px;
+      &:first-child {
+        padding-left: 5px;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
     }
     .button {
       padding-left: 0;
       padding-right: 0;
+      @include border-radius(0px);
+      border: 2px solid #34c5de;
+      margin: 0;
     }
   }
   .search-title {

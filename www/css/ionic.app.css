@@ -8621,16 +8621,23 @@ a.button {
   background-color: #E5FFE5; }
 
 .tags-search-screen .row {
-  padding-left: 0;
-  padding-right: 0; }
+  padding: 7px 0; }
   .tags-search-screen .row .col {
     padding: 0;
-    margin-right: 5px; }
-  .tags-search-screen .row:last-child {
-    margin-right: 0; }
+    padding-right: 5px; }
+    .tags-search-screen .row .col:first-child {
+      padding-left: 5px; }
+    .tags-search-screen .row .col:last-child {
+      margin-right: 0; }
   .tags-search-screen .row .button {
     padding-left: 0;
-    padding-right: 0; }
+    padding-right: 0;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    border-radius: 0px;
+    border: 2px solid #34c5de;
+    margin: 0; }
 .tags-search-screen .search-title {
   color: #11c1f3;
   text-align: center;
