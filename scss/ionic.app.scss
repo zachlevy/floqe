@@ -24,6 +24,10 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // font awesome
 @import "www/scss/font-awesome";
 
+// VARIABLES START
+$light-grey: #999;
+// VARIABLES END
+
 // HELPER START
 .hidden {
   display: none;
@@ -80,9 +84,44 @@ $i: 1;
 // TAGS RESULTS SCREEN START
 .tags-results-screen {
   .search-results-list {
+    .user {
+      .photo {
+        top: 11px;
+        left: 11px;
+        max-width: 50px;
+        max-height: 50px;
+      }
+      .name {
+        font-weight: bold;
+      }
+      .friend {
+        color: $calm;
+      }
+      .distance {
+        color: $light-grey;
+        float: right
+      }
+      .description-wrap {
+        .edit {
+          color: $light-grey;
+        }
+        input.description {
+          color: $light-grey;
+          height: 19px;
+          display: inline-block;
+        }
+      }
+      .description {
 
+      }
+    }
   }
   .search-filters-list {
+    .button-show-filters,
+    .button-hide-filters {
+      margin: 0.5em 2%;
+      width: 96%;
+    }
     position: absolute;
     bottom: 0;
     width: 100%;

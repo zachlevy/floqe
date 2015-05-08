@@ -10306,11 +10306,32 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.tags-results-screen .search-results-list .user .photo {
+  top: 11px;
+  left: 11px;
+  max-width: 50px;
+  max-height: 50px; }
+.tags-results-screen .search-results-list .user .name {
+  font-weight: bold; }
+.tags-results-screen .search-results-list .user .friend {
+  color: #11c1f3; }
+.tags-results-screen .search-results-list .user .distance {
+  color: #999;
+  float: right; }
+.tags-results-screen .search-results-list .user .description-wrap .edit {
+  color: #999; }
+.tags-results-screen .search-results-list .user .description-wrap input.description {
+  color: #999;
+  height: 19px;
+  display: inline-block; }
 .tags-results-screen .search-filters-list {
   position: absolute;
   bottom: 0;
   width: 100%;
   background: #f5f5f5; }
+  .tags-results-screen .search-filters-list .button-show-filters, .tags-results-screen .search-filters-list .button-hide-filters {
+    margin: 0.5em 2%;
+    width: 96%; }
   .tags-results-screen .search-filters-list .item {
     background: #f5f5f5; }
   .tags-results-screen .search-filters-list label.filter-name {
