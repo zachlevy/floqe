@@ -9412,6 +9412,9 @@ a.button {
 .multi-title-bottom {
   font-size: 12px; }
 
+.bar .title {
+  font-weight: bold; }
+
 .col-1 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 1%;

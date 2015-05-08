@@ -46,6 +46,9 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 .multi-title-bottom {
   font-size: 12px;
 }
+.bar .title {
+  font-weight: bold;
+}
 // columns
 $i: 1;
 @while $i < 100 {
