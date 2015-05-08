@@ -22,33 +22,47 @@
   </ion-content>
   <div class="list search-filters-list" on-swipe-up="showFilters()" on-swipe-down="hideFilters()">
     <div class="filters-wrap" data-ng-class="{hidden:hideFilter}">
-      <div class="item checkbox-button">
-          <input id="filter-male" type="checkbox" data-ng-model="filters.male">
-          <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
-            <i class="fa fa-mars"></i> Males
-          </label>
-          <input id="filter-female" type="checkbox" data-ng-model="filters.female">
-          <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
-            <i class="fa fa-venus"></i> Females
-          </label>
+      <div class="item item-gender">
+        <div class="triangle"></div>
+        <label class="filter-name">Gender</label>
+        <div class="row">
+          <div class="col">
+            <div class="checkbox-button">
+              <input id="filter-male" type="checkbox" data-ng-model="filters.male">
+              <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
+                <i class="fa fa-mars"></i>
+              </label>
+              <input id="filter-female" type="checkbox" data-ng-model="filters.female">
+              <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
+                <i class="fa fa-venus"></i>
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="item item-proximity">
+        <label class="filter-name">Proximity</label>
+        <div class="row">
+          <div class="col">
+            <div class="range range-positive">
+              <p>{{ filters.proximity }}km</p>
+              <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
+            </div>
+          </div>
+        </div>
       </div>
 
-      <div class="item range range-positive">
-        <p>{{ filters.proximity }}km</p>
-        <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
-      </div>
-
-      <div class="item multi-slider-item">
+      <div class="item item-age">
         <label class="filter-name">Age</label>
         <div class="row">
           <div class="col">
-            <p>{{ filters.ageMin }}</p>
+            <p class="age-min">{{ filters.ageMin }}</p>
           </div>
           <div class="col col-80">
             <slider floor="14" ceiling="70" ng-model-low="filters.ageMin" ng-model-high="filters.ageMax"></slider>
           </div>
           <div class="col">
-            <p>{{ filters.ageMax }}</p>
+            <p class="age-min">{{ filters.ageMax }}</p>
           </div>
         </div>
       </div>

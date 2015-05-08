@@ -117,6 +117,19 @@ $i: 1;
     }
   }
   .search-filters-list {
+    .filters-wrap {
+      position: relative;
+    }
+    .triangle {
+      width: 0;
+      height: 0;
+      border-style: solid;
+      border-width: 7px 7px 0 7px;
+      border-color: #ddd transparent transparent transparent;
+      position: absolute;
+      top: 1px;
+      left: 50%;
+    }
     .button-show-filters,
     .button-hide-filters {
       margin: 0.5em 2%;
@@ -133,8 +146,45 @@ $i: 1;
     label.filter-name {
       margin-left: 1em;
     }
-    .multi-slider-item {
-      padding: 0.5em 0;
+    .item {
+      padding: 0.1em 0;
+      //padding-top: 0;
+      //padding-bottom: 0;
+      &.item-age {
+        padding-bottom: 1.2em;
+        .row {
+          margin-top: 4px;
+        }
+        .age-min {
+          padding-left: 3px;
+        }
+        .age-max {
+
+        }
+      }
+      &.item-proximity {
+        .range {
+          padding: 0 5px;
+        }
+        input {
+          margin-top: 0;
+          margin-bottom: 0;
+        }
+      }
+      &.item-gender {
+        padding-bottom: 7px;
+        .row {
+          padding-left: 5px;
+        }
+      }
+      .row {
+        padding-top: 0;
+        padding-bottom: 0;
+        .col {
+          padding-top: 0;
+          padding-bottom: 0;
+        }
+      }
     }
     // checkboxes start
     .checkbox-button {
