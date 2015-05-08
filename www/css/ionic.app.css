@@ -9415,6 +9415,16 @@ a.button {
 .bar .title {
   font-weight: bold; }
 
+.footer-button-wrap {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #f5f5f5; }
+
+.footer-button {
+  margin: 0.5em 2%;
+  width: 96%; }
+
 .col-1 {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 1%;

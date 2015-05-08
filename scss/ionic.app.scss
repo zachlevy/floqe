@@ -54,6 +54,17 @@ $medium-grey: #666;
 .bar .title {
   font-weight: bold;
 }
+// fixed footer button
+.footer-button-wrap {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  background: #f5f5f5;
+}
+.footer-button {
+  margin: 0.5em 2%;
+  width: 96%;
+}
 // columns
 $i: 1;
 @while $i < 100 {
@@ -136,6 +147,10 @@ $i: 1;
     
   }
   .search-filters-list {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background: #f5f5f5;
     .filters-wrap {
       position: relative;
     }
@@ -154,10 +169,6 @@ $i: 1;
       margin: 0.5em 2%;
       width: 96%;
     }
-    position: absolute;
-    bottom: 0;
-    width: 100%;
-    background: #f5f5f5;
     .item {
       background: #f5f5f5;
     }
@@ -290,7 +301,7 @@ $i: 1;
 
 // MATCHES SCREEN AND INVITE SCREEN START
 .matches-screen {
-  
+
 }
 // MATCHES SCREEN AND INVITE SCREEN END
 
