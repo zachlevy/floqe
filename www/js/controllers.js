@@ -95,8 +95,9 @@ angular.module('starter.controllers', [])
   // hit API server for results
   users = post_api_search.result.users;
   searchedTags = post_api_search.result.tags;
-  $scope.myDescription = post_api_search.result.me.description;
   $scope.me = current_user;
+  $scope.my = {};
+  $scope.my.description = post_api_search.result.me.description;
   $scope.tagNames = appHelper.namesList(searchedTags);
   $scope.users = users;
 
@@ -161,7 +162,7 @@ angular.module('starter.controllers', [])
     console.log('updateDescription');
     // send to API
     // implement
-    console.log($scope.myDescription);
+    console.log($scope.my.description);
     // search id
   };
   
