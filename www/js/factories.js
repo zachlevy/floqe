@@ -395,6 +395,7 @@ angular.module('starter.factories', [])
           "description" : null,
           "photo" : "http://placehold.it/100x100",
           "friend" : true,
+          "removable" : true
         },
         {
           "id" : 2,
@@ -402,6 +403,7 @@ angular.module('starter.factories', [])
           "description" : "Scrim",
           "photo" : "http://placehold.it/100x100",
           "friend" : false,
+          "removable" : false
         }
       ]
     }

@@ -10316,6 +10316,8 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.user-list .user .options {
+  float: right; }
 .user-list .user .photo {
   top: 11px;
   left: 11px;

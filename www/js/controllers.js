@@ -237,6 +237,7 @@ angular.module('starter.controllers', [])
   $rootScope.optionsClick = function () {
     console.log('optionsClick');
     //console.log($stateParams.conversation_id);
+    $state.go('app.conversationDetails', {conversation_id: $stateParams.conversation_id});
   };
   
   // send message
@@ -287,5 +288,71 @@ angular.module('starter.controllers', [])
     // implement
   };
 })
+
+// Conversation Details Screen
+.controller('ConversationDetailsController', function($scope, $rootScope, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation) {
+  // convoinvite
+  $rootScope.showInvite = false;
+  $rootScope.showOptions = false;
+  // multilined header bar
+  $rootScope.multiBar = false;
+
+  console.log('ConversationDetailsController');
+  $scope.users = post_api_conversation.result.users;
+  
+  // swiping
+  $scope.selectedUserIds = [];
+
+  // when leave button clicked
+  $scope.onLeave = function(){
+    // leave convo
+    console.log('onLeave');
+    $scope.confirmLeave();
+  };
+  // when user remove button clicked
+  $scope.onRemoveUser = function (user_id) {
+    console.log('onRemoveUser');
+    $scope.confirmRemoveUser(user_id);
+  };
+  // when user view button clicked
+  $scope.onUserView = function (user_id) {
+    console.log('onUserView');
+  };
+  $scope.confirmRemoveUser = function(user_id) {
+    var confirmRemoveUserPopup = $ionicPopup.confirm({
+      title: 'Remove User',
+      template: 'Are you sure you want to remove ' + usersFactory.getUser(user_id, $scope.users).name + ' from the conversation?'
+    });
+    confirmRemoveUserPopup.then(function(res) {
+      if(res) {
+        console.log('confirmed onRemoveUser');
+        // send to API
+        // implement
+      } else {
+        console.log('cancelled onRemoveUser');
+      }
+    });
+  };
+  $scope.confirmLeave = function() {
+    var confirmLeavePopup = $ionicPopup.confirm({
+      title: 'Leave Conversation',
+      template: 'Are you sure you want to leave this conversation?'
+    });
+    confirmLeavePopup.then(function(res) {
+      if(res) {
+        console.log('confirmed Leave');
+        console.log($stateParams.conversation_id);
+        // send to API
+        // implement
+        $state.go('app.matches');
+      } else {
+        console.log('cancelled Leave');
+      }
+    });
+  };
+})
+
+
+
 
 ; // ends chaining

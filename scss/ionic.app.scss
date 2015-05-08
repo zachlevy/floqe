@@ -90,6 +90,9 @@ $i: 1;
 // USER LIST START
 .user-list {
   .user {
+    .options {
+      float: right;
+    }
     .photo {
       top: 11px;
       left: 11px;
@@ -104,10 +107,10 @@ $i: 1;
     }
     .distance,
     .time {
+      float: right;
       h2 {
         color: $medium-grey;
       }
-      float: right;
       i {
         color: $medium-grey;
         &.icon-checked {
@@ -304,6 +307,12 @@ $i: 1;
 
 }
 // MATCHES SCREEN AND INVITE SCREEN END
+
+// CONVERSATION DETAILS SCREEN START
+.conversation-details-screen {
+
+}
+// CONVERSATION DETAILS SCREEN END
 
 // ANGULAR TAGGER START
 .angular-tagger {
