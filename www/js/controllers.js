@@ -169,8 +169,13 @@ angular.module('starter.controllers', [])
 
 // Matches Screen
 .controller('MatchesController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine) {
+  $scope.navTitle='<span ng-click="onTitleClick()">ok</span>';
+  $scope.onTitleClick = function () {
+    console.log('onTitleClick');
+  };
   // convoinvite
   $rootScope.showInvite = false;
+  $rootScope.showOptions = false;
   // multilined header bar
   $rootScope.multiBar = false;
 
@@ -201,6 +206,7 @@ angular.module('starter.controllers', [])
   $rootScope.multiBar = true;
   // convoinvite
   $rootScope.showInvite = true;
+  $rootScope.showOptions = true;
 
   // build the nav title
   function navTitle () {
@@ -222,9 +228,15 @@ angular.module('starter.controllers', [])
 
   // when invite is clicked
   $rootScope.inviteClick = function () {
-    console.log('onInviteClick');
+    console.log('inviteClick');
     console.log($stateParams.conversation_id);
     $state.go('app.matchesInvite', {conversation_id: $stateParams.conversation_id});
+  };
+
+  // when options is clicked
+  $rootScope.optionsClick = function () {
+    console.log('optionsClick');
+    //console.log($stateParams.conversation_id);
   };
   
   // send message
@@ -242,6 +254,7 @@ angular.module('starter.controllers', [])
 .controller('MatchesInviteController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
   // convoinvite
   $rootScope.showInvite = false;
+  $rootScope.showOptions = false;
   // multilined header bar
   $rootScope.multiBar = false;
 
