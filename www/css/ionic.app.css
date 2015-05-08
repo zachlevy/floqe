@@ -10306,24 +10306,30 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
-.tags-results-screen .search-results-list .user .photo {
+.user-list .user .photo {
   top: 11px;
   left: 11px;
   max-width: 50px;
   max-height: 50px; }
-.tags-results-screen .search-results-list .user .name {
+.user-list .user .name {
   font-weight: bold; }
-.tags-results-screen .search-results-list .user .friend {
+.user-list .user .friend {
   color: #11c1f3; }
-.tags-results-screen .search-results-list .user .distance {
-  color: #999;
+.user-list .user .distance, .user-list .user .time {
   float: right; }
-.tags-results-screen .search-results-list .user .description-wrap .edit {
+  .user-list .user .distance h2, .user-list .user .time h2 {
+    color: #666; }
+  .user-list .user .distance i, .user-list .user .time i {
+    color: #666; }
+    .user-list .user .distance i.icon-unchecked, .user-list .user .time i.icon-unchecked {
+      margin-right: 2px; }
+.user-list .user .description-wrap .edit {
   color: #999; }
-.tags-results-screen .search-results-list .user .description-wrap input.description {
+.user-list .user .description-wrap input.description {
   color: #999;
   height: 19px;
   display: inline-block; }
+
 .tags-results-screen .search-filters-list {
   position: absolute;
   bottom: 0;

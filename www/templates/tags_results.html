@@ -1,6 +1,6 @@
 <ion-view view-title="{{ tagNames }}" class="tags-results-screen">
   <ion-content class="">
-    <div class="list search-results-list">
+    <div class="list search-results-list user-list">
       <a class="item item-avatar user" href="#" data-ng-click="meClick()">
         <img class="photo" data-ng-src="{{ me.photo }}">
         <h2 class="name">{{ me.name }}</h2>
@@ -21,7 +21,7 @@
     </div>
   </ion-content>
   <div class="list search-filters-list" on-swipe-up="showFilters()" on-swipe-down="hideFilters()">
-    <div class="filters-wrap" data-ng-class="{hidden:hideFilter}">
+    <div class="filters-wrap" data-ng-hide="hideFilter">
       <div class="item item-gender">
         <div class="triangle"></div>
         <label class="filter-name">Gender</label>
