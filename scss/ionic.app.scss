@@ -22,7 +22,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 @import "www/lib/ionic/scss/ionic";
 
 // font awesome
-@import url(//netdna.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.css);
+@import "www/scss/font-awesome";
 
 // HELPER START
 .hidden {
