@@ -33,22 +33,8 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
 
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
 
-// Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
 
