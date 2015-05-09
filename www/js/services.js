@@ -11,11 +11,11 @@ angular.module('starter.services', [])
 
       $http.post(baseUrl + endpoint, data)
       .success(function(res, status) {
-        if (res.result.success === true) {
+        if (res.success === true) {
           // success
           console.log('http success');
           deferred.resolve(res.result);
-        } else if (res.result.success === false) {
+        } else if (res.success === false) {
           // bad params
           console.log('http bad server request');
           console.log(res.result);
@@ -39,6 +39,7 @@ angular.module('starter.services', [])
 
       $http.get(baseUrl + endpoint)
       .success(function(res, status) {
+        console.log(status);
         if (res.result.success === true) {
           // success
           console.log('http success');
@@ -200,7 +201,6 @@ angular.module('starter.services', [])
 .value(
   'baseUrl',
   'http://192.168.0.11:8100/api/v1/'
-  //'http://staging.vain.be/api/'
   //'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
 // all tags preloaded, can be refreshed with tagsFactory.refreshTags()

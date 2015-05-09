@@ -34,15 +34,41 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
-  // testing api
-  console.log('testing api');
-  $scope.api = {};
-  console.log('controller');
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
+  // testing api
+  $scope.api = {};
+
+  // populate the tags resource
+  // sample, remove for production
   appApi.get('tags').then(function(result){
     $scope.api.result = result;
   });
+
+  // every 3 seconds, repopulate the tags resource from the server
+  $rootScope.tagRefresher = $interval(function(){
+    appApi.get('tags').then(function(result){
+      $scope.api.result = result;
+    });
+  }, 3000);
+
+  /*
+  // sample, remove for production
+  appApi.post('match/mine', {}).then(function(result){
+    $scope.api.result = result;
+  });
+  */
 
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
@@ -82,7 +108,19 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function($scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
@@ -164,16 +202,18 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine) {
-  $scope.navTitle='<span ng-click="onTitleClick()">ok</span>';
-  $scope.onTitleClick = function () {
-    console.log('onTitleClick');
-  };
-  // convoinvite
-  $rootScope.showInvite = false;
-  $rootScope.showOptions = false;
-  // multilined header bar
-  $rootScope.multiBar = false;
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
   console.log('MatchesController');
   $scope.matches = post_api_match_mine.result;
@@ -187,6 +227,7 @@ angular.module('starter.controllers', [])
 .controller('ConversationController', function(
   $scope,
   $rootScope,
+  $interval,
   $state,
   $stateParams,
   post_api_messages,
@@ -195,14 +236,21 @@ angular.module('starter.controllers', [])
   $ionicNavBarDelegate,
   appHelper
 ) {
-  $scope.messages = post_api_messages.result.messages;
-  $scope.current_user = current_user;
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // multilined header bar, make sure to turn this off on all screens visited after
+    $rootScope.multiBar = true;
+    // convoinvite
+    $rootScope.showInvite = true;
+    $rootScope.showOptions = true;
+  }
+  pre();
 
-  // multilined header bar, make sure to turn this off on all screens visited after
-  $rootScope.multiBar = true;
-  // convoinvite
-  $rootScope.showInvite = true;
-  $rootScope.showOptions = true;
+  $scope.messages = post_api_messages.result.messages;
+  //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
+  $scope.current_user = current_user;
 
   // build the nav title
   function navTitle () {
@@ -248,12 +296,18 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
-  // convoinvite
-  $rootScope.showInvite = false;
-  $rootScope.showOptions = false;
-  // multilined header bar
-  $rootScope.multiBar = false;
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
   console.log('InviteMatchesController');
   $scope.matches = post_api_conversations_invite.result;
@@ -286,12 +340,18 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Details Screen
-.controller('ConversationDetailsController', function($scope, $rootScope, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation) {
-  // convoinvite
-  $rootScope.showInvite = false;
-  $rootScope.showOptions = false;
-  // multilined header bar
-  $rootScope.multiBar = false;
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
   console.log('ConversationDetailsController');
   $scope.users = post_api_conversation.result.users;
