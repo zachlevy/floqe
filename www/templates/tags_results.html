@@ -1,63 +1,78 @@
-<ion-view view-title="{{ tagNames }}">
-  <ion-content class="tags-results-screen">
-    <div class="list search-results-list">
-      <a class="item item-avatar" href="#" data-ng-click="meClick()">
-        <img data-ng-src="{{ me.photo }}">
-        <h2>{{ me.name }}</h2>
-        <input type="text" data-ng-model="myDescription" data-ng-blur="updateDescription()" placeholder="Add a description"/>
+<ion-view view-title="{{ tagNames }}" class="tags-results-screen">
+  <ion-content class="">
+    <div class="list search-results-list user-list">
+      <a class="item item-avatar user" href="#" data-ng-click="meClick()">
+        <img class="photo" data-ng-src="{{ me.photo }}">
+        <h2 class="name">{{ me.name }}</h2>
+        <div class="description-wrap">
+          <i class="fa fa-pencil edit"></i>
+          <input class="description" type="text" data-ng-model="my.description" data-ng-blur="updateDescription()" placeholder="Add a description..."/>
+        </div>
       </a>
       <div class="item item-divider">
         Matches
       </div>
-      <a class="item item-avatar" href="#" data-ng-repeat="user in users | filter:filterUsers" on-swipe-right="onSwipeRight(user.id)" on-swipe-left="onSwipeLeft(user.id)" data-ng-class="{swiped:(swipedUserIds.indexOf(user.id) > -1)}">
-        <img data-ng-src="{{ user.photo }}">
-        <h2 style="float: right">{{ user.distance }} km</h2>
-        <h2>{{ user.name }} <i class="fa fa-user" data-ng-if="user.friend"></i></h2>
+      <a class="item item-avatar user" href="#" data-ng-repeat="user in users | filter:filterUsers" on-swipe-right="onSwipeRight(user.id)" on-swipe-left="onSwipeLeft(user.id)" data-ng-class="{swiped:(swipedUserIds.indexOf(user.id) > -1)}">
+        <img class="photo" data-ng-src="{{ user.photo }}">
+        <h2 class="distance">{{ user.distance }}km</h2>
+        <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend"></i></h2>
         <p>{{ user.description }}</p>
       </a>
     </div>
-
-    <div class="list search-filters-list">
-      <div class="filters-wrap" data-ng-class="{hidden:hideFilter}">
-        <div class="item checkbox-button">
-            <input id="filter-male" type="checkbox" data-ng-model="filters.male">
-            <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
-              <i class="fa fa-mars"></i> Males
-            </label>
-            <input id="filter-female" type="checkbox" data-ng-model="filters.female">
-            <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
-              <i class="fa fa-venus"></i> Females
-            </label>
-        </div>
-
-        <div class="item range range-positive">
-          <p>{{ filters.proximity }} km</p>
-          <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
-        </div>
-
-        <div class="item multi-slider-item">
-          <label class="filter-name">Age</label>
-          <div class="row">
-            <div class="col">
-              <p>{{ filters.ageMin }}</p>
-            </div>
-            <div class="col col-80">
-              <slider floor="14" ceiling="70" ng-model-low="filters.ageMin" ng-model-high="filters.ageMax"></slider>
-            </div>
-            <div class="col">
-              <p>{{ filters.ageMax }}</p>
+  </ion-content>
+  <div class="list search-filters-list" on-swipe-up="showFilters()" on-swipe-down="hideFilters()">
+    <div class="filters-wrap" data-ng-hide="hideFilter">
+      <div class="item item-gender">
+        <div class="triangle"></div>
+        <label class="filter-name">Gender</label>
+        <div class="row">
+          <div class="col">
+            <div class="checkbox-button">
+              <input id="filter-male" type="checkbox" data-ng-model="filters.male">
+              <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
+                <i class="fa fa-mars"></i>
+              </label>
+              <input id="filter-female" type="checkbox" data-ng-model="filters.female">
+              <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
+                <i class="fa fa-venus"></i>
+              </label>
             </div>
           </div>
         </div>
-
       </div>
-      <button class="button button-block button-calm" data-ng-click="hideFilters()" data-ng-class="{hidden:hideFilter}">
-        Hide Filters
-      </button>
-      <button class="button button-block button-calm" data-ng-click="showFilters()" data-ng-class="{hidden:!hideFilter}">
-        Add Filters
-      </button>
-    </div>
+      <div class="item item-proximity">
+        <label class="filter-name">Proximity</label>
+        <div class="row">
+          <div class="col">
+            <div class="range range-positive">
+              <p>{{ filters.proximity }}km</p>
+              <input type="range" name="proximity" min="0" max="100" value="{{ filters.proximity }}" data-ng-model="filters.proximity">
+            </div>
+          </div>
+        </div>
+      </div>
 
-  </ion-content>
+      <div class="item item-age">
+        <label class="filter-name">Age</label>
+        <div class="row">
+          <div class="col">
+            <p class="age-min">{{ filters.ageMin }}</p>
+          </div>
+          <div class="col col-80">
+            <slider floor="14" ceiling="70" ng-model-low="filters.ageMin" ng-model-high="filters.ageMax"></slider>
+          </div>
+          <div class="col">
+            <p class="age-min">{{ filters.ageMax }}</p>
+          </div>
+        </div>
+      </div>
+
+    </div>
+    <button class="button button-block button-calm button-show-filters" data-ng-click="hideFilters()" data-ng-class="{hidden:hideFilter}">
+      Hide Filters
+    </button>
+    <button class="button button-block button-calm button-hide-filters" data-ng-click="showFilters()" data-ng-class="{hidden:!hideFilter}">
+      Add Filters
+    </button>
+  </div>
 </ion-view>

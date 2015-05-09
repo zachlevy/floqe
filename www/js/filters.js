@@ -11,7 +11,7 @@ angular.module('starter.filters', [])
   };
 })
 
-// chat filter
+// chat filter, takes new lines and makes them <br/>s
 .filter('nl2br', ['$filter',
   function($filter) {
     return function(data) {
@@ -20,4 +20,29 @@ angular.module('starter.filters', [])
     };
   }
 ])
+// takes an array of tags and returns tags w/ relative % column_size widths
+.filter('tagColumns', function() {
+  return function (tags) {
+    // get total chars
+    total = 0;
+    column_total = 0;
+    angular.forEach(tags, function (tag, key) {
+      total += tag.name.length;
+    });
+    // add the column size to the tag object
+    angular.forEach(tags, function (tag, key) {
+      column_size = Math.round(tag.name.length / total * 100);
+      tag.column_size = column_size;
+      column_total += column_size;
+    });
+    // catch if total not 100
+    if (column_total < 100) {
+      tags[0].column_size += 100 - column_total;
+    } else if (column_total > 100) {
+      tags[0].column_size -= abs(100 - column_total);
+    }
+    return tags;
+  };
+})
+
 ; // end chaining

@@ -33,29 +33,51 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('PlaylistsCtrl', function($scope) {
-  $scope.playlists = [
-    { title: 'Reggae', id: 1 },
-    { title: 'Chill', id: 2 },
-    { title: 'Dubstep', id: 3 },
-    { title: 'Indie', id: 4 },
-    { title: 'Rap', id: 5 },
-    { title: 'Cowbell', id: 6 }
-  ];
-})
-
-.controller('PlaylistCtrl', function($scope, $stateParams) {
-})
-
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $state, tagsFactory, allTags, $timeout, appHelper) {
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  // testing api
+  $scope.api = {};
+
+  // populate the tags resource
+  // sample, remove for production
+  appApi.get('tags').then(function(result){
+    $scope.api.result = result;
+  });
+
+  // every 3 seconds, repopulate the tags resource from the server
+  $rootScope.tagRefresher = $interval(function(){
+    appApi.get('tags').then(function(result){
+      $scope.api.result = result;
+    });
+  }, 3000);
+
+  /*
+  // sample, remove for production
+  appApi.post('match/mine', {}).then(function(result){
+    $scope.api.result = result;
+  });
+  */
+
   // reset global allTags value to make sure they're up to date
   tagsFactory.refreshTags();
 
   // default tags
   $scope.searchTags = [];
   // get all tags
-  $scope.suggestedTags = tagsFactory.suggested();
+  // $scope.suggestedTags = tagsFactory.suggestedTags
+  $scope.suggestedTags = post_api_tags_suggested.result;
   //console.log($scope.suggestedTags);
   $scope.allTags = tagsFactory.all();
 
@@ -86,7 +108,19 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function($scope, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function($scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
@@ -94,8 +128,9 @@ angular.module('starter.controllers', [])
   // hit API server for results
   users = post_api_search.result.users;
   searchedTags = post_api_search.result.tags;
-  $scope.myDescription = post_api_search.result.me.description;
   $scope.me = current_user;
+  $scope.my = {};
+  $scope.my.description = post_api_search.result.me.description;
   $scope.tagNames = appHelper.namesList(searchedTags);
   $scope.users = users;
 
@@ -160,18 +195,25 @@ angular.module('starter.controllers', [])
     console.log('updateDescription');
     // send to API
     // implement
-    console.log($scope.myDescription);
+    console.log($scope.my.description);
     // search id
   };
   
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine) {
-  // convoinvite
-  $rootScope.showInvite = false;
-  // multilined header bar
-  $rootScope.multiBar = false;
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
   console.log('MatchesController');
   $scope.matches = post_api_match_mine.result;
@@ -185,6 +227,7 @@ angular.module('starter.controllers', [])
 .controller('ConversationController', function(
   $scope,
   $rootScope,
+  $interval,
   $state,
   $stateParams,
   post_api_messages,
@@ -193,13 +236,21 @@ angular.module('starter.controllers', [])
   $ionicNavBarDelegate,
   appHelper
 ) {
-  $scope.messages = post_api_messages.result.messages;
-  $scope.current_user = current_user;
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // multilined header bar, make sure to turn this off on all screens visited after
+    $rootScope.multiBar = true;
+    // convoinvite
+    $rootScope.showInvite = true;
+    $rootScope.showOptions = true;
+  }
+  pre();
 
-  // multilined header bar, make sure to turn this off on all screens visited after
-  $rootScope.multiBar = true;
-  // convoinvite
-  $rootScope.showInvite = true;
+  $scope.messages = post_api_messages.result.messages;
+  //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
+  $scope.current_user = current_user;
 
   // build the nav title
   function navTitle () {
@@ -221,9 +272,16 @@ angular.module('starter.controllers', [])
 
   // when invite is clicked
   $rootScope.inviteClick = function () {
-    console.log('onInviteClick');
+    console.log('inviteClick');
     console.log($stateParams.conversation_id);
     $state.go('app.matchesInvite', {conversation_id: $stateParams.conversation_id});
+  };
+
+  // when options is clicked
+  $rootScope.optionsClick = function () {
+    console.log('optionsClick');
+    //console.log($stateParams.conversation_id);
+    $state.go('app.conversationDetails', {conversation_id: $stateParams.conversation_id});
   };
   
   // send message
@@ -238,11 +296,18 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
-  // convoinvite
-  $rootScope.showInvite = false;
-  // multilined header bar
-  $rootScope.multiBar = false;
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
   console.log('InviteMatchesController');
   $scope.matches = post_api_conversations_invite.result;
@@ -273,5 +338,77 @@ angular.module('starter.controllers', [])
     // implement
   };
 })
+
+// Conversation Details Screen
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation) {
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  console.log('ConversationDetailsController');
+  $scope.users = post_api_conversation.result.users;
+  
+  // swiping
+  $scope.selectedUserIds = [];
+
+  // when leave button clicked
+  $scope.onLeave = function(){
+    // leave convo
+    console.log('onLeave');
+    $scope.confirmLeave();
+  };
+  // when user remove button clicked
+  $scope.onRemoveUser = function (user_id) {
+    console.log('onRemoveUser');
+    $scope.confirmRemoveUser(user_id);
+  };
+  // when user view button clicked
+  $scope.onUserView = function (user_id) {
+    console.log('onUserView');
+  };
+  $scope.confirmRemoveUser = function(user_id) {
+    var confirmRemoveUserPopup = $ionicPopup.confirm({
+      title: 'Remove User',
+      template: 'Are you sure you want to remove ' + usersFactory.getUser(user_id, $scope.users).name + ' from the conversation?'
+    });
+    confirmRemoveUserPopup.then(function(res) {
+      if(res) {
+        console.log('confirmed onRemoveUser');
+        // send to API
+        // implement
+      } else {
+        console.log('cancelled onRemoveUser');
+      }
+    });
+  };
+  $scope.confirmLeave = function() {
+    var confirmLeavePopup = $ionicPopup.confirm({
+      title: 'Leave Conversation',
+      template: 'Are you sure you want to leave this conversation?'
+    });
+    confirmLeavePopup.then(function(res) {
+      if(res) {
+        console.log('confirmed Leave');
+        console.log($stateParams.conversation_id);
+        // send to API
+        // implement
+        $state.go('app.matches');
+      } else {
+        console.log('cancelled Leave');
+      }
+    });
+  };
+})
+
+
+
 
 ; // ends chaining

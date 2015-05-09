@@ -1,32 +1,66 @@
-angular.module('starter.factories', [])
+angular.module('starter.services', [])
 
 // any function related to accessing the api
-.factory('appApi', function ($http, baseUrl) {
+.factory('appApi', function ($http, $q, baseUrl) {
   // data is an object like {'foo':'bar'}
   // endpoint is a string
   return {
-    send: function(endpoint, data) {
-      $http.post(baseUrl, data)
-      .success(function(data, status, headers, config) {
-        if (data.success === true) {
-          return data.result;
-        } else if (data.success === false) {
-          return false;
+    post: function(endpoint, data) {
+      // promise
+      var deferred = $q.defer();
+
+      $http.post(baseUrl + endpoint, data)
+      .success(function(res, status) {
+        if (res.success === true) {
+          // success
+          console.log('http success');
+          deferred.resolve(res.result);
+        } else if (res.success === false) {
+          // bad params
+          console.log('http bad server request');
+          console.log(res.result);
+          deferred.resolve(res.result);
         } else {
-          return null;
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res.result);
         }
-      }).error(function(data, status, headers, config) {
-        console.log(status);
-        return status;
+      }).error(function(res, status) {
+        // http error
+        console.log('http error');
+        deferred.reject(msg);
       });
+      return deferred.promise;
     },
-    recieve: function(endpoint) {
+    get: function(endpoint) {
+      // promise
+      var deferred = $q.defer();
+
       $http.get(baseUrl + endpoint)
-      .success(function(data, status, headers, config) {
-        return data;
-      }).error(function(data, status, headers, config) {
-        return status;
+      .success(function(res, status) {
+        console.log(status);
+        if (res.result.success === true) {
+          // success
+          console.log('http success');
+          deferred.resolve(res.result);
+        } else if (res.result.success === false) {
+          // bad params
+          console.log('http bad server request');
+          console.log(res.result);
+          deferred.resolve(res.result);
+        } else {
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res.result);
+        }
+      }).error(function(res, status) {
+        // http error
+        console.log('http error');
+        deferred.reject(msg);
       });
+      return deferred.promise;
     }
   };
 })
@@ -166,7 +200,8 @@ angular.module('starter.factories', [])
 // API base url
 .value(
   'baseUrl',
-  'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
+  'http://192.168.0.11:8100/api/v1/'
+  //'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
 // all tags preloaded, can be refreshed with tagsFactory.refreshTags()
 .value(
@@ -395,6 +430,7 @@ angular.module('starter.factories', [])
           "description" : null,
           "photo" : "http://placehold.it/100x100",
           "friend" : true,
+          "removable" : true
         },
         {
           "id" : 2,
@@ -402,6 +438,7 @@ angular.module('starter.factories', [])
           "description" : "Scrim",
           "photo" : "http://placehold.it/100x100",
           "friend" : false,
+          "removable" : false
         }
       ]
     }
@@ -514,4 +551,53 @@ angular.module('starter.factories', [])
     ]
   }
 )
+// Response POST /tags/suggested
+// add to api docs
+.value(
+  'post_api_tags_suggested',
+  {
+    "success" : true,
+    "result" : {
+      "trending" : [
+        {
+          "id" : 1,
+          "name" : "Motor rallies"
+        },
+        {
+          "id" : 2,
+          "name" : "Motor"
+        },
+      ],
+      "suggested" : [
+        {
+          "id" : 3,
+          "name" : "Volleyball"
+        },
+        {
+          "id" : 4,
+          "name" : "Horses"
+        },
+        {
+          "id" : 5,
+          "name" : "Dog Walking"
+        }
+      ],
+      "popular" : [
+        {
+          "id" : 1,
+          "name" : "Motor rallies"
+        },
+        {
+          "id" : 4,
+          "name" : "Horses"
+        },
+        {
+          "id" : 2,
+          "name" : "Motor"
+        },
+      ],
+    }
+  }
+)
+
 ; // end chaining
