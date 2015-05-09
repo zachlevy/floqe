@@ -14,14 +14,19 @@ angular.module('starter.services', [])
         if (res.result.success === true) {
           // success
           console.log('http success');
-          deferred.resolve(res);
-        } else {
+          deferred.resolve(res.result);
+        } else if (res.result.success === false) {
           // bad params
           console.log('http bad server request');
-          console.log(res);
-          deferred.resolve(res);
+          console.log(res.result);
+          deferred.resolve(res.result);
+        } else {
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res.result);
         }
-      }).error(function(msg, status) {
+      }).error(function(res, status) {
         // http error
         console.log('http error');
         deferred.reject(msg);
@@ -37,15 +42,22 @@ angular.module('starter.services', [])
         if (res.result.success === true) {
           // success
           console.log('http success');
-          deferred.resolve(res);
-        } else {
+          deferred.resolve(res.result);
+        } else if (res.result.success === false) {
           // bad params
           console.log('http bad server request');
-          console.log(res);
-          deferred.resolve(res);
+          console.log(res.result);
+          deferred.resolve(res.result);
+        } else {
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res.result);
         }
       }).error(function(res, status) {
-        return status;
+        // http error
+        console.log('http error');
+        deferred.reject(msg);
       });
       return deferred.promise;
     }

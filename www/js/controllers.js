@@ -39,9 +39,9 @@ angular.module('starter.controllers', [])
   console.log('testing api');
   $scope.api = {};
   console.log('controller');
-  
-  appApi.get('tags').then(function(val){
-    $scope.api.result = val;
+
+  appApi.get('tags').then(function(result){
+    $scope.api.result = result;
   });
 
   // reset global allTags value to make sure they're up to date
