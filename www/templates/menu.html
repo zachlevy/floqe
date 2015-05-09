@@ -1,7 +1,7 @@
-<ion-side-menus enable-menu-with-back-views="false">
+<ion-side-menus enable-menu-with-back-views="true">
   <ion-side-menu-content drag-content="false">
     <ion-nav-bar class="bar-calm" data-ng-class="{'multi-bar':multiBar}" no-tap-scroll="true">
-      <ion-nav-back-button></ion-nav-back-button>
+      <ion-nav-back-button>Back</ion-nav-back-button>
       <ion-nav-buttons side="right">
         <button class="button button-icon button-clear" data-ng-if="showOptions" ng-click="optionsClick()">
           <i class="fa fa-cog"></i>
@@ -28,9 +28,11 @@
         <ion-item nav-clear menu-close href="#/app/tags/search">
           Search Tags
         </ion-item>
+        <!--
         <ion-item nav-clear menu-close href="#/app/tags/results/1">
           Search Results
         </ion-item>
+        -->
         <ion-item nav-clear menu-close href="#/app/matches">
           Matches
         </ion-item>

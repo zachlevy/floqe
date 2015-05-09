@@ -344,7 +344,7 @@ angular.module('starter.services', [])
          ],
       },
       {
-        "id": 2,
+        "conversation_id": 2,
         "last_message" : null,
         "users" : [
           {

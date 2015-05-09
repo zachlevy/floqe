@@ -9420,10 +9420,9 @@ a.button {
   bottom: 0;
   width: 100%;
   background: #f5f5f5; }
-
-.footer-button {
-  margin: 0.5em 2%;
-  width: 96%; }
+  .footer-button-wrap .footer-button {
+    margin: 0.5em 2%;
+    width: 96%; }
 
 .col-1 {
   -webkit-box-flex: 0;

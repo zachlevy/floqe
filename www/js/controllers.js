@@ -219,23 +219,13 @@ angular.module('starter.controllers', [])
   $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
+    console.log(conversation_id);
     $state.go('app.conversation', {conversation_id: conversation_id});
   };
 })
 
 // Conversation Screen
-.controller('ConversationController', function(
-  $scope,
-  $rootScope,
-  $interval,
-  $state,
-  $stateParams,
-  post_api_messages,
-  post_api_conversation,
-  current_user,
-  $ionicNavBarDelegate,
-  appHelper
-) {
+.controller('ConversationController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_messages, post_api_conversation, current_user, $ionicNavBarDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -247,6 +237,8 @@ angular.module('starter.controllers', [])
     $rootScope.showOptions = true;
   }
   pre();
+
+  console.log($stateParams.conversation_id);
 
   $scope.messages = post_api_messages.result.messages;
   //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
