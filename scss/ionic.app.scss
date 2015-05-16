@@ -86,7 +86,28 @@ $i: 1;
           border-radius: $radius;
 }
 // HELPER END
-
+// USER EDIT START
+.user-edit-screen {
+  .edit-user-list {
+    .item-gender {
+      .checkbox-button input {
+        display: none;
+      }
+    }
+  }
+  .item-interests {
+    overflow: visible;
+    padding: 6px 0 11px 16px;
+    .search-box {
+      min-height: 34px;
+    }
+    .angular-tagger__holder {
+      display: block;
+      float: left;
+    }
+  }
+}
+// USER EDIT END
 // USER LIST START
 .user-list {
   .user {

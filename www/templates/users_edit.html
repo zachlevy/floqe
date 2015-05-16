@@ -1,0 +1,75 @@
+<ion-view view-title="Edit User">
+  <ion-content class="user-edit-screen">
+    <div class="list edit-user-list">
+      <label class="item item-input">
+        <span class="input-label">Name</span>
+        <input type="text" data-ng-model="user.name" placeholder="...">
+      </label>
+      <label class="item item-input">
+        <span class="input-label">Birth Date</span>
+        <input type="date" data-ng-model="user.birthdate">
+      </label>
+      <label class="item item-gender item-input">
+        <span class="input-label">Gender</span>
+        <div class="checkbox-button">
+          <input type="checkbox" data-ng-model="user.gender.male">
+          <label class="button" ng-class="{'button-male':user.gender.male}" data-ng-click="onSelectMale()">
+            <i class="fa fa-mars"></i> Male
+          </label>
+          <input type="checkbox" data-ng-model="user.gender.female">
+          <label class="button" ng-class="{'button-female':user.gender.female}" data-ng-click="onSelectFemale()">
+            <i class="fa fa-venus"></i> Female
+          </label>
+        </div>
+      </label>
+      <label class="item item-input">
+        Upload Photo
+      </label>
+      <div class="item item-interests">
+        <span class="input-label">Interests</span>
+        <tagger class="search-box" ng-model="searchTags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
+      </div>
+      <!-- OLD GENDER SELECT
+      <div class="row">
+        <div class="col col-50">
+          <li class="item item-checkbox">
+            <label class="checkbox">
+              <input type="checkbox" data-ng-model="user.gender.male" data-ng-click="onSelectMale()">
+            </label>
+            <i class="icon ion-male"></i> M
+          </li>
+        </div>
+        <div class="col col-50">
+          <li class="item item-checkbox">
+            <label class="checkbox">
+              <input type="checkbox" data-ng-model="user.gender.female" data-ng-click="onSelectFemale()">
+            </label>
+            <i class="icon ion-female"></i> F
+          </li>
+        </div>
+      </div>
+      -->
+      
+
+      <!-- EVENT START
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Event Start</span>
+        <div class="row">
+          <div class="col col-60">
+            <input type="date">
+          </div>
+          <div class="col col-40">
+            <input type="time">
+          </div>
+        </div>
+      </label>
+      -->
+
+    </div>
+  </ion-content>
+  <div class="footer-button-wrap">
+    <button class="button button-block button-calm footer-button" data-ng-click="onSubmit()">
+      Submit
+    </button>
+  </div>
+</ion-view>

@@ -33,6 +33,62 @@ angular.module('starter.controllers', [])
   };
 })
 
+// Edit User Screen
+.controller('UserEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user) {
+  console.log("UserEditController");
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+  $scope.user = {};
+  $scope.user.gender = {};
+  $scope.user.birthdate = new Date();
+
+  // gender
+  $scope.user.gender.male = false;
+  $scope.user.gender.female = !$scope.user.gender.male;
+  $scope.onSelectMale = function () {
+    console.log('onSelectMale');
+    $scope.user.gender.male = true;
+    $scope.user.gender.female = false;
+  };
+  $scope.onSelectFemale = function () {
+    console.log('onSelectFemale');
+    $scope.user.gender.male = false;
+    $scope.user.gender.female = true;
+  };
+
+  // interests
+  $scope.searchTags = [];
+  $scope.allTags = tagsFactory.all();
+  console.log($scope.allTags);
+
+  // tagger
+  $scope.maxTags = 10;
+  $scope.taggerTags = $scope.suggestedTags;
+  $scope.showTagName = function (tag) {
+    return tag.name;
+  };
+  $scope.createTagName = function (name) {
+    return {name: name};
+  };
+
+  // submit
+  $scope.onSubmit = function () {
+    console.log($scope.user.name);
+    console.log($scope.user.birthdate);
+    console.log($scope.user.gender.male);
+    console.log($scope.user.gender.female);
+    console.log($scope.searchTags);
+  };
+})
+
 // Tags Search Screen
 .controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
   // before the view is loaded, add things here that involve switching between controllers
@@ -61,7 +117,7 @@ angular.module('starter.controllers', [])
     appApi.get('tags').then(function(result){
       $scope.api.result = result;
     });
-  }, 3000);
+  }, 30000);
 
   /*
   // sample, remove for production

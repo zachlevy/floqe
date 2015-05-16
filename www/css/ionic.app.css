@@ -10315,6 +10315,17 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.user-edit-screen .edit-user-list .item-gender .checkbox-button input {
+  display: none; }
+.user-edit-screen .item-interests {
+  overflow: visible;
+  padding: 6px 0 11px 16px; }
+  .user-edit-screen .item-interests .search-box {
+    min-height: 34px; }
+  .user-edit-screen .item-interests .angular-tagger__holder {
+    display: block;
+    float: left; }
+
 .user-list .user .options {
   float: right; }
 .user-list .user .photo {
