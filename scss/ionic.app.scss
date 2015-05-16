@@ -108,6 +108,28 @@ $i: 1;
   }
 }
 // USER EDIT END
+// EVENT CREATE START
+.edit-event-screen {
+  .edit-event-list {
+    .item-event-tags {
+      overflow: visible;
+      padding: 6px 0 11px 16px;
+      .search-box {
+        min-height: 34px;
+      }
+      .angular-tagger__holder {
+        display: block;
+        float: left;
+      }
+    }
+    .item-event-datetime {
+      .input-label {
+        // max-width: 60px;
+      }
+    }
+  }
+}
+// EVENT CREATE END
 // USER LIST START
 .user-list {
   .user {

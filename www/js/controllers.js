@@ -65,7 +65,7 @@ angular.module('starter.controllers', [])
   };
 
   // interests
-  $scope.searchTags = [];
+  $scope.interestTags = [];
   $scope.allTags = tagsFactory.all();
   console.log($scope.allTags);
 
@@ -88,6 +88,50 @@ angular.module('starter.controllers', [])
     console.log($scope.searchTags);
   };
 })
+
+// New Event Screen
+.controller('EventNewController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user) {
+  console.log("EventNewController");
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  $scope.event = {};
+  // times
+  $scope.event.start = {};
+  $scope.event.end = {};
+  $scope.event.start.date = new Date();
+  $scope.event.start.time = new Date();
+  $scope.event.end.date = new Date();
+  $scope.event.end.time = new Date();
+  // tags
+  $scope.event.tags = [];
+  $scope.allTags = tagsFactory.all();
+  console.log($scope.allTags);
+
+  // tagger
+  $scope.maxTags = 10;
+  $scope.taggerTags = $scope.suggestedTags;
+  $scope.showTagName = function (tag) {
+    return tag.name;
+  };
+  $scope.createTagName = function (name) {
+    return {name: name};
+  };
+
+  // submit
+  $scope.onSubmit = function () {
+    console.log($scope.event);
+  };
+})
+
 
 // Tags Search Screen
 .controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
