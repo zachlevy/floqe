@@ -219,6 +219,14 @@ angular.module('starter.controllers', [])
   };
 
 })
+
+// Event List Screen
+.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events) {
+  console.log('EventsListController');
+  $scope.events = post_api_events.result;
+})
+
+
 // Tags Search Screen
 .controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
   // before the view is loaded, add things here that involve switching between controllers

@@ -646,4 +646,52 @@ angular.module('starter.services', [])
   }
 )
 
+// events
+.value(
+  'post_api_events',
+  {
+    "success" : true,
+    "result" : [
+      {
+        "name" : "Zach's Birthday",
+        "start" : "2015-06-17T20:00:00Z",
+        "end" : "2015-06-17T23:55:00Z",
+        "location" : "1701 - 55 Maitland St. Toronto, ON M4Y1C9",
+        "tags" : [
+          {
+            "id" : 1,
+            "name" : "Motor rallies"
+          },
+          {
+            "id" : 2,
+            "name" : "Motor"
+          },
+        ],
+        "private" : true,
+        "users" : [
+          {
+            "id" : 1,
+            "name" : "Jake",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : true,
+            "admin" : true
+          },
+          {
+            "id" : 2,
+            "name" : "Alex",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : false,
+            "admin" : false
+          }
+        ],
+        "conversation_id" : 1,
+        "me" : {
+          "joined" : true,
+          "admin" : true
+        }
+      }
+    ]
+  }
+)
+
 ; // end chaining

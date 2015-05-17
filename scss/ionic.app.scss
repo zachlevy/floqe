@@ -138,6 +138,27 @@ $i: 1;
 
 }
 // EVENT SHOW END
+// EVENTS LIST START
+.events-screen {
+  .events-list {
+    .users-count {
+      float: right;
+      .users-all {
+        //margin-top: 1.3em;
+        margin-top: 2em;
+      }
+    }
+    .event-name {
+
+    }
+    .event-start,
+    .event-tags,
+    .event-location {
+
+    }
+  }
+}
+// EVENTS LIST END
 // USER LIST START
 .user-list {
   .user {

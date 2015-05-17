@@ -10337,6 +10337,11 @@ a.button {
     display: block;
     float: left; }
 
+.events-screen .events-list .users-count {
+  float: right; }
+  .events-screen .events-list .users-count .users-all {
+    margin-top: 2em; }
+
 .user-list .user .options {
   float: right; }
 .user-list .user .photo {
