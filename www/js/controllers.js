@@ -89,9 +89,9 @@ angular.module('starter.controllers', [])
   };
 })
 
-// New Event Screen
-.controller('EventNewController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user) {
-  console.log("EventNewController");
+// New/Edit Event Screen
+.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, post_api_event) {
+  console.log("EventEditController");
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -103,16 +103,38 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  $scope.event = {};
-  // times
-  $scope.event.start = {};
-  $scope.event.end = {};
-  $scope.event.start.date = new Date();
-  $scope.event.start.time = new Date();
-  $scope.event.end.date = new Date();
-  $scope.event.end.time = new Date();
-  // tags
-  $scope.event.tags = [];
+  if ($stateParams.event_id === "") {
+    // if its a new event
+    $ionicNavBarDelegate.title("New Event");
+    $scope.event = {};
+    // times
+    $scope.event.start = null;
+    $scope.event.end = null;
+    today = new Date((new Date()).toDateString()); // hacky
+
+    $scope.event.start = {};
+    $scope.event.end = {};
+    $scope.event.start.date = today; // new Date();
+    $scope.event.start.time = today; // new Date();
+    $scope.event.end.date = today; // new Date();
+    $scope.event.end.time = today; // new Date();
+    // tags
+    $scope.event.tags = [];
+  } else {
+    // its an existing event
+    $ionicNavBarDelegate.title("Edit event");
+
+    $scope.event = post_api_event.result;
+    start = new Date($scope.event.start);
+    end = new Date($scope.event.end);
+    $scope.event.start = {};
+    $scope.event.end = {};
+    $scope.event.start.date = start;
+    $scope.event.start.time = start;
+    $scope.event.end.date = end;
+    $scope.event.end.time = end;
+  }
+  // temp
   $scope.allTags = tagsFactory.all();
   console.log($scope.allTags);
 
@@ -128,6 +150,20 @@ angular.module('starter.controllers', [])
 
   // submit
   $scope.onSubmit = function () {
+    $scope.event.start = new Date(
+      $scope.event.start.date.getFullYear(),
+      $scope.event.start.date.getMonth(),
+      $scope.event.start.date.getDay(),
+      $scope.event.start.time.getHours(),
+      $scope.event.start.time.getMinutes()
+    );
+    $scope.event.end = new Date(
+      $scope.event.end.date.getFullYear(),
+      $scope.event.end.date.getMonth(),
+      $scope.event.end.date.getDay(),
+      $scope.event.end.time.getHours(),
+      $scope.event.end.time.getMinutes()
+    );
     console.log($scope.event);
   };
 })

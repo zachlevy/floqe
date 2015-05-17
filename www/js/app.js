@@ -95,12 +95,12 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
-  .state('app.createEvent', {
-    url: "/events/new",
+  .state('app.editEvent', {
+    url: "/events/edit/{event_id}",
     views: {
       'menuContent': {
-        templateUrl: "templates/events_new.html",
-        controller: 'EventNewController'
+        templateUrl: "templates/events_edit.html",
+        controller: 'EventEditController'
       }
     }
   })
@@ -109,5 +109,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/events/new');
+  $urlRouterProvider.otherwise('/app/events/edit/');
 });

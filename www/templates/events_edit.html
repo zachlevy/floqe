@@ -1,9 +1,9 @@
-<ion-view view-title="New Event">
+<ion-view>
   <ion-content class="edit-event-screen">
     <div class="list edit-event-list">
       <label class="item item-input">
         <span class="input-label">Name</span>
-        <input type="text" data-ng-model="user.name" placeholder="Best birthday party ever">
+        <input type="text" data-ng-model="event.name" placeholder="Best birthday party ever">
       </label>
 
       <div class="item item-input item-event-datetime item-stacked-label">
@@ -28,7 +28,7 @@
           </div>
         </div>
       </div>
-      <label class="item item-input">
+      <label class="item item-input item-stacked-label">
         <span class="input-label">Location</span>
         <input type="text" data-ng-model="event.location" placeholder="123 Fake St">
       </label>

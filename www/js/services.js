@@ -600,4 +600,28 @@ angular.module('starter.services', [])
   }
 )
 
+// edit event
+.value(
+  'post_api_event',
+{
+  "success" : true,
+  "result" : {
+    "name" : "Zach's Birthday",
+    "start" : "2015-06-17T20:00:00Z",
+    "end" : "2015-06-17T23:55:00Z",
+    "location" : "1701 - 55 Maitland St. Toronto, ON M4Y1C9",
+    "tags" : [
+      {
+        "id" : 1,
+        "name" : "Motor rallies"
+      },
+      {
+        "id" : 2,
+        "name" : "Motor"
+      },
+    ],
+    "private" : true
+  }
+})
+
 ; // end chaining
