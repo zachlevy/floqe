@@ -40,11 +40,11 @@ angular.module('starter.services', [])
       $http.get(baseUrl + endpoint)
       .success(function(res, status) {
         console.log(status);
-        if (res.result.success === true) {
+        if (res.success === true) {
           // success
           console.log('http success');
           deferred.resolve(res.result);
-        } else if (res.result.success === false) {
+        } else if (res.success === false) {
           // bad params
           console.log('http bad server request');
           console.log(res.result);
@@ -53,9 +53,9 @@ angular.module('starter.services', [])
           // server error
           console.log('http server error');
           console.log(res.result);
-          deferred.resolve(res.result);
+          deferred.resolve(res);
         }
-      }).error(function(res, status) {
+      }).error(function(res, status, msg) {
         // http error
         console.log('http error');
         deferred.reject(msg);
