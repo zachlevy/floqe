@@ -8,11 +8,5 @@
   "watchPatterns": [
     "www/**/*",
     "!www/lib/**/*"
-  ],
-  "proxies": [
-    {
-      "path": "/api/v1/",
-      "proxyUrl": "http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/"
-    }
   ]
 }
