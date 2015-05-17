@@ -10337,6 +10337,19 @@ a.button {
     display: block;
     float: left; }
 
+.show-event-screen .event-name {
+  margin-top: 1em;
+  color: #333; }
+.show-event-screen .event-details p {
+  margin-bottom: 0;
+  color: #333; }
+.show-event-screen .event-options .col, .show-event-screen .event-options.row {
+  padding-top: 0;
+  padding-bottom: 0; }
+  .show-event-screen .event-options .col button, .show-event-screen .event-options.row button {
+    margin-top: 5px;
+    margin-bottom: 5px; }
+
 .events-screen .events-list .users-count {
   float: right; }
   .events-screen .events-list .users-count .users-all {

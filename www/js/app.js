@@ -127,5 +127,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/events');
+  $urlRouterProvider.otherwise('/app/events/1');
 });

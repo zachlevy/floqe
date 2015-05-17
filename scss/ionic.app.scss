@@ -27,6 +27,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // VARIABLES START
 $light-grey: #999;
 $medium-grey: #666;
+$dark-grey: #333;
 // VARIABLES END
 
 // HELPER START
@@ -135,7 +136,27 @@ $i: 1;
 // EVENT CREATE END
 // EVENT SHOW START
 .show-event-screen {
-
+  .event-name {
+    margin-top: 1em;
+    color: $dark-grey;
+  }
+  .event-details {
+    p {
+      margin-bottom: 0;
+      color: $dark-grey;
+    }
+  }
+  .event-options {
+    .col,
+    &.row {
+      padding-top: 0;
+      padding-bottom: 0;
+      button {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
 }
 // EVENT SHOW END
 // EVENTS LIST START

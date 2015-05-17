@@ -173,6 +173,18 @@ angular.module('starter.controllers', [])
 // Show Event Screen
 .controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user) {
   console.log('EventShowController');
+
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
   $scope.event = post_api_event.result;
   $scope.current_user = current_user;
 
@@ -223,7 +235,24 @@ angular.module('starter.controllers', [])
 // Event List Screen
 .controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events) {
   console.log('EventsListController');
+
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
   $scope.events = post_api_events.result;
+  $scope.onEventSelect = function (event_id) {
+    console.log('onEventSelect');
+    $state.go('app.showEvent', {'event_id' : event_id});
+  };
+
 })
 
 
