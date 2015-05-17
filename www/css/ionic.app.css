@@ -10317,15 +10317,21 @@ a.button {
 
 .user-edit-screen .edit-user-list .item-gender .checkbox-button input {
   display: none; }
-.user-edit-screen .item-interests {
+.user-edit-screen .edit-user-list .item-birthdate input, .user-edit-screen .edit-user-list .item-name input {
+  color: #666; }
+.user-edit-screen .edit-user-list .item-interests {
   overflow: visible;
   padding: 6px 0 11px 16px; }
-  .user-edit-screen .item-interests .search-box {
+  .user-edit-screen .edit-user-list .item-interests .search-box {
     min-height: 34px; }
-  .user-edit-screen .item-interests .angular-tagger__holder {
+  .user-edit-screen .edit-user-list .item-interests .angular-tagger {
+    border: none; }
+  .user-edit-screen .edit-user-list .item-interests .angular-tagger__holder {
     display: block;
     float: left; }
 
+.edit-event-screen .edit-event-list input {
+  color: #666; }
 .edit-event-screen .edit-event-list .item-event-tags {
   overflow: visible;
   padding: 6px 0 11px 16px; }

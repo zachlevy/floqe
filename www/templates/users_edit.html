@@ -1,11 +1,11 @@
 <ion-view view-title="Edit User">
   <ion-content class="user-edit-screen">
     <div class="list edit-user-list">
-      <label class="item item-input">
+      <label class="item item-input item-name">
         <span class="input-label">Name</span>
-        <input type="text" data-ng-model="user.name" placeholder="...">
+        <input type="text" data-ng-model="user.name">
       </label>
-      <label class="item item-input">
+      <label class="item item-input item-birthdate">
         <span class="input-label">Birth Date</span>
         <input type="date" data-ng-model="user.birthdate">
       </label>
@@ -27,7 +27,7 @@
       </label>
       <div class="item item-interests">
         <span class="input-label">Interests</span>
-        <tagger class="search-box" ng-model="interestTags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
+        <tagger class="search-box" ng-model="user.interests" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
       </div>
       <!-- OLD GENDER SELECT
       <div class="row">

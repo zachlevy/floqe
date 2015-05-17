@@ -95,23 +95,35 @@ $i: 1;
         display: none;
       }
     }
-  }
-  .item-interests {
-    overflow: visible;
-    padding: 6px 0 11px 16px;
-    .search-box {
-      min-height: 34px;
+    .item-birthdate,
+    .item-name {
+      input {
+        color: $medium-grey;
+      }
     }
-    .angular-tagger__holder {
-      display: block;
-      float: left;
+    .item-interests {
+      overflow: visible;
+      padding: 6px 0 11px 16px;
+      .search-box {
+        min-height: 34px;
+      }
+      .angular-tagger {
+        border: none;
+      }
+      .angular-tagger__holder {
+        display: block;
+        float: left;
+      }
     }
   }
 }
 // USER EDIT END
-// EVENT CREATE START
+// EVENT EDIT START
 .edit-event-screen {
   .edit-event-list {
+    input {
+      color: $medium-grey;
+    }
     .item-event-tags {
       overflow: visible;
       padding: 6px 0 11px 16px;
@@ -133,7 +145,7 @@ $i: 1;
     }
   }
 }
-// EVENT CREATE END
+// EVENT EDIT END
 // EVENT SHOW START
 .show-event-screen {
   .event-name {

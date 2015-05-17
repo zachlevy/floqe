@@ -1,4 +1,4 @@
-<ion-view>
+<ion-view cache-view="false">
   <ion-content class="edit-event-screen">
     <div class="list edit-event-list">
       <label class="item item-input">
@@ -42,7 +42,7 @@
       </li>
       <div class="item item-event-tags">
         <span class="input-label">Tags</span>
-        <tagger class="search-box" ng-model="event.tags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
+        <tagger class="search-box" ng-model="event.tags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName" placeholder=""></tagger>
       </div>
     </div>
   </ion-content>

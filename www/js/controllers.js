@@ -46,13 +46,23 @@ angular.module('starter.controllers', [])
     $rootScope.multiBar = false;
   }
   pre();
-  $scope.user = {};
-  $scope.user.gender = {};
-  $scope.user.birthdate = new Date();
+  $scope.user = current_user;
+
+  // birthdate
+  // convert from date string to js date object
+  $scope.user.birthdate = new Date($scope.user.birthdate);
 
   // gender
-  $scope.user.gender.male = false;
+  // change user object gender into radio button
+  if ($scope.user.gender === 1) {
+    $scope.user.gender = {};
+    $scope.user.gender.male = true;
+  } else {
+    $scope.user.gender = {};
+    $scope.user.gender.male = false;
+  }
   $scope.user.gender.female = !$scope.user.gender.male;
+
   $scope.onSelectMale = function () {
     console.log('onSelectMale');
     $scope.user.gender.male = true;
@@ -65,13 +75,11 @@ angular.module('starter.controllers', [])
   };
 
   // interests
-  $scope.interestTags = [];
   $scope.allTags = tagsFactory.all();
   console.log($scope.allTags);
 
   // tagger
   $scope.maxTags = 10;
-  $scope.taggerTags = $scope.suggestedTags;
   $scope.showTagName = function (tag) {
     return tag.name;
   };
@@ -81,11 +89,17 @@ angular.module('starter.controllers', [])
 
   // submit
   $scope.onSubmit = function () {
+    // change gender radio buttons into user object
+    if ($scope.user.gender.male === true) {
+      $scope.user.gender = 1;
+    } else {
+      $scope.user.gender = 0;
+    }
     console.log($scope.user.name);
     console.log($scope.user.birthdate);
     console.log($scope.user.gender.male);
     console.log($scope.user.gender.female);
-    console.log($scope.searchTags);
+    console.log($scope.user.interests);
   };
 })
 

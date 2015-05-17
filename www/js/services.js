@@ -219,9 +219,19 @@ angular.module('starter.services', [])
     "id" : 2,
     "name" : "Boaz",
     "photo" : "http://placehold.it/100x100",
-    "description" : null,
     "gender" : 1,
-    "age" : 23
+    "age" : 23,
+    "birthdate" : "1991-06-17T01:11:21Z",
+    "interests" : [
+      {
+        "id" : 1,
+        "name" : "Motor rallies"
+      },
+      {
+        "id" : 2,
+        "name" : "Motor"
+      },
+    ]
   }
 )
 
