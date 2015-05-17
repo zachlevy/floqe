@@ -46,6 +46,16 @@ angular.module('starter.controllers', [])
     $rootScope.multiBar = false;
   }
   pre();
+
+  // photo upload
+  $scope.changePhoto = function () {
+    uploadcare.openDialog().done(function(file) {
+      file.promise().done(function(fileInfo) {
+        $scope.user.photo = fileInfo.cdnUrl;
+      });
+    });
+  };
+
   $scope.user = current_user;
 
   // birthdate
@@ -100,6 +110,7 @@ angular.module('starter.controllers', [])
     console.log($scope.user.gender.male);
     console.log($scope.user.gender.female);
     console.log($scope.user.interests);
+    console.log($scope.user.photo);
   };
 })
 
