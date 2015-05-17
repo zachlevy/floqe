@@ -112,6 +112,7 @@ angular.module('starter.controllers', [])
     $scope.event.end = null;
     today = new Date((new Date()).toDateString()); // hacky
 
+    // default to today's date
     $scope.event.start = {};
     $scope.event.end = {};
     $scope.event.start.date = today; // new Date();
@@ -123,10 +124,12 @@ angular.module('starter.controllers', [])
   } else {
     // its an existing event
     $ionicNavBarDelegate.title("Edit event");
-
+    // temp
     $scope.event = post_api_event.result;
+    // build date objects from api
     start = new Date($scope.event.start);
     end = new Date($scope.event.end);
+    // break down dates in scope between date and time for pickers
     $scope.event.start = {};
     $scope.event.end = {};
     $scope.event.start.date = start;
@@ -136,7 +139,6 @@ angular.module('starter.controllers', [])
   }
   // temp
   $scope.allTags = tagsFactory.all();
-  console.log($scope.allTags);
 
   // tagger
   $scope.maxTags = 10;
@@ -150,6 +152,7 @@ angular.module('starter.controllers', [])
 
   // submit
   $scope.onSubmit = function () {
+    // rebuild dates from the separate date and time pickers
     $scope.event.start = new Date(
       $scope.event.start.date.getFullYear(),
       $scope.event.start.date.getMonth(),
@@ -167,8 +170,55 @@ angular.module('starter.controllers', [])
     console.log($scope.event);
   };
 })
+// Show Event Screen
+.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user) {
+  console.log('EventShowController');
+  $scope.event = post_api_event.result;
+  $scope.current_user = current_user;
 
+  // admins removing user from group
+  $scope.onRemoveUser = function (user_id) {
+    console.log('onRemoveUser: ' + user_id);
+    $scope.confirmRemoveUser(user_id);
+  };
 
+  $scope.onJoinEvent = function () {
+    console.log('onJoinEvent');
+    $scope.event.me.joined = true;
+    // send to api
+    // implement
+  };
+
+  $scope.onLeaveEvent = function () {
+    console.log('onLeaveEvent');
+    $scope.event.me.joined = false;
+    // send to api
+    // implement
+  };
+
+  $scope.onChat = function () {
+    console.log('onChat: ' + $scope.event.conversation_id);
+    $state.go('app.conversation', {'conversation_id': $scope.event.conversation_id});
+  };
+
+  // popup for admins removing users from event
+  $scope.confirmRemoveUser = function(user_id) {
+    var confirmRemoveUserPopup = $ionicPopup.confirm({
+      title: 'Remove User',
+      template: 'Are you sure you want to remove ' + usersFactory.getUser(user_id, $scope.event.users).name + ' from the conversation?'
+    });
+    confirmRemoveUserPopup.then(function(res) {
+      if(res) {
+        console.log('confirmed onRemoveUser');
+        // send to API
+        // implement
+      } else {
+        console.log('cancelled onRemoveUser');
+      }
+    });
+  };
+
+})
 // Tags Search Screen
 .controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
   // before the view is loaded, add things here that involve switching between controllers

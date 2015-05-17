@@ -104,10 +104,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.showEvent', {
+    url: "/events/{event_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/event.html",
+        controller: 'EventShowController'
+      }
+    }
+  })
 
   // FLOQUE END
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/events/edit/');
+  $urlRouterProvider.otherwise('/app/events/1');
 });

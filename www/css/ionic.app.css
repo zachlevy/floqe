@@ -10331,6 +10331,8 @@ a.button {
   padding: 6px 0 11px 16px; }
   .edit-event-screen .edit-event-list .item-event-tags .search-box {
     min-height: 34px; }
+  .edit-event-screen .edit-event-list .item-event-tags .angular-tagger {
+    border: none; }
   .edit-event-screen .edit-event-list .item-event-tags .angular-tagger__holder {
     display: block;
     float: left; }

@@ -117,6 +117,9 @@ $i: 1;
       .search-box {
         min-height: 34px;
       }
+      .angular-tagger {
+        border: none;
+      }
       .angular-tagger__holder {
         display: block;
         float: left;
@@ -130,6 +133,11 @@ $i: 1;
   }
 }
 // EVENT CREATE END
+// EVENT SHOW START
+.show-event-screen {
+
+}
+// EVENT SHOW END
 // USER LIST START
 .user-list {
   .user {
