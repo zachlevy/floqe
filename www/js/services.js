@@ -6,6 +6,9 @@ angular.module('starter.services', [])
   // endpoint is a string
   return {
     post: function(endpoint, data) {
+      console.log('sending post from appApi');
+      console.log(baseUrl + endpoint);
+      console.log(data);
       // promise
       var deferred = $q.defer();
 
@@ -29,8 +32,9 @@ angular.module('starter.services', [])
       }).error(function(res, status) {
         // http error
         console.log('http error');
+        console.log(status);
         console.log(res);
-        deferred.reject(msg);
+        deferred.reject(res);
       });
       return deferred.promise;
     },
