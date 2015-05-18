@@ -43,6 +43,44 @@ angular.module('starter.services', [])
       });
       return deferred.promise;
     },
+    put: function(endpoint, data) {
+      console.log('sending post from appApi');
+      console.log(baseUrl + endpoint);
+      console.log(data);
+      // promise
+      var deferred = $q.defer();
+
+      $http.put(baseUrl + endpoint, data)
+      .success(function(res, status) {
+        if (res.success === true) {
+          // success
+          console.log('http success');
+          if ( res.hasOwnProperty('result')) {
+            deferred.resolve(res.result);
+          } else {
+            deferred.resolve(true);
+          }
+          
+        } else if (res.success === false) {
+          // bad params
+          console.log('http bad server request');
+          console.log(res.result);
+          deferred.resolve(res.result);
+        } else {
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res.result);
+        }
+      }).error(function(res, status) {
+        // http error
+        console.log('http error');
+        console.log(status);
+        console.log(res);
+        deferred.reject(res);
+      });
+      return deferred.promise;
+    },
     get: function(endpoint) {
       // promise
       var deferred = $q.defer();

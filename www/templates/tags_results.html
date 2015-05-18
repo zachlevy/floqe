@@ -2,7 +2,7 @@
   <ion-content class="">
     <div class="list search-results-list user-list">
       <a class="item item-avatar user" href="#" data-ng-click="meClick()">
-        <img class="photo" data-ng-src="{{ me.photo }}">
+        <img class="photo" data-ng-src="{{ me.photo }}-/scale_crop/100x100/">
         <h2 class="name">{{ me.name }}</h2>
         <div class="description-wrap">
           <i class="fa fa-pencil edit"></i>
@@ -13,7 +13,7 @@
         Matches
       </div>
       <a class="item item-avatar user" href="#" data-ng-repeat="user in users | filter:filterUsers" on-swipe-right="onSwipeRight(user.id)" on-swipe-left="onSwipeLeft(user.id)" data-ng-class="{swiped:(swipedUserIds.indexOf(user.id) > -1)}">
-        <img class="photo" data-ng-src="{{ user.photo }}">
+        <img class="photo" data-ng-src="{{ user.photo }}-/scale_crop/100x100/">
         <h2 class="distance">{{ user.distance }}km</h2>
         <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend"></i></h2>
         <p>{{ user.description }}</p>

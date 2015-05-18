@@ -2,7 +2,7 @@
   <ion-content class="matches-screen">
     <div class="list matches-list user-list">
       <a class="item item-avatar user" href="#" data-ng-repeat="match in matches" data-ng-click="onMatchSelect(match.id)">
-        <img class="photo" data-ng-src="{{ match.photo }}">
+        <img class="photo" data-ng-src="{{ match.photo }}-/scale_crop/100x100/">
         <div class="time">
           <h2>{{ match.matched_for.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
           <i class="fa fa-check-square-o pull-right icon-checked" data-ng-if="(selectedMatchIds.indexOf(match.id) > -1)"></i>

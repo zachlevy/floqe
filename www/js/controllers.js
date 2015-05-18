@@ -34,7 +34,7 @@ angular.module('starter.controllers', [])
 })
 
 // Edit User Screen
-.controller('UserEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user) {
+.controller('UserEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi) {
   console.log("UserEditController");
   function pre () {
     // cancel the refresher
@@ -57,22 +57,26 @@ angular.module('starter.controllers', [])
     });
   };
 
-  $scope.user = current_user;
+  // $scope.user = current_user;
+  appApi.post('user', {user_id : 1}).then(function(result) {
+    $scope.user = result;
+     // birthdate
+    // convert from date string to js date object
+    $scope.user.birthdate = new Date($scope.user.birthdate);
 
-  // birthdate
-  // convert from date string to js date object
-  $scope.user.birthdate = new Date($scope.user.birthdate);
+    // gender
+    // change user object gender into radio button
+    if ($scope.user.gender === 1) {
+      $scope.user.gender = {};
+      $scope.user.gender.male = true;
+    } else {
+      $scope.user.gender = {};
+      $scope.user.gender.male = false;
+    }
+    $scope.user.gender.female = !$scope.user.gender.male;
+  });
 
-  // gender
-  // change user object gender into radio button
-  if ($scope.user.gender === 1) {
-    $scope.user.gender = {};
-    $scope.user.gender.male = true;
-  } else {
-    $scope.user.gender = {};
-    $scope.user.gender.male = false;
-  }
-  $scope.user.gender.female = !$scope.user.gender.male;
+
 
   $scope.onSelectMale = function () {
     console.log('onSelectMale');
@@ -99,6 +103,7 @@ angular.module('starter.controllers', [])
   };
 
   // submit
+  // implement
   $scope.onSubmit = function () {
     // change gender radio buttons into user object
     if ($scope.user.gender.male === true) {
@@ -106,12 +111,26 @@ angular.module('starter.controllers', [])
     } else {
       $scope.user.gender = 0;
     }
+    // remove extra data
+    angular.forEach($scope.user.interests, function (tag, key) {
+      delete tag.$$hashKey;
+    });
+    // print
+    console.log($scope.user.user_id);
     console.log($scope.user.name);
     console.log($scope.user.birthdate);
-    console.log($scope.user.gender.male);
-    console.log($scope.user.gender.female);
+    console.log($scope.user.gender);
     console.log($scope.user.interests);
     console.log($scope.user.photo);
+    // put to api
+    appApi.put('user', {
+      user_id : $scope.user.user_id,
+      name : $scope.user.name,
+      photo : $scope.user.photo,
+      gender : $scope.user.gender,
+      birthdate : $scope.user.birthdate,
+      interests : $scope.user.interests
+    });
   };
 })
 

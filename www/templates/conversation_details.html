@@ -2,7 +2,7 @@
   <ion-content class="conversation-details-screen">
     <div class="list details-user-list user-list">
       <div class="item item-avatar user" data-ng-repeat="user in users">
-        <img class="photo" data-ng-src="{{ user.photo }}">
+        <img class="photo" data-ng-src="{{ user.photo }}-/scale_crop/100x100/">
         <div class="options">
           <button class="button button-assertive" data-ng-if="user.removable" data-ng-click="onRemoveUser(user.id)">
             <i class="fa fa-trash-o"></i>

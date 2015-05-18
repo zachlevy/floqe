@@ -2,7 +2,7 @@
   <ion-content has-bouncing="true" class="conversation-screen has-header has-footer" delegate-handle="userMessageScroll">
     <div ng-repeat="message in messages" class="message-wrapper">
       <div ng-if="current_user.id !== message.user.id">
-        <img class="profile-pic left" ng-src="{{message.user.photo}}" />
+        <img class="profile-pic left" ng-src="{{message.user.photo}}-/scale_crop/100x100/" />
         <div class="chat-bubble left">
           <div class="message" ng-bind-html="message.text | nl2br" >
           </div>
@@ -13,7 +13,7 @@
         </div>
       </div>
       <div ng-if="current_user.id === message.user.id">
-        <img class="profile-pic right" ng-src="{{message.user.photo}}" />
+        <img class="profile-pic right" ng-src="{{message.user.photo}}-/scale_crop/100x100/" />
         <div class="chat-bubble right">
           <div class="message" ng-bind-html="message.text | nl2br" >
           </div>
