@@ -300,7 +300,15 @@ angular.module('starter.controllers', [])
 
   // populate the tags resource
   // sample, remove for production
+  /*
   appApi.get('tags').then(function(result){
+    $scope.api.result = result;
+  });
+  */
+
+  // populate the tags resource
+  // sample, remove for production
+  appApi.post('match/mine', {'user_id' : 1}).then(function(result){
     $scope.api.result = result;
   });
 
@@ -450,7 +458,8 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine) {
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, appApi) {
+  console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -463,8 +472,13 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  console.log('MatchesController');
-  $scope.matches = post_api_match_mine.result;
+  // live
+  // works
+  appApi.post('match/mine', {'user_id' : 1}).then(function(result){
+    $scope.matches = result;
+  });
+
+  // $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
     console.log(conversation_id);
@@ -473,7 +487,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_messages, post_api_conversation, current_user, $ionicNavBarDelegate, appHelper) {
+.controller('ConversationController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_messages, post_api_conversation, current_user, $ionicNavBarDelegate, appHelper, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -488,7 +502,17 @@ angular.module('starter.controllers', [])
 
   console.log($stateParams.conversation_id);
 
-  $scope.messages = post_api_messages.result.messages;
+  // devleopment
+  // $scope.messages = post_api_messages.result.messages;
+  
+  // live
+  // works
+  appApi.post('messages', {'user_id' : 1, 'conversation_id' : $stateParams.conversation_id}).then(function(result){
+    $scope.messages = result;
+  });
+
+  // $scope.messages = $scope.result.messages;
+
   //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
   $scope.current_user = current_user;
 

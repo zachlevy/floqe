@@ -29,6 +29,7 @@ angular.module('starter.services', [])
       }).error(function(res, status) {
         // http error
         console.log('http error');
+        console.log(res);
         deferred.reject(msg);
       });
       return deferred.promise;
