@@ -657,11 +657,19 @@ angular.module('starter.controllers', [])
 
   // when invite button clicked
   $scope.onInvite = function(){
+    console.log('onInvite');
     // go back to convo screen
     console.log($stateParams.conversation_id);
     console.log($scope.selectedMatchIds);
-    // send to API 
-    // implement
+    // send to API
+    angular.forEach($scope.selectedMatchIds, function (target_user_id, index) {
+      appApi.post('conversations', {user_id : target_user_id, conversation_id : $stateParams.conversation_id}).then(function(result) {
+        if (result === true) {
+          console.log('invite successful');
+        }
+      });
+    });
+    $state.go('app.conversation', {conversation_id : $stateParams.conversation_id});
   };
 })
 
