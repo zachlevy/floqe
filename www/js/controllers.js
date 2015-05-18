@@ -196,7 +196,7 @@ angular.module('starter.controllers', [])
   };
 })
 // Show Event Screen
-.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user) {
+.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user, appApi) {
   console.log('EventShowController');
 
   function pre () {
@@ -210,7 +210,11 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  $scope.event = post_api_event.result;
+  //$scope.event = post_api_event.result;
+  appApi.post('event', {event_id : 1, user_id : 1}).then(function(result) {
+    $scope.event = result;
+  });
+
   $scope.current_user = current_user;
 
   // admins removing user from group
