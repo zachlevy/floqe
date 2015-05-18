@@ -39,6 +39,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -120,6 +121,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -202,6 +204,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -268,6 +271,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -294,6 +298,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -393,6 +398,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -505,6 +511,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -533,6 +540,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // multilined header bar, make sure to turn this off on all screens visited after
     $rootScope.multiBar = true;
     // convoinvite
@@ -541,6 +549,23 @@ angular.module('starter.controllers', [])
   }
   pre();
 
+
+  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+    $scope.messages = result;
+    // start the messages checker
+    // implement
+    $rootScope.messagesRefresher = $interval(function(){
+      appApi.post('messages/check', {'conversation_id' : 1, 'messages_count' : $scope.messages.length}).then(function(result){
+        if (result.new_messages === true) {
+          // get new messages
+          appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+            $scope.messages = result;
+          });
+        }
+      });
+    }, 5000);
+  });
+
   console.log($stateParams.conversation_id);
 
   // devleopment
@@ -548,9 +573,11 @@ angular.module('starter.controllers', [])
 
   // live
   // works
+  /*
   appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.messages = result;
   });
+  */
 
   // build the nav title
   function navTitle () {
@@ -573,6 +600,7 @@ angular.module('starter.controllers', [])
   // works
   appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.conversation = result;
+    // debut navtitle not showing unless on refresh
     $scope.navTitle = navTitle();
     $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
   });
@@ -624,6 +652,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -679,6 +708,7 @@ angular.module('starter.controllers', [])
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
