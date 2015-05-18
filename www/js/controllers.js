@@ -373,7 +373,7 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function($scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -389,16 +389,21 @@ angular.module('starter.controllers', [])
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
-  // init
-  // hit API server for results
-  users = post_api_search.result.users;
-  searchedTags = post_api_search.result.tags;
-  $scope.me = current_user;
-  $scope.my = {};
-  $scope.my.description = post_api_search.result.me.description;
-  $scope.tagNames = appHelper.namesList(searchedTags);
-  $scope.users = users;
+  appApi.post('search/results', {'search_id' : 1}).then(function(result){
+    console.log('search/results');
+    console.log(result);
+    $scope.result = result;
 
+    // init
+    // hit API server for results
+    $scope.me = current_user;
+    $scope.my = {};
+    $scope.my.description = $scope.result.me.description;
+    $scope.tagNames = appHelper.namesList($scope.result.tags);
+    $scope.users = $scope.result.users;
+  });
+
+  
   // default filters
   $scope.filters = {};
   $scope.filters.proximity = 5;

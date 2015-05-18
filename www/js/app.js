@@ -43,7 +43,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
   .state('app.tagsResults', {
-    url: "/tags/results/{tag_ids}",
+    url: "/tags/results/{search_id}",
     views: {
       'menuContent': {
         templateUrl: "templates/tags_results.html",
@@ -128,5 +128,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/conversations/1');
+  $urlRouterProvider.otherwise('/app/tags/results/1');
 });
