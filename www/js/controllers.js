@@ -366,9 +366,17 @@ angular.module('starter.controllers', [])
   // process search
   $scope.submitTags = function () {
     console.log("submitTags");
+    angular.forEach($scope.searchTags, function (tag, key) {
+      delete tag.$$hashKey;
+    });
     console.log($scope.searchTags);
-    searchTagsText = tagsFactory.idsList($scope.searchTags);
-    $state.go('app.tagsResults', {tag_ids: searchTagsText});
+    appApi.post('search', {'user_id' : 1, 'tags' : $scope.searchTags}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
+
+    // searchTagsText = tagsFactory.idsList($scope.searchTags);
+    
   };
 })
 
