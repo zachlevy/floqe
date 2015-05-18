@@ -479,7 +479,6 @@ angular.module('starter.controllers', [])
   $scope.updateDescription = function() {
     console.log('updateDescription');
     // send to API
-    // implement
     appApi.post('search/description', {search_id : 1, description : $scope.my.description}).then(function (result) {
       if (result === true) {
         console.log('description updated');
@@ -545,18 +544,6 @@ angular.module('starter.controllers', [])
     $scope.messages = result;
   });
 
-  // live
-  // works
-  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
-    $scope.conversation = result;
-    $scope.navTitle = navTitle();
-  });
-
-  // $scope.messages = $scope.result.messages;
-
-  //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
-  $scope.current_user = current_user;
-
   // build the nav title
   function navTitle () {
     names = appHelper.namesList($scope.conversation.users);
@@ -573,6 +560,18 @@ angular.module('starter.controllers', [])
     }
     return "<span class=\"multi-title-top\">" + title_top + "</span><br /><span class=\"multi-title-bottom\">For " + title_bottom + "</span>";
   }
+
+  // live
+  // works
+  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+    $scope.conversation = result;
+    $scope.navTitle = navTitle();
+  });
+
+  // $scope.messages = $scope.result.messages;
+
+  //$scope.messages = chatFactory.refreshChat($stateParams.conversation_id).messages;
+  $scope.current_user = current_user;
   
 
   // when invite is clicked
@@ -595,7 +594,16 @@ angular.module('starter.controllers', [])
     console.log('sendMessage');
     console.log($scope.newMessage);
     // send to API
-    // implement
+    appApi.post('messages/send', {user_id : 1, conversation_id : $stateParams.conversation_id, text : $scope.newMessage}).then(function(result) {
+      if (result === true) {
+        console.log('message sent');
+        $scope.newMessage = null;
+        // refresh conversation
+        appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+          $scope.messages = result;
+        });
+      }
+    });
   };
 
 })
