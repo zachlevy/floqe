@@ -258,7 +258,7 @@ angular.module('starter.controllers', [])
 })
 
 // Event List Screen
-.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events) {
+.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events, appApi) {
   console.log('EventsListController');
 
   function pre () {
@@ -272,7 +272,10 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  $scope.events = post_api_events.result;
+  // $scope.events = post_api_events.result;
+  appApi.post('events', {user_id : 1}).then(function (result) {
+    $scope.events = result;
+  });
   $scope.onEventSelect = function (event_id) {
     console.log('onEventSelect');
     $state.go('app.showEvent', {'event_id' : event_id});
