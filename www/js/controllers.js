@@ -751,7 +751,12 @@ angular.module('starter.controllers', [])
       if(res) {
         console.log('confirmed onRemoveUser');
         // send to API
-        // implement
+        appApi.post('conversations/remove', {conversation_id : $stateParams.conversation_id, remove_user : user_id}).then(function(result) {
+          if (result === true) {
+            console.log('user removed from conversation');
+          }
+          $state.go('app.matches');
+        });
       } else {
         console.log('cancelled onRemoveUser');
       }
@@ -767,8 +772,12 @@ angular.module('starter.controllers', [])
         console.log('confirmed Leave');
         console.log($stateParams.conversation_id);
         // send to API
-        // implement
-        $state.go('app.matches');
+        appApi.post('conversations/remove', {conversation_id : $stateParams.conversation_id, remove_user : 1}).then(function(result) {
+          if (result === true) {
+            console.log('removed from conversation');
+          }
+          $state.go('app.matches');
+        });
       } else {
         console.log('cancelled Leave');
       }
