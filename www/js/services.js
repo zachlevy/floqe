@@ -17,7 +17,12 @@ angular.module('starter.services', [])
         if (res.success === true) {
           // success
           console.log('http success');
-          deferred.resolve(res.result);
+          if ( res.hasOwnProperty('result')) {
+            deferred.resolve(res.result);
+          } else {
+            deferred.resolve(true);
+          }
+          
         } else if (res.success === false) {
           // bad params
           console.log('http bad server request');

@@ -480,6 +480,11 @@ angular.module('starter.controllers', [])
     console.log('updateDescription');
     // send to API
     // implement
+    appApi.post('search/description', {search_id : 1, description : $scope.my.description}).then(function (result) {
+      if (result === true) {
+        console.log('description updated');
+      }
+    });
     console.log($scope.my.description);
     // search id
   };
