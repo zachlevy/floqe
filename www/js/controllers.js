@@ -308,16 +308,25 @@ angular.module('starter.controllers', [])
 
   // populate the tags resource
   // sample, remove for production
-  appApi.post('match/mine', {'user_id' : 1}).then(function(result){
+  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
+    console.log('conversation');
+    console.log(result);
     $scope.api.result = result;
   });
-
+  /*
+  appApi.post('conversations', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
+    console.log(result);
+    $scope.api.result = result;
+  });
+  */
   // every 3 seconds, repopulate the tags resource from the server
+  /*
   $rootScope.tagRefresher = $interval(function(){
     appApi.get('tags').then(function(result){
       $scope.api.result = result;
     });
   }, 30000);
+  */
 
   /*
   // sample, remove for production
@@ -504,11 +513,18 @@ angular.module('starter.controllers', [])
 
   // devleopment
   // $scope.messages = post_api_messages.result.messages;
-  
+
   // live
   // works
-  appApi.post('messages', {'user_id' : 1, 'conversation_id' : $stateParams.conversation_id}).then(function(result){
+  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.messages = result;
+  });
+
+  // live
+  // works
+  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+    $scope.conversation = result;
+    $scope.navTitle = navTitle();
   });
 
   // $scope.messages = $scope.result.messages;
@@ -518,10 +534,10 @@ angular.module('starter.controllers', [])
 
   // build the nav title
   function navTitle () {
-    names = appHelper.namesList(post_api_conversation.result.users);
-    description = post_api_conversation.result.users[0].description;
-    tags = appHelper.namesList(post_api_conversation.result.search.tags);
-    if (post_api_conversation.result.users.length == 1) {
+    names = appHelper.namesList($scope.conversation.users);
+    description = $scope.conversation.users[0].description;
+    tags = appHelper.namesList($scope.conversation.search.tags);
+    if ($scope.conversation.users.length == 1) {
       // 1v1 convo
       title_top = names + " for " + tags;
       title_bottom = description;
@@ -532,7 +548,7 @@ angular.module('starter.controllers', [])
     }
     return "<span class=\"multi-title-top\">" + title_top + "</span><br /><span class=\"multi-title-bottom\">For " + title_bottom + "</span>";
   }
-  $scope.navTitle = navTitle();
+  
 
   // when invite is clicked
   $rootScope.inviteClick = function () {
