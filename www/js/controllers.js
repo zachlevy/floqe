@@ -214,30 +214,47 @@ angular.module('starter.controllers', [])
   pre();
 
   //$scope.event = post_api_event.result;
-  appApi.post('event', {event_id : 1, user_id : 1}).then(function(result) {
+  appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
     $scope.event = result;
   });
 
   $scope.current_user = current_user;
 
   // admins removing user from group
-  $scope.onRemoveUser = function (user_id) {
-    console.log('onRemoveUser: ' + user_id);
-    $scope.confirmRemoveUser(user_id);
+  $scope.onRemoveUser = function (target_user_id) {
+    console.log('onRemoveUser: ' + target_user_id);
+    $scope.confirmRemoveUser(target_user_id);
+    // send to api
+    appApi.post('event/join', {user_id : target_user_id, event_id : $stateParams.event_id, join : false}).then(function(result) {
+      if (result === true) {
+        console.log('removed from event');
+      }
+      $state.go('app.eventList');
+    });
   };
 
   $scope.onJoinEvent = function () {
     console.log('onJoinEvent');
-    $scope.event.me.joined = true;
     // send to api
-    // implement
+    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : true}).then(function(result) {
+      if (result === true) {
+        console.log('joined event');
+        $scope.event.me.joined = true;
+      }
+      // $state.go('app.eventList');
+    });
   };
 
   $scope.onLeaveEvent = function () {
     console.log('onLeaveEvent');
-    $scope.event.me.joined = false;
     // send to api
-    // implement
+    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : false}).then(function(result) {
+      if (result === true) {
+        console.log('removed from event');
+        $scope.event.me.joined = false;
+      }
+      $state.go('app.eventList');
+    });
   };
 
   $scope.onChat = function () {
