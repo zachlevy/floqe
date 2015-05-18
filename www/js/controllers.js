@@ -457,20 +457,28 @@ angular.module('starter.controllers', [])
   // swiping
   $scope.swipedUserIds = [];
 
-  $scope.onSwipeRight = function(user_id) {
+  $scope.onSwipeRight = function(swiped_user_id) {
     console.log("Swiped Right");
-    appHelper.addIfNotExists(user_id, $scope.swipedUserIds);
+    appHelper.addIfNotExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    // implement
+    appApi.post('match/me', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+      if (result === true) {
+        console.log('matched with user');
+      }
+    });
     console.log($scope.swipedUserIds);
     console.log($stateParams.search_id);
   };
 
-  $scope.onSwipeLeft = function(user_id) {
+  $scope.onSwipeLeft = function(swiped_user_id) {
     console.log("Swiped Left");
-    appHelper.removeIfExists(user_id, $scope.swipedUserIds);
+    appHelper.removeIfExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    // implement
+    appApi.post('match/me/delete', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+      if (result === true) {
+        console.log('unmatched with user');
+      }
+    });
     console.log($scope.swipedUserIds);
     console.log($stateParams.search_id);
   };
