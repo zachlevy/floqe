@@ -589,7 +589,7 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite) {
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -603,7 +603,10 @@ angular.module('starter.controllers', [])
   pre();
 
   console.log('InviteMatchesController');
-  $scope.matches = post_api_conversations_invite.result;
+  appApi.post('invite', {conversation_id : 1, user_id : 1}).then(function (result) {
+    $scope.matches = result;
+  });
+  // $scope.matches = post_api_conversations_invite.result;
   
   // for match
   console.log();
@@ -633,7 +636,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Details Screen
-.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation) {
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -647,7 +650,11 @@ angular.module('starter.controllers', [])
   pre();
 
   console.log('ConversationDetailsController');
-  $scope.users = post_api_conversation.result.users;
+  
+  
+  appApi.post('conversation', {conversation_id : 1, user_id : 1}).then(function(result) {
+    $scope.users = result.users;
+  });
   
   // swiping
   $scope.selectedUserIds = [];

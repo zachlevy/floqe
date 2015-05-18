@@ -7,9 +7,11 @@
           <button class="button button-assertive" data-ng-if="user.removable" data-ng-click="onRemoveUser(user.id)">
             <i class="fa fa-trash-o"></i>
           </button>
+          <!--
           <button class="button button-calm" data-ng-click="onUserView(user.id)">
             <i class="fa fa-eye"></i>
           </button>
+          -->
         </div>
         <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend"></i></h2>
         <p>{{ user.description }}</p>
