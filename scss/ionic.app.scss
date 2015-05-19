@@ -27,6 +27,7 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 // VARIABLES START
 $light-grey: #999;
 $medium-grey: #666;
+$dark-grey: #333;
 // VARIABLES END
 
 // HELPER START
@@ -60,10 +61,10 @@ $medium-grey: #666;
   bottom: 0;
   width: 100%;
   background: #f5f5f5;
-}
-.footer-button {
-  margin: 0.5em 2%;
-  width: 96%;
+  .footer-button {
+    margin: 0.5em 2%;
+    width: 96%;
+  }
 }
 // columns
 $i: 1;
@@ -86,7 +87,127 @@ $i: 1;
           border-radius: $radius;
 }
 // HELPER END
+// USER EDIT START
+.user-edit-screen {
+  .edit-user-list {
+    .photo-wrapper {
+      position: relative;
+      i {
+        // color: #fff;
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        margin-bottom: 5px;
+        margin-right: 0px;
+        background: #fff;
+        padding: 0.2em;
+      }
+      .photo {
 
+      }
+    }
+    .item-gender {
+      .checkbox-button input {
+        display: none;
+      }
+    }
+    .item-birthdate,
+    .item-name {
+      input {
+        color: $medium-grey;
+      }
+    }
+    .item-interests {
+      overflow: visible;
+      padding: 6px 0 11px 16px;
+      .search-box {
+        min-height: 34px;
+      }
+      .angular-tagger {
+        border: none;
+      }
+      .angular-tagger__holder {
+        display: block;
+        float: left;
+      }
+    }
+  }
+}
+// USER EDIT END
+// EVENT EDIT START
+.edit-event-screen {
+  .edit-event-list {
+    input {
+      color: $medium-grey;
+    }
+    .item-event-tags {
+      overflow: visible;
+      padding: 6px 0 11px 16px;
+      .search-box {
+        min-height: 34px;
+      }
+      .angular-tagger {
+        border: none;
+      }
+      .angular-tagger__holder {
+        display: block;
+        float: left;
+      }
+    }
+    .item-event-datetime {
+      .input-label {
+        // max-width: 60px;
+      }
+    }
+  }
+}
+// EVENT EDIT END
+// EVENT SHOW START
+.show-event-screen {
+  .event-name {
+    margin-top: 1em;
+    color: $dark-grey;
+  }
+  .event-details {
+    p {
+      margin-bottom: 0;
+      color: $dark-grey;
+    }
+  }
+  .event-options {
+    .col,
+    &.row {
+      padding-top: 0;
+      padding-bottom: 0;
+      button {
+        margin-top: 5px;
+        margin-bottom: 5px;
+      }
+    }
+  }
+}
+// EVENT SHOW END
+// EVENTS LIST START
+.events-screen {
+  .events-list {
+    .users-count {
+      float: right;
+      .users-all {
+        //margin-top: 1.3em;
+        margin-top: 2em;
+      }
+    }
+    .event-name {
+
+    }
+    .event-start,
+    .event-tags,
+    .event-location {
+
+    }
+  }
+}
+// EVENTS LIST END
 // USER LIST START
 .user-list {
   .user {

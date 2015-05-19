@@ -1,11 +1,12 @@
 <ion-view view-title="Search">
   <ion-content class="tags-search-screen">
+    <h2>Result</h2>
+    <pre>
+      {{ api.result }}
+    </pre>
     <h1 class="search-title">What do you want to do?</h1>
     <!--<input data-ng-model="search" class="search-box" />-->
     <tagger class="search-box" ng-model="searchTags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
-    <button class="button button-block button-calm" data-ng-click="submitTags()">
-      <i class="fa fa-search"></i>
-    </button>
     <div class="row" data-ng-repeat="tagGroup in suggestedTags">
       <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in tagGroup | tagColumns">
         <button class="button button-block button-calm" data-ng-click="addTag(tag.id)">
@@ -13,8 +14,10 @@
         </button>
       </div>
     </div>
-    <pre>
-      {{ api.result }}
-    </pre>
   </ion-content>
+  <div class="footer-button-wrap">
+    <button class="button button-block button-calm footer-button" data-ng-click="submitTags()">
+      <i class="fa fa-search"></i>
+    </button>
+  </div>
 </ion-view>

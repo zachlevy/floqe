@@ -9420,10 +9420,9 @@ a.button {
   bottom: 0;
   width: 100%;
   background: #f5f5f5; }
-
-.footer-button {
-  margin: 0.5em 2%;
-  width: 96%; }
+  .footer-button-wrap .footer-button {
+    margin: 0.5em 2%;
+    width: 96%; }
 
 .col-1 {
   -webkit-box-flex: 0;
@@ -10315,6 +10314,62 @@ a.button {
   -ms-flex: 0 0 99%;
   flex: 0 0 99%;
   max-width: 99%; }
+
+.user-edit-screen .edit-user-list .photo-wrapper {
+  position: relative; }
+  .user-edit-screen .edit-user-list .photo-wrapper i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 5px;
+    margin-right: 0px;
+    background: #fff;
+    padding: 0.2em; }
+.user-edit-screen .edit-user-list .item-gender .checkbox-button input {
+  display: none; }
+.user-edit-screen .edit-user-list .item-birthdate input, .user-edit-screen .edit-user-list .item-name input {
+  color: #666; }
+.user-edit-screen .edit-user-list .item-interests {
+  overflow: visible;
+  padding: 6px 0 11px 16px; }
+  .user-edit-screen .edit-user-list .item-interests .search-box {
+    min-height: 34px; }
+  .user-edit-screen .edit-user-list .item-interests .angular-tagger {
+    border: none; }
+  .user-edit-screen .edit-user-list .item-interests .angular-tagger__holder {
+    display: block;
+    float: left; }
+
+.edit-event-screen .edit-event-list input {
+  color: #666; }
+.edit-event-screen .edit-event-list .item-event-tags {
+  overflow: visible;
+  padding: 6px 0 11px 16px; }
+  .edit-event-screen .edit-event-list .item-event-tags .search-box {
+    min-height: 34px; }
+  .edit-event-screen .edit-event-list .item-event-tags .angular-tagger {
+    border: none; }
+  .edit-event-screen .edit-event-list .item-event-tags .angular-tagger__holder {
+    display: block;
+    float: left; }
+
+.show-event-screen .event-name {
+  margin-top: 1em;
+  color: #333; }
+.show-event-screen .event-details p {
+  margin-bottom: 0;
+  color: #333; }
+.show-event-screen .event-options .col, .show-event-screen .event-options.row {
+  padding-top: 0;
+  padding-bottom: 0; }
+  .show-event-screen .event-options .col button, .show-event-screen .event-options.row button {
+    margin-top: 5px;
+    margin-bottom: 5px; }
+
+.events-screen .events-list .users-count {
+  float: right; }
+  .events-screen .events-list .users-count .users-all {
+    margin-top: 2em; }
 
 .user-list .user .options {
   float: right; }

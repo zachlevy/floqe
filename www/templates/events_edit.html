@@ -1,0 +1,54 @@
+<ion-view cache-view="false">
+  <ion-content class="edit-event-screen">
+    <div class="list edit-event-list">
+      <label class="item item-input">
+        <span class="input-label">Name</span>
+        <input type="text" data-ng-model="event.name" placeholder="Best birthday party ever">
+      </label>
+
+      <div class="item item-input item-event-datetime item-stacked-label">
+        <span class="input-label">Event Start</span>
+        <div class="row">
+          <div class="col col-60">
+            <input type="date" data-ng-model="event.start.date">
+          </div>
+          <div class="col col-40">
+            <input type="time" data-ng-model="event.start.time">
+          </div>
+        </div>
+      </div>
+      <div class="item item-input item-event-datetime item-stacked-label">
+        <span class="input-label">Event End</span>
+        <div class="row">
+          <!--
+          <div class="col col-60">
+            <input type="date" data-ng-model="event.end.date">
+          </div>
+          -->
+          <div class="col col-40">
+            <input type="time" data-ng-model="event.end.time">
+          </div>
+        </div>
+      </div>
+      <label class="item item-input item-stacked-label">
+        <span class="input-label">Location</span>
+        <input type="text" data-ng-model="event.location" placeholder="123 Fake St">
+      </label>
+      <li class="item item-checkbox">
+        <label class="checkbox">
+          <input type="checkbox" ng-model="event.private">
+        </label>
+        Private Event
+      </li>
+      <div class="item item-event-tags">
+        <span class="input-label">Tags</span>
+        <tagger class="search-box" ng-model="event.tags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName" placeholder=""></tagger>
+      </div>
+    </div>
+  </ion-content>
+  <div class="footer-button-wrap">
+    <button class="button button-block button-calm footer-button" data-ng-click="onSubmit()">
+      Submit
+    </button>
+  </div>
+</ion-view>

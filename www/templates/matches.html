@@ -2,7 +2,7 @@
   <ion-content class="matches-screen">
     <div class="list matches-list user-list">
       <a class="item item-avatar user" href="#" data-ng-repeat="match in matches" data-ng-click="onMatchSelect(match.conversation_id)">
-        <img class="photo" data-ng-src="{{ match.users[0].photo }}">
+        <img class="photo" data-ng-src="{{ match.users[0].photo }}-/scale_crop/100x100/">
 
         <div class="time">
           <h2 data-ng-if="match.last_message == null">{{ match.matched_for.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>

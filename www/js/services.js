@@ -6,6 +6,9 @@ angular.module('starter.services', [])
   // endpoint is a string
   return {
     post: function(endpoint, data) {
+      console.log('sending post from appApi');
+      console.log(baseUrl + endpoint);
+      console.log(data);
       // promise
       var deferred = $q.defer();
 
@@ -14,7 +17,12 @@ angular.module('starter.services', [])
         if (res.success === true) {
           // success
           console.log('http success');
-          deferred.resolve(res.result);
+          if ( res.hasOwnProperty('result')) {
+            deferred.resolve(res.result);
+          } else {
+            deferred.resolve(true);
+          }
+          
         } else if (res.success === false) {
           // bad params
           console.log('http bad server request');
@@ -29,22 +37,31 @@ angular.module('starter.services', [])
       }).error(function(res, status) {
         // http error
         console.log('http error');
-        deferred.reject(msg);
+        console.log(status);
+        console.log(res);
+        deferred.reject(res);
       });
       return deferred.promise;
     },
-    get: function(endpoint) {
+    put: function(endpoint, data) {
+      console.log('sending post from appApi');
+      console.log(baseUrl + endpoint);
+      console.log(data);
       // promise
       var deferred = $q.defer();
 
-      $http.get(baseUrl + endpoint)
+      $http.put(baseUrl + endpoint, data)
       .success(function(res, status) {
-        console.log(status);
-        if (res.result.success === true) {
+        if (res.success === true) {
           // success
           console.log('http success');
-          deferred.resolve(res.result);
-        } else if (res.result.success === false) {
+          if ( res.hasOwnProperty('result')) {
+            deferred.resolve(res.result);
+          } else {
+            deferred.resolve(true);
+          }
+          
+        } else if (res.success === false) {
           // bad params
           console.log('http bad server request');
           console.log(res.result);
@@ -56,6 +73,37 @@ angular.module('starter.services', [])
           deferred.resolve(res.result);
         }
       }).error(function(res, status) {
+        // http error
+        console.log('http error');
+        console.log(status);
+        console.log(res);
+        deferred.reject(res);
+      });
+      return deferred.promise;
+    },
+    get: function(endpoint) {
+      // promise
+      var deferred = $q.defer();
+
+      $http.get(baseUrl + endpoint)
+      .success(function(res, status) {
+        console.log(status);
+        if (res.success === true) {
+          // success
+          console.log('http success');
+          deferred.resolve(res.result);
+        } else if (res.success === false) {
+          // bad params
+          console.log('http bad server request');
+          console.log(res.result);
+          deferred.resolve(res.result);
+        } else {
+          // server error
+          console.log('http server error');
+          console.log(res.result);
+          deferred.resolve(res);
+        }
+      }).error(function(res, status, msg) {
         // http error
         console.log('http error');
         deferred.reject(msg);
@@ -200,8 +248,8 @@ angular.module('starter.services', [])
 // API base url
 .value(
   'baseUrl',
-  'http://192.168.0.11:8100/api/v1/'
-  //'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
+  //'http://192.168.0.11:8100/api/v1/'
+  'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
 // all tags preloaded, can be refreshed with tagsFactory.refreshTags()
 .value(
@@ -219,9 +267,19 @@ angular.module('starter.services', [])
     "id" : 2,
     "name" : "Boaz",
     "photo" : "http://placehold.it/100x100",
-    "description" : null,
     "gender" : 1,
-    "age" : 23
+    "age" : 23,
+    "birthdate" : "1991-06-17T01:11:21Z",
+    "interests" : [
+      {
+        "id" : 1,
+        "name" : "Motor rallies"
+      },
+      {
+        "id" : 2,
+        "name" : "Motor"
+      },
+    ]
   }
 )
 
@@ -344,7 +402,7 @@ angular.module('starter.services', [])
          ],
       },
       {
-        "id": 2,
+        "conversation_id": 2,
         "last_message" : null,
         "users" : [
           {
@@ -597,6 +655,100 @@ angular.module('starter.services', [])
         },
       ],
     }
+  }
+)
+
+// edit event
+.value(
+  'post_api_event',
+  {
+    "success" : true,
+    "result" : {
+      "name" : "Zach's Birthday",
+      "start" : "2015-06-17T20:00:00Z",
+      "end" : "2015-06-17T23:55:00Z",
+      "location" : "1701 - 55 Maitland St. Toronto, ON M4Y1C9",
+      "tags" : [
+        {
+          "id" : 1,
+          "name" : "Motor rallies"
+        },
+        {
+          "id" : 2,
+          "name" : "Motor"
+        },
+      ],
+      "private" : true,
+      "users" : [
+        {
+          "id" : 1,
+          "name" : "Jake",
+          "photo" : "http://placehold.it/100x100",
+          "friend" : true,
+          "admin" : true
+        },
+        {
+          "id" : 2,
+          "name" : "Alex",
+          "photo" : "http://placehold.it/100x100",
+          "friend" : false,
+          "admin" : false
+        }
+      ],
+      "conversation_id" : 1,
+      "me" : {
+        "joined" : true,
+        "admin" : true
+      }
+    }
+  }
+)
+
+// events
+.value(
+  'post_api_events',
+  {
+    "success" : true,
+    "result" : [
+      {
+        "name" : "Zach's Birthday",
+        "start" : "2015-06-17T20:00:00Z",
+        "end" : "2015-06-17T23:55:00Z",
+        "location" : "1701 - 55 Maitland St. Toronto, ON M4Y1C9",
+        "tags" : [
+          {
+            "id" : 1,
+            "name" : "Motor rallies"
+          },
+          {
+            "id" : 2,
+            "name" : "Motor"
+          },
+        ],
+        "private" : true,
+        "users" : [
+          {
+            "id" : 1,
+            "name" : "Jake",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : true,
+            "admin" : true
+          },
+          {
+            "id" : 2,
+            "name" : "Alex",
+            "photo" : "http://placehold.it/100x100",
+            "friend" : false,
+            "admin" : false
+          }
+        ],
+        "conversation_id" : 1,
+        "me" : {
+          "joined" : true,
+          "admin" : true
+        }
+      }
+    ]
   }
 )
 

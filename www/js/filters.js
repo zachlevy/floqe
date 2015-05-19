@@ -1,5 +1,27 @@
 angular.module('starter.filters', [])
 
+// return human readable time format with start and end date
+.filter('privateFilter', function() {
+  return function(private) {
+    if (private === true) {
+      return "Private";
+    } else {
+      return "Public";
+    }
+  };
+})
+
+// return creator or admin for event user lists
+.filter('adminFilter', function() {
+  return function(admin) {
+    if (admin === true) {
+      return "Creator";
+    } else {
+      return "Member";
+    }
+  };
+})
+
 // get user names csv from user objects array
 .filter('namesFilter', function() {
   return function(objects) {

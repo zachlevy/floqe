@@ -12,6 +12,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     // for form inputs)
     if (window.cordova && window.cordova.plugins.Keyboard) {
       cordova.plugins.Keyboard.hideKeyboardAccessoryBar(true);
+      cordova.plugins.Keyboard.disableScroll(true);
     }
     if (window.StatusBar) {
       // org.apache.cordova.statusbar required
@@ -20,7 +21,8 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   });
 })
 
-.config(function($stateProvider, $urlRouterProvider) {
+.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
+  $ionicConfigProvider.views.swipeBackEnabled(false);
   $stateProvider
 
   .state('app', {
@@ -41,7 +43,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
     }
   })
   .state('app.tagsResults', {
-    url: "/tags/results/{tag_ids}",
+    url: "/tags/results/{search_id}",
     views: {
       'menuContent': {
         templateUrl: "templates/tags_results.html",
@@ -85,9 +87,46 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.userEdit', {
+    url: "/users/{user_id}/edit",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/users_edit.html",
+        controller: 'UserEditController'
+      }
+    }
+  })
+  .state('app.editEvent', {
+    url: "/events/edit/{event_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/events_edit.html",
+        controller: 'EventEditController'
+      }
+    }
+  })
+  .state('app.showEvent', {
+    url: "/events/{event_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/event.html",
+        controller: 'EventShowController'
+      }
+    }
+  })
+  .state('app.eventList', {
+    url: "/events",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/events.html",
+        controller: 'EventsListController'
+      }
+    }
+  })
+
   // FLOQUE END
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/conversations/1');
+  $urlRouterProvider.otherwise('/app/tags/search');
 });
