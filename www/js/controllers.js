@@ -392,109 +392,6 @@ angular.module('starter.controllers', [])
 
 })
 
-
-// Tags Search Screen
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper) {
-  // before the view is loaded, add things here that involve switching between controllers
-  function pre () {
-    // cancel the refresher
-    $interval.cancel($rootScope.tagRefresher);
-    $interval.cancel($rootScope.messagesRefresher);
-    $interval.cancel($rootScope.matchesRefresher);
-    // convoinvite
-    $rootScope.showInvite = false;
-    $rootScope.showOptions = false;
-    // multilined header bar
-    $rootScope.multiBar = false;
-  }
-  pre();
-
-  // testing api
-  $scope.api = {};
-
-  // populate the tags resource
-  // sample, remove for production
-  /*
-  appApi.get('tags').then(function(result){
-    $scope.api.result = result;
-  });
-  */
-
-  // populate the tags resource
-  // sample, remove for production
-  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
-    console.log('conversation');
-    console.log(result);
-    $scope.api.result = result;
-  });
-  /*
-  appApi.post('conversations', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
-    console.log(result);
-    $scope.api.result = result;
-  });
-  */
-  // every 3 seconds, repopulate the tags resource from the server
-  /*
-  $rootScope.tagRefresher = $interval(function(){
-    appApi.get('tags').then(function(result){
-      $scope.api.result = result;
-    });
-  }, 30000);
-  */
-
-  /*
-  // sample, remove for production
-  appApi.post('match/mine', {}).then(function(result){
-    $scope.api.result = result;
-  });
-  */
-
-  // reset global allTags value to make sure they're up to date
-  tagsFactory.refreshTags();
-
-  // default tags
-  $scope.searchTags = [];
-  // get all tags
-  appApi.post('tags', {user_id : 1}).then (function(result) {
-    $scope.suggestedTags = result;
-  });
-
-  $scope.allTags = tagsFactory.all();
-
-  // tagger
-  $scope.maxTags = 2;
-  $scope.taggerTags = $scope.suggestedTags;
-  $scope.showTagName = function (tag) {
-    return tag.name;
-  };
-  $scope.createTagName = function (name) {
-    return {name: name};
-  };
-
-  // add a tag
-  $scope.addTag = function(tagId) {
-    if ($scope.searchTags.length < $scope.maxTags) {
-      appHelper.addIfNotExists(tagsFactory.getTag(tagId), $scope.searchTags);
-    }
-  };
-
-  // process search
-  $scope.submitTags = function () {
-    console.log("submitTags");
-    angular.forEach($scope.searchTags, function (tag, key) {
-      delete tag.$$hashKey;
-    });
-    console.log($scope.searchTags);
-    appApi.post('search', {'user_id' : 1, 'tags' : $scope.searchTags}).then(function(result) {
-      console.log(result.search_id);
-      $state.go('app.tagsResults', {search_id: result.search_id});
-    });
-
-    // searchTagsText = tagsFactory.idsList($scope.searchTags);
-    
-  };
-})
-
 // Tags Search Results Screen
 .controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
@@ -946,8 +843,8 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TagsCtrl', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory) {
-  console.log('TagsCtrl');
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory) {
+  console.log('TagsSearchController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -969,7 +866,7 @@ angular.module('starter.controllers', [])
   // max number of tags teh user can serach
   $scope.tags.max = 2;
   $scope.tags.search = {};
-  $scope.tags.search.name = "c";
+  $scope.tags.search.name = "";
 
   // get all tags
   appApi.get('tags').then(function(result) {
@@ -991,6 +888,17 @@ angular.module('starter.controllers', [])
   $scope.onSearch = function () {
     console.log('onSearch');
     console.log($scope.tags.selected);
+    console.log("submitTags");
+
+    $scope.tags.fullSelected = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.tags.fullSelected.push({"id" : tag_id});
+    });
+    console.log($scope.tags.fullSelected);
+    appApi.post('search', {'user_id' : 1, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
   };
 
   // when a tag is selected
@@ -1036,4 +944,6 @@ angular.module('starter.controllers', [])
     return rowTags;
   }
 })
+
+
 ; // ends chaining

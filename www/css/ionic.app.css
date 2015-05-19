@@ -10519,8 +10519,8 @@ a.button {
 .tags-search-screen .search-title {
   color: #11c1f3;
   text-align: center;
-  font-size: 2em;
-  margin: 2em 0 1em; }
+  font-size: 1.8em;
+  margin: 0.4em 0 0.2em; }
 .tags-search-screen .search-box {
   background-color: transparent;
   border-style: solid;
