@@ -1,23 +1,18 @@
-<ion-view view-title="Search">
-  <ion-content class="tags-search-screen">
-    <h2>Result</h2>
-    <pre>
-      {{ api.result }}
-    </pre>
+<ion-view view-title="Search Tags">
+  <ion-content class="tags-search-screen has-footer-button">
     <h1 class="search-title">What do you want to do?</h1>
-    <!--<input data-ng-model="search" class="search-box" />-->
-    <tagger class="search-box" ng-model="searchTags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
-    <div class="row" data-ng-repeat="tagGroup in suggestedTags">
-      <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in tagGroup | tagColumns">
-        <button class="button button-block button-calm" data-ng-click="addTag(tag.id)">
+    <input class="search-box" type="text" data-ng-model="tags.search.name" placeholder="search..."/>
+    <div class="row tags-wrap" data-ng-repeat="row in processedTags">
+      <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
+        <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
           {{ tag.name }}
         </button>
       </div>
     </div>
   </ion-content>
   <div class="footer-button-wrap">
-    <button class="button button-block button-calm footer-button" data-ng-click="submitTags()">
-      <i class="fa fa-search"></i>
+    <button class="button button-block button-calm footer-button" data-ng-click="onSearch()">
+        Search
     </button>
   </div>
 </ion-view>

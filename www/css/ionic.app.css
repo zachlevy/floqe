@@ -9392,6 +9392,11 @@ a.button {
 .fa-medium:before {
   content: "\f23a"; }
 
+.img-responsive {
+  display: block;
+  width: 100%;
+  height: auto; }
+
 .hidden {
   display: none;
   visibility: hidden; }
@@ -9414,6 +9419,9 @@ a.button {
 
 .bar .title {
   font-weight: bold; }
+
+.has-footer-button {
+  margin-bottom: 4.3em; }
 
 .footer-button-wrap {
   position: absolute;
@@ -10315,6 +10323,30 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.tags-wrap .button {
+  border: 2px solid #11c1f3; }
+  .tags-wrap .button.unselected {
+    background: none;
+    color: #666; }
+
+.user-show-screen {
+  color: #666; }
+  .user-show-screen .name {
+    font-weight: bold;
+    color: #333; }
+  .user-show-screen .friend {
+    color: #11c1f3; }
+  .user-show-screen .distance {
+    margin-top: 0.7em;
+    float: right;
+    color: #333; }
+  .user-show-screen .interests {
+    color: #333; }
+  .user-show-screen .interest {
+    margin: 2px; }
+    .user-show-screen .interest:hover, .user-show-screen .interest:focus, .user-show-screen .interest:active .user-show-screen .interest.button.button-calm.activated {
+      background: #11c1f3; }
+
 .user-edit-screen .edit-user-list .photo-wrapper {
   position: relative; }
   .user-edit-screen .edit-user-list .photo-wrapper i {
@@ -10339,6 +10371,14 @@ a.button {
   .user-edit-screen .edit-user-list .item-interests .angular-tagger__holder {
     display: block;
     float: left; }
+
+.invite-contacts-screen .contacts-list .options {
+  float: right;
+  padding-top: 1em; }
+  .invite-contacts-screen .contacts-list .options i {
+    color: #666; }
+    .invite-contacts-screen .contacts-list .options i.icon-unchecked {
+      margin-right: 2px; }
 
 .edit-event-screen .edit-event-list input {
   color: #666; }
@@ -10465,16 +10505,16 @@ a.button {
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
-.tags-search-screen .row {
+.row.tags-wrap {
   padding: 7px 0; }
-  .tags-search-screen .row .col {
+  .row.tags-wrap .col {
     padding: 0;
     padding-right: 5px; }
-    .tags-search-screen .row .col:first-child {
+    .row.tags-wrap .col:first-child {
       padding-left: 5px; }
-    .tags-search-screen .row .col:last-child {
+    .row.tags-wrap .col:last-child {
       margin-right: 0; }
-  .tags-search-screen .row .button {
+  .row.tags-wrap .button {
     padding-left: 0;
     padding-right: 0;
     -webkit-border-radius: 0px;
@@ -10483,11 +10523,12 @@ a.button {
     border-radius: 0px;
     border: 2px solid #34c5de;
     margin: 0; }
+
 .tags-search-screen .search-title {
   color: #11c1f3;
   text-align: center;
-  font-size: 2em;
-  margin: 2em 0 1em; }
+  font-size: 1.8em;
+  margin: 0.4em 0 0.2em; }
 .tags-search-screen .search-box {
   background-color: transparent;
   border-style: solid;
@@ -10498,6 +10539,18 @@ a.button {
   padding-left: 0.5em;
   color: #666;
   margin-bottom: 1em; }
+
+.tags-screen .ion-scroll .tag-button {
+  margin: 5px 5px 0px 5px; }
+.tags-screen .tag-container {
+  white-space: normal; }
+.tags-screen .tag-small {
+  background: #4a87ee;
+  color: white;
+  padding: 2px 12px;
+  border-radius: .5em;
+  margin: 1px 3px;
+  display: inline-block; }
 
 .angular-tagger {
   border: 1px solid #ccc;

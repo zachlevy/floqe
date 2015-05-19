@@ -49,6 +49,93 @@ angular.module('starter.controllers', [])
   }
   pre();
 
+  // START TAGS SEARCH
+  // prep the tags object
+  $scope.tags = {};
+  // tags that the user has selected
+  $scope.tags.selected = [];
+  // max number of tags teh user can serach
+  $scope.tags.max = 2;
+  $scope.tags.search = {};
+  $scope.tags.search.name = "";
+
+  // get all tags
+  appApi.get('tags').then(function(result) {
+    $scope.tags.all = result;
+    console.log('$scope.tags.all');
+    console.log($scope.tags.all);
+
+    $scope.processedTags = processedTags();
+  });
+
+  // get all suggested tags
+  appApi.post('tags', {user_id : current_user.id}).then(function(result) {
+    $scope.tags.suggested = result;
+    console.log('$scope.tags.suggested');
+    console.log($scope.tags.suggested);
+  });
+
+  // when search button is pressed
+  $scope.onSearch = function () {
+    console.log('onSearch');
+    console.log($scope.tags.selected);
+    console.log("submitTags");
+
+    $scope.tags.fullSelected = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.tags.fullSelected.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+    console.log($scope.tags.fullSelected);
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
+  };
+
+  // when a tag is selected
+  $scope.onTagSelect = function(tag_id) {
+    if ($scope.tags.selected.indexOf(tag_id) == -1) {
+      if ($scope.tags.selected.length < $scope.tags.max) {
+        $scope.tags.selected.push(tag_id);
+      }
+    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+    }
+    // $scope.tags.selected.push(tag_id);
+    console.log('tagsFactory.getTag(tag_id)');
+    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    console.log('$scope.tags.selected');
+    console.log($scope.tags.selected);
+  };
+
+  // watch for the search field to be updated to re-run the tag processor
+  $scope.$watch('tags.search.name', function () {
+    console.log('watched tags.search.name');
+    $scope.processedTags = processedTags();
+  });
+  
+  function processedTags () {
+    numRows = 3;
+    rowTags = [[]];
+    angular.forEach($scope.tags.all, function(tag, index) {
+      // if the tag is selected or it contains the search string
+      console.log('name: ' + tag.name);
+      if (
+        $scope.tags.selected.indexOf(tag.id) !== -1 ||
+        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
+      ) {
+        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
+          // push a new row
+          rowTags.push([]);
+        }
+        // push the tag into the last row
+        rowTags[rowTags.length - 1].push(tag);
+      }
+    });
+    return rowTags;
+  }
+  // END TAGS SEARCH
+
   // photo upload
   $scope.changePhoto = function () {
     uploadcare.openDialog().done(function(file) {
@@ -60,12 +147,17 @@ angular.module('starter.controllers', [])
   };
 
   // $scope.user = current_user;
-  appApi.post('user', {user_id : 1}).then(function(result) {
+  appApi.post('user', {user_id : current_user.id}).then(function(result) {
     $scope.user = result;
     $scope.user.user_id = $scope.user.id;
      // birthdate
     // convert from date string to js date object
     $scope.user.birthdate = new Date($scope.user.birthdate);
+
+    // tags
+    angular.forEach(result.interests, function(tag, index) {
+      $scope.tags.selected.push(tag.id);
+    });
 
     // gender
     // change user object gender into radio button
@@ -92,22 +184,15 @@ angular.module('starter.controllers', [])
     $scope.user.gender.female = true;
   };
 
-  // interests
-  $scope.allTags = tagsFactory.all();
-  console.log($scope.allTags);
-
-  // tagger
-  $scope.maxTags = 10;
-  $scope.showTagName = function (tag) {
-    return tag.name;
-  };
-  $scope.createTagName = function (name) {
-    return {name: name};
-  };
-
   // submit
   // implement
   $scope.onSubmit = function () {
+    // tags
+    $scope.user.interests = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.user.interests.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+
     // change gender radio buttons into user object
     if ($scope.user.gender.male === true) {
       $scope.user.gender = 1;
@@ -141,8 +226,31 @@ angular.module('starter.controllers', [])
   };
 })
 
+// view/show user
+.controller('UserController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi, post_api_user) {
+  console.log("UserController");
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  //$scope.user = post_api_user;
+  appApi.post('user', {user_id : $stateParams.user_id}).then(function(result) {
+    $scope.user = result;
+  });
+
+})
+
 // New/Edit Event Screen
-.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, post_api_event, appApi) {
+.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
   console.log("EventEditController");
   function pre () {
     // cancel the refresher
@@ -156,6 +264,93 @@ angular.module('starter.controllers', [])
     $rootScope.multiBar = false;
   }
   pre();
+
+  // START TAGS SEARCH
+  // prep the tags object
+  $scope.tags = {};
+  // tags that the user has selected
+  $scope.tags.selected = [];
+  // max number of tags teh user can serach
+  $scope.tags.max = 2;
+  $scope.tags.search = {};
+  $scope.tags.search.name = "";
+
+  // get all tags
+  appApi.get('tags').then(function(result) {
+    $scope.tags.all = result;
+    console.log('$scope.tags.all');
+    console.log($scope.tags.all);
+
+    $scope.processedTags = processedTags();
+  });
+
+  // get all suggested tags
+  appApi.post('tags', {user_id : current_user.id}).then(function(result) {
+    $scope.tags.suggested = result;
+    console.log('$scope.tags.suggested');
+    console.log($scope.tags.suggested);
+  });
+
+  // when search button is pressed
+  $scope.onSearch = function () {
+    console.log('onSearch');
+    console.log($scope.tags.selected);
+    console.log("submitTags");
+
+    $scope.tags.fullSelected = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.tags.fullSelected.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+    console.log($scope.tags.fullSelected);
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
+  };
+
+  // when a tag is selected
+  $scope.onTagSelect = function(tag_id) {
+    if ($scope.tags.selected.indexOf(tag_id) == -1) {
+      if ($scope.tags.selected.length < $scope.tags.max) {
+        $scope.tags.selected.push(tag_id);
+      }
+    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+    }
+    // $scope.tags.selected.push(tag_id);
+    console.log('tagsFactory.getTag(tag_id)');
+    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    console.log('$scope.tags.selected');
+    console.log($scope.tags.selected);
+  };
+
+  // watch for the search field to be updated to re-run the tag processor
+  $scope.$watch('tags.search.name', function () {
+    console.log('watched tags.search.name');
+    $scope.processedTags = processedTags();
+  });
+  
+  function processedTags () {
+    numRows = 3;
+    rowTags = [[]];
+    angular.forEach($scope.tags.all, function(tag, index) {
+      // if the tag is selected or it contains the search string
+      console.log('name: ' + tag.name);
+      if (
+        $scope.tags.selected.indexOf(tag.id) !== -1 ||
+        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
+      ) {
+        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
+          // push a new row
+          rowTags.push([]);
+        }
+        // push the tag into the last row
+        rowTags[rowTags.length - 1].push(tag);
+      }
+    });
+    return rowTags;
+  }
+  // END TAGS SEARCH
 
   if ($stateParams.event_id === "") {
     // if its a new event
@@ -179,8 +374,12 @@ angular.module('starter.controllers', [])
     // its an existing event
     $ionicNavBarDelegate.title("Edit event");
     // temp
-    appApi.post('event', {user_id : 1, event_id : parseInt($stateParams.event_id)}).then(function(result) {
+    appApi.post('event', {user_id : current_user.id, event_id : parseInt($stateParams.event_id)}).then(function(result) {
       console.log('post event');
+      // tags
+      angular.forEach(result.tags, function(tag, index) {
+        $scope.tags.selected.push(tag.id);
+      });
 
       $scope.event = result;
 
@@ -199,18 +398,15 @@ angular.module('starter.controllers', [])
   // temp
   $scope.allTags = tagsFactory.all();
 
-  // tagger
-  $scope.maxTags = 10;
-  $scope.taggerTags = $scope.suggestedTags;
-  $scope.showTagName = function (tag) {
-    return tag.name;
-  };
-  $scope.createTagName = function (name) {
-    return {name: name};
-  };
-
   // submit
   $scope.onSubmit = function () {
+    // tags
+    $scope.event.tags = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.event.tags.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+
+
     // rebuild dates from the separate date and time pickers
     $scope.event.start = new Date(
       $scope.event.start.date.getFullYear(),
@@ -236,7 +432,7 @@ angular.module('starter.controllers', [])
     // send to api
     // implement
     appApi.put('event', {
-      event_id : $stateParams.evend_id,
+      event_id : $stateParams.event_id,
       name : $scope.event.name,
       start : $scope.event.start,
       end : $scope.event.end,
@@ -252,7 +448,7 @@ angular.module('starter.controllers', [])
   };
 })
 // Show Event Screen
-.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user, appApi) {
+.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, current_user, appApi) {
   console.log('EventShowController');
 
   function pre () {
@@ -268,8 +464,7 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  //$scope.event = post_api_event.result;
-  appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
+  appApi.post('event', {event_id : $stateParams.event_id, user_id : current_user.id}).then(function(result) {
     $scope.event = result;
   });
 
@@ -284,7 +479,7 @@ angular.module('starter.controllers', [])
   $scope.onJoinEvent = function () {
     console.log('onJoinEvent');
     // send to api
-    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : true}).then(function(result) {
+    appApi.post('event/join', {user_id : current_user.id, event_id : $stateParams.event_id, join : true}).then(function(result) {
       if (result === true) {
         console.log('joined event');
         $scope.event.me.joined = true;
@@ -296,7 +491,7 @@ angular.module('starter.controllers', [])
   $scope.onLeaveEvent = function () {
     console.log('onLeaveEvent');
     // send to api
-    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : false}).then(function(result) {
+    appApi.post('event/join', {user_id : current_user.id, event_id : $stateParams.event_id, join : false}).then(function(result) {
       if (result === true) {
         console.log('removed from event');
         $scope.event.me.joined = false;
@@ -324,7 +519,7 @@ angular.module('starter.controllers', [])
           if (result === true) {
             console.log('removed from event');
           }
-          appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
+          appApi.post('event', {event_id : $stateParams.event_id, user_id : current_user.id}).then(function(result) {
             $scope.event = result;
           });
         });
@@ -334,10 +529,17 @@ angular.module('starter.controllers', [])
     });
   };
 
+  // inviting contacts from contact book
+  $scope.onInviteContacts = function () {
+    console.log('onInviteContacts');
+    console.log('$stateParams.event_id: ' + $stateParams.event_id);
+    $state.go('app.inviteContacts', {'event_id' : $stateParams.event_id});
+  };
+
 })
 
 // Event List Screen
-.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events, appApi) {
+.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi, current_user) {
   console.log('EventsListController');
 
   function pre () {
@@ -353,8 +555,7 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  // $scope.events = post_api_events.result;
-  appApi.post('events', {user_id : 1}).then(function (result) {
+  appApi.post('events', {user_id : current_user.id}).then(function (result) {
     $scope.events = result;
   });
   $scope.onEventSelect = function (event_id) {
@@ -364,110 +565,8 @@ angular.module('starter.controllers', [])
 
 })
 
-
-// Tags Search Screen
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
-  // before the view is loaded, add things here that involve switching between controllers
-  function pre () {
-    // cancel the refresher
-    $interval.cancel($rootScope.tagRefresher);
-    $interval.cancel($rootScope.messagesRefresher);
-    $interval.cancel($rootScope.matchesRefresher);
-    // convoinvite
-    $rootScope.showInvite = false;
-    $rootScope.showOptions = false;
-    // multilined header bar
-    $rootScope.multiBar = false;
-  }
-  pre();
-
-  // testing api
-  $scope.api = {};
-
-  // populate the tags resource
-  // sample, remove for production
-  /*
-  appApi.get('tags').then(function(result){
-    $scope.api.result = result;
-  });
-  */
-
-  // populate the tags resource
-  // sample, remove for production
-  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
-    console.log('conversation');
-    console.log(result);
-    $scope.api.result = result;
-  });
-  /*
-  appApi.post('conversations', {'user_id' : 1, 'conversation_id' : 1}).then(function(result){
-    console.log(result);
-    $scope.api.result = result;
-  });
-  */
-  // every 3 seconds, repopulate the tags resource from the server
-  /*
-  $rootScope.tagRefresher = $interval(function(){
-    appApi.get('tags').then(function(result){
-      $scope.api.result = result;
-    });
-  }, 30000);
-  */
-
-  /*
-  // sample, remove for production
-  appApi.post('match/mine', {}).then(function(result){
-    $scope.api.result = result;
-  });
-  */
-
-  // reset global allTags value to make sure they're up to date
-  tagsFactory.refreshTags();
-
-  // default tags
-  $scope.searchTags = [];
-  // get all tags
-  // $scope.suggestedTags = tagsFactory.suggestedTags
-  $scope.suggestedTags = post_api_tags_suggested.result;
-  //console.log($scope.suggestedTags);
-  $scope.allTags = tagsFactory.all();
-
-  // tagger
-  $scope.maxTags = 2;
-  $scope.taggerTags = $scope.suggestedTags;
-  $scope.showTagName = function (tag) {
-    return tag.name;
-  };
-  $scope.createTagName = function (name) {
-    return {name: name};
-  };
-
-  // add a tag
-  $scope.addTag = function(tagId) {
-    if ($scope.searchTags.length < $scope.maxTags) {
-      appHelper.addIfNotExists(tagsFactory.getTag(tagId), $scope.searchTags);
-    }
-  };
-
-  // process search
-  $scope.submitTags = function () {
-    console.log("submitTags");
-    angular.forEach($scope.searchTags, function (tag, key) {
-      delete tag.$$hashKey;
-    });
-    console.log($scope.searchTags);
-    appApi.post('search', {'user_id' : 1, 'tags' : $scope.searchTags}).then(function(result) {
-      console.log(result.search_id);
-      $state.go('app.tagsResults', {search_id: result.search_id});
-    });
-
-    // searchTagsText = tagsFactory.idsList($scope.searchTags);
-    
-  };
-})
-
 // Tags Search Results Screen
-.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -542,7 +641,7 @@ angular.module('starter.controllers', [])
     console.log("Swiped Right");
     appHelper.addIfNotExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    appApi.post('match/me', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+    appApi.post('match/me', {user_id : current_user.id, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
       if (result === true) {
         console.log('matched with user');
       }
@@ -555,7 +654,7 @@ angular.module('starter.controllers', [])
     console.log("Swiped Left");
     appHelper.removeIfExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    appApi.post('match/me/remove', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+    appApi.post('match/me/remove', {user_id : current_user.id, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
       if (result === true) {
         console.log('unmatched with user');
       }
@@ -580,7 +679,7 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, appApi) {
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
@@ -598,19 +697,18 @@ angular.module('starter.controllers', [])
 
   // live
   // works
-  appApi.post('match/mine', {user_id : 1}).then(function(result){
+  appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
     $scope.matches = result;
   });
 
   // start the conversations checker
   // implement
   $rootScope.matchesRefresher = $interval(function(){
-    appApi.post('match/mine', {user_id : 1}).then(function(result){
+    appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
       $scope.matches = result;
     });
   }, 30000);
 
-  // $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
     console.log(conversation_id);
@@ -619,7 +717,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, post_api_messages, post_api_conversation, current_user, $ionicNavBarDelegate, appHelper, appApi) {
+.controller('ConversationController', function($timeout, $ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, current_user, $ionicNavBarDelegate, appHelper, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -635,7 +733,7 @@ angular.module('starter.controllers', [])
   pre();
 
 
-  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+  appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.messages = result;
     // start the messages checker
     // implement
@@ -643,7 +741,7 @@ angular.module('starter.controllers', [])
       appApi.post('messages/check', {'conversation_id' : 1, 'messages_count' : $scope.messages.length}).then(function(result){
         if (result.new_messages === true) {
           // get new messages
-          appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+          appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
             $scope.messages = result;
           });
         }
@@ -652,17 +750,6 @@ angular.module('starter.controllers', [])
   });
 
   console.log($stateParams.conversation_id);
-
-  // devleopment
-  // $scope.messages = post_api_messages.result.messages;
-
-  // live
-  // works
-  /*
-  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
-    $scope.messages = result;
-  });
-  */
 
   // build the nav title
   function navTitle () {
@@ -683,12 +770,18 @@ angular.module('starter.controllers', [])
 
   // live
   // works
-  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
-    $scope.conversation = result;
-    // debut navtitle not showing unless on refresh
-    $scope.navTitle = navTitle();
-    $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
-  });
+  $timeout(function(){
+    appApi.post('conversation', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+      $scope.conversation = result;
+      // debug navtitle not showing unless on refresh
+      $scope.navTitle = navTitle();
+      $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
+    });
+  }, 2000);
+
+
+
+  
 
   // $scope.messages = $scope.result.messages;
 
@@ -716,12 +809,12 @@ angular.module('starter.controllers', [])
     console.log('sendMessage');
     console.log($scope.newMessage);
     // send to API
-    appApi.post('messages/send', {user_id : 1, conversation_id : $stateParams.conversation_id, text : $scope.newMessage}).then(function(result) {
+    appApi.post('messages/send', {user_id : current_user.id, conversation_id : $stateParams.conversation_id, text : $scope.newMessage}).then(function(result) {
       if (result === true) {
         console.log('message sent');
         $scope.newMessage = null;
         // refresh conversation
-        appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+        appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
           $scope.messages = result;
           $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
         });
@@ -732,7 +825,7 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite, appApi) {
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -748,10 +841,9 @@ angular.module('starter.controllers', [])
   pre();
 
   console.log('InviteMatchesController');
-  appApi.post('invite', {conversation_id : 1, user_id : 1}).then(function (result) {
+  appApi.post('invite', {conversation_id : 1, user_id : current_user.id}).then(function (result) {
     $scope.matches = result;
   });
-  // $scope.matches = post_api_conversations_invite.result;
   
   // for match
   console.log();
@@ -789,7 +881,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Details Screen
-.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation, appApi) {
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, appApi, current_user) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -807,7 +899,7 @@ angular.module('starter.controllers', [])
   console.log('ConversationDetailsController');
   
   
-  appApi.post('conversation', {conversation_id : 1, user_id : 1}).then(function(result) {
+  appApi.post('conversation', {conversation_id : 1, user_id : current_user.id}).then(function(result) {
     $scope.users = result.users;
   });
   
@@ -872,7 +964,178 @@ angular.module('starter.controllers', [])
   };
 })
 
+// Invite Contacts Screen
+.controller('ContactsInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
+  console.log('ContactsInviteController');
+  console.log($stateParams.event_id);
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
+  appApi.post('contacts', {user_id : current_user.id}).then(function (result) {
+    $scope.contacts = result;
+  });
+  
+  // swiping
+  $scope.selectedContactIds = [];
+
+  // when contact selected
+  $scope.onContactSelect = function(contact_id){
+    console.log('contact selected');
+    if ($scope.selectedContactIds.indexOf(contact_id) == -1) {
+      $scope.selectedContactIds.push(contact_id);
+    } else if ($scope.selectedContactIds.indexOf(contact_id) > -1) {
+      $scope.selectedContactIds.splice($scope.selectedContactIds.indexOf(contact_id), 1);
+    }
+    console.log($scope.selectedContactIds);
+  };
+
+  // when invite button clicked
+  $scope.onInvite = function(){
+    console.log('onInvite');
+    // go back to convo screen
+    console.log($stateParams.event_id);
+    console.log($scope.selectedContactIds);
+    // prep array
+    $scope.selectedContactIds = $scope.selectedContactIds.map(Number);
+    // send to API
+    appApi.post('contacts/invite', {
+      user_id : current_user.id,
+      event_id : parseInt($stateParams.event_id),
+      contact_ids : $scope.selectedContactIds
+    }).then(function(result) {
+      if (result === true) {
+        console.log('invite successful');
+      }
+    });
+    $state.go('app.showEvent', {'event_id' : $stateParams.event_id});
+  };
+})
+
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory, current_user) {
+  console.log('TagsSearchController');
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  // prep the tags object
+  $scope.tags = {};
+  // tags that the user has selected
+  $scope.tags.selected = [];
+  // max number of tags teh user can serach
+  $scope.tags.max = 2;
+  $scope.tags.search = {};
+  $scope.tags.search.name = "";
+
+  // get all tags
+  appApi.get('tags').then(function(result) {
+    $scope.tags.all = result;
+    console.log('$scope.tags.all');
+    console.log($scope.tags.all);
+
+    // get all suggested tags
+    appApi.post('tags', {user_id : current_user.id}).then(function(result) {
+      $scope.tags.suggested = result;
+      console.log('$scope.tags.suggested');
+      console.log($scope.tags.suggested);
+
+      $scope.processedTags = processedTags();
+    });
+    
+  });
+
+  
+
+  // when search button is pressed
+  $scope.onSearch = function () {
+    console.log('onSearch');
+    console.log($scope.tags.selected);
+    console.log("submitTags");
+
+    $scope.tags.fullSelected = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.tags.fullSelected.push({"id" : tag_id});
+    });
+    console.log($scope.tags.fullSelected);
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
+  };
+
+  // when a tag is selected
+  $scope.onTagSelect = function(tag_id) {
+    if ($scope.tags.selected.indexOf(tag_id) == -1) {
+      if ($scope.tags.selected.length < $scope.tags.max) {
+        $scope.tags.selected.push(tag_id);
+      }
+    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+    }
+    // $scope.tags.selected.push(tag_id);
+    console.log('tagsFactory.getTag(tag_id)');
+    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    console.log('$scope.tags.selected');
+    console.log($scope.tags.selected);
+  };
+
+  // watch for the search field to be updated to re-run the tag processor
+  $scope.$watch('tags.search.name', function () {
+    console.log('watched tags.search.name');
+    $scope.processedTags = processedTags();
+  });
+  
+  function processedTags () {
+    numRows = 3;
+    rowTags = [[]];
+    availableTags = $scope.tags.all;
+    if ($scope.tags.search.name.length > 0) {
+      console.log("use tags.all");
+      availableTags = $scope.tags.all;
+    } else {
+      console.log($scope.tags.search.name);
+      console.log("use tags.suggested");
+      availableTags = $scope.tags.suggested;
+    }
+    
+    angular.forEach(availableTags, function(tag, index) {
+      // if the tag is selected or it contains the search string
+      console.log('name: ' + tag.name);
+      if (
+        $scope.tags.selected.indexOf(tag.id) !== -1 ||
+        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
+      ) {
+        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
+          // push a new row
+          rowTags.push([]);
+        }
+        // push the tag into the last row
+        rowTags[rowTags.length - 1].push(tag);
+      }
+    });
+    return rowTags;
+  }
+})
 
 
 ; // ends chaining

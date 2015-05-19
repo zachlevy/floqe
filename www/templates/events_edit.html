@@ -1,5 +1,5 @@
 <ion-view cache-view="false">
-  <ion-content class="edit-event-screen">
+  <ion-content class="edit-event-screen has-footer-button">
     <div class="list edit-event-list">
       <label class="item item-input">
         <span class="input-label">Name</span>
@@ -20,11 +20,6 @@
       <div class="item item-input item-event-datetime item-stacked-label">
         <span class="input-label">Event End</span>
         <div class="row">
-          <!--
-          <div class="col col-60">
-            <input type="date" data-ng-model="event.end.date">
-          </div>
-          -->
           <div class="col col-40">
             <input type="time" data-ng-model="event.end.time">
           </div>
@@ -40,10 +35,19 @@
         </label>
         Private Event
       </li>
-      <div class="item item-event-tags">
-        <span class="input-label">Tags</span>
-        <tagger class="search-box" ng-model="event.tags" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName" placeholder=""></tagger>
+      <li class="item item-input item-stacked-label">
+        <span class="input-label">Interests</span>
+        <input class="search-box" type="text" data-ng-model="tags.search.name" placeholder="search..."/>
+      </li>
+
+      <div class="row tags-wrap" data-ng-repeat="row in processedTags">
+        <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
+          <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
+            {{ tag.name }}
+          </button>
+        </div>
       </div>
+
     </div>
   </ion-content>
   <div class="footer-button-wrap">

@@ -1,5 +1,16 @@
 angular.module('starter.filters', [])
 
+// gender 1/0 to male or female
+.filter('genderFilter', function() {
+  return function(gender) {
+    if (gender === 1) {
+      return "Female";
+    } else {
+      return "Male";
+    }
+  };
+})
+
 // return human readable time format with start and end date
 .filter('privateFilter', function() {
   return function(private) {
@@ -57,11 +68,14 @@ angular.module('starter.filters', [])
       tag.column_size = column_size;
       column_total += column_size;
     });
-    // catch if total not 100
-    if (column_total < 100) {
-      tags[0].column_size += 100 - column_total;
-    } else if (column_total > 100) {
-      tags[0].column_size -= abs(100 - column_total);
+    // catch empty array
+    if (tags.length !== 0) {
+      // catch if total not 100
+      if (column_total < 100) {
+        tags[0].column_size += 100 - column_total;
+      } else if (column_total > 100) {
+        tags[0].column_size -= abs(100 - column_total);
+      }
     }
     return tags;
   };
