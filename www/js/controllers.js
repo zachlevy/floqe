@@ -1047,15 +1047,18 @@ angular.module('starter.controllers', [])
     console.log('$scope.tags.all');
     console.log($scope.tags.all);
 
-    $scope.processedTags = processedTags();
+    // get all suggested tags
+    appApi.post('tags', {user_id : 1}).then(function(result) {
+      $scope.tags.suggested = result;
+      console.log('$scope.tags.suggested');
+      console.log($scope.tags.suggested);
+
+      $scope.processedTags = processedTags();
+    });
+    
   });
 
-  // get all suggested tags
-  appApi.post('tags', {user_id : 1}).then(function(result) {
-    $scope.tags.suggested = result;
-    console.log('$scope.tags.suggested');
-    console.log($scope.tags.suggested);
-  });
+  
 
   // when search button is pressed
   $scope.onSearch = function () {
@@ -1099,7 +1102,17 @@ angular.module('starter.controllers', [])
   function processedTags () {
     numRows = 3;
     rowTags = [[]];
-    angular.forEach($scope.tags.all, function(tag, index) {
+    availableTags = $scope.tags.all;
+    if ($scope.tags.search.name.length > 0) {
+      console.log("use tags.all");
+      availableTags = $scope.tags.all;
+    } else {
+      console.log($scope.tags.search.name);
+      console.log("use tags.suggested");
+      availableTags = $scope.tags.suggested;
+    }
+    
+    angular.forEach(availableTags, function(tag, index) {
       // if the tag is selected or it contains the search string
       console.log('name: ' + tag.name);
       if (
