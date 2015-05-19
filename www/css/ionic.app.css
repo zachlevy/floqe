@@ -10511,7 +10511,6 @@ a.button {
     .tags-search-screen .row .col:last-child {
       margin-right: 0; }
   .tags-search-screen .row .button {
-    font-size: 0.9em;
     padding-left: 0;
     padding-right: 0;
     -webkit-border-radius: 0px;

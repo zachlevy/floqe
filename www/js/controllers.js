@@ -924,7 +924,7 @@ angular.module('starter.controllers', [])
   });
   
   function processedTags () {
-    numRows = 4;
+    numRows = 3;
     rowTags = [[]];
     angular.forEach($scope.tags.all, function(tag, index) {
       // if the tag is selected or it contains the search string
@@ -933,7 +933,7 @@ angular.module('starter.controllers', [])
         $scope.tags.selected.indexOf(tag.id) !== -1 ||
         (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
       ) {
-        if ((numRows + 1) % (rowTags[rowTags.length - 1].length + 1) === 0) {
+        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
           // push a new row
           rowTags.push([]);
         }
