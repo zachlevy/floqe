@@ -31,6 +31,11 @@ $dark-grey: #333;
 // VARIABLES END
 
 // HELPER START
+.img-responsive {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .hidden {
   display: none;
   visibility: hidden;
@@ -87,6 +92,34 @@ $i: 1;
           border-radius: $radius;
 }
 // HELPER END
+// USER SHOW START
+.user-show-screen {
+  color: $medium-grey;
+  .name {
+    font-weight: bold;
+    color: $dark-grey;
+  }
+  .friend {
+    color: $calm;
+  }
+  .distance {
+    margin-top: 0.7em;
+    float: right;
+    color: $dark-grey;
+  }
+  .interests {
+    color: $dark-grey;
+  }
+  .interest {
+    background: $calm;
+    padding: 5px;
+    margin: 1px;
+    display: inline-block;
+    color: white;
+    border-radius: 2px;
+  }
+}
+// USER SHOW END
 // USER EDIT START
 .user-edit-screen {
   .edit-user-list {

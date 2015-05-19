@@ -1,5 +1,16 @@
 angular.module('starter.filters', [])
 
+// gender 1/0 to male or female
+.filter('genderFilter', function() {
+  return function(gender) {
+    if (gender === 1) {
+      return "Female";
+    } else {
+      return "Male";
+    }
+  };
+})
+
 // return human readable time format with start and end date
 .filter('privateFilter', function() {
   return function(private) {

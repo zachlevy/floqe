@@ -87,6 +87,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.user', {
+    url: "/users/{user_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/user.html",
+        controller: 'UserController'
+      }
+    }
+  })
   .state('app.userEdit', {
     url: "/users/{user_id}/edit",
     views: {

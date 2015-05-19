@@ -9392,6 +9392,11 @@ a.button {
 .fa-medium:before {
   content: "\f23a"; }
 
+.img-responsive {
+  display: block;
+  width: 100%;
+  height: auto; }
+
 .hidden {
   display: none;
   visibility: hidden; }
@@ -10314,6 +10319,27 @@ a.button {
   -ms-flex: 0 0 99%;
   flex: 0 0 99%;
   max-width: 99%; }
+
+.user-show-screen {
+  color: #666; }
+  .user-show-screen .name {
+    font-weight: bold;
+    color: #333; }
+  .user-show-screen .friend {
+    color: #11c1f3; }
+  .user-show-screen .distance {
+    margin-top: 0.7em;
+    float: right;
+    color: #333; }
+  .user-show-screen .interests {
+    color: #333; }
+  .user-show-screen .interest {
+    background: #11c1f3;
+    padding: 5px;
+    margin: 1px;
+    display: inline-block;
+    color: white;
+    border-radius: 2px; }
 
 .user-edit-screen .edit-user-list .photo-wrapper {
   position: relative; }

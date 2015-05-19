@@ -141,6 +141,33 @@ angular.module('starter.controllers', [])
   };
 })
 
+
+.controller('UserController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi, post_api_user) {
+  console.log("UserController");
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
+
+  // implement
+  $scope.user = post_api_user;
+
+  /*
+  appApi.post('user', {user_id : $stateParams.user_id}).then(function(result) {
+    $scope.user = result;
+  });
+  */
+
+})
+
 // New/Edit Event Screen
 .controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
   console.log("EventEditController");

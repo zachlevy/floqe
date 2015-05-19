@@ -267,5 +267,27 @@ angular.module('starter.services', [])
     ]
   }
 )
+.value(
+  'post_api_user',
+  {
+    "id" : 2,
+    "name" : "Boaz",
+    "photo" : "http://placehold.it/100x100",
+    "distance" : 5.2,
+    "gender" : 0,
+    "age" : 23,
+    "birthdate" : "1991-06-17T01:11:21Z",
+    "interests" : [
+      {
+        "id" : 1,
+        "name" : "Motor rallies"
+      },
+      {
+        "id" : 2,
+        "name" : "Motor"
+      },
+    ]
+  }
+)
 
 ; // end chaining
