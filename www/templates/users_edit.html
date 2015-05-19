@@ -31,30 +31,19 @@
           <img data-ng-src="{{ user.photo }}-/scale_crop/100x100/" />
         </div>
       </label>
-      <div class="item item-interests">
+      
+      <li class="item item-input item-stacked-label">
         <span class="input-label">Interests</span>
-        <tagger class="search-box" ng-model="user.interests" options="allTags" data-disable-new data-limit="{{maxTags}}" display-fun="showTagName" create-fun="createTagName"></tagger>
-      </div>
-      <!-- OLD GENDER SELECT
-      <div class="row">
-        <div class="col col-50">
-          <li class="item item-checkbox">
-            <label class="checkbox">
-              <input type="checkbox" data-ng-model="user.gender.male" data-ng-click="onSelectMale()">
-            </label>
-            <i class="icon ion-male"></i> M
-          </li>
-        </div>
-        <div class="col col-50">
-          <li class="item item-checkbox">
-            <label class="checkbox">
-              <input type="checkbox" data-ng-model="user.gender.female" data-ng-click="onSelectFemale()">
-            </label>
-            <i class="icon ion-female"></i> F
-          </li>
+        <input class="search-box" type="text" data-ng-model="tags.search.name" placeholder="search..."/>
+      </li>
+
+      <div class="row tags-wrap" data-ng-repeat="row in processedTags">
+        <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
+          <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
+            {{ tag.name }}
+          </button>
         </div>
       </div>
-      -->
 
     </div>
   </ion-content>

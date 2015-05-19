@@ -49,6 +49,93 @@ angular.module('starter.controllers', [])
   }
   pre();
 
+  // START TAGS SEARCH
+  // prep the tags object
+  $scope.tags = {};
+  // tags that the user has selected
+  $scope.tags.selected = [];
+  // max number of tags teh user can serach
+  $scope.tags.max = 2;
+  $scope.tags.search = {};
+  $scope.tags.search.name = "";
+
+  // get all tags
+  appApi.get('tags').then(function(result) {
+    $scope.tags.all = result;
+    console.log('$scope.tags.all');
+    console.log($scope.tags.all);
+
+    $scope.processedTags = processedTags();
+  });
+
+  // get all suggested tags
+  appApi.post('tags', {user_id : 1}).then(function(result) {
+    $scope.tags.suggested = result;
+    console.log('$scope.tags.suggested');
+    console.log($scope.tags.suggested);
+  });
+
+  // when search button is pressed
+  $scope.onSearch = function () {
+    console.log('onSearch');
+    console.log($scope.tags.selected);
+    console.log("submitTags");
+
+    $scope.tags.fullSelected = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.tags.fullSelected.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+    console.log($scope.tags.fullSelected);
+    appApi.post('search', {'user_id' : 1, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+      console.log(result.search_id);
+      $state.go('app.tagsResults', {search_id: result.search_id});
+    });
+  };
+
+  // when a tag is selected
+  $scope.onTagSelect = function(tag_id) {
+    if ($scope.tags.selected.indexOf(tag_id) == -1) {
+      if ($scope.tags.selected.length < $scope.tags.max) {
+        $scope.tags.selected.push(tag_id);
+      }
+    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+    }
+    // $scope.tags.selected.push(tag_id);
+    console.log('tagsFactory.getTag(tag_id)');
+    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    console.log('$scope.tags.selected');
+    console.log($scope.tags.selected);
+  };
+
+  // watch for the search field to be updated to re-run the tag processor
+  $scope.$watch('tags.search.name', function () {
+    console.log('watched tags.search.name');
+    $scope.processedTags = processedTags();
+  });
+  
+  function processedTags () {
+    numRows = 3;
+    rowTags = [[]];
+    angular.forEach($scope.tags.all, function(tag, index) {
+      // if the tag is selected or it contains the search string
+      console.log('name: ' + tag.name);
+      if (
+        $scope.tags.selected.indexOf(tag.id) !== -1 ||
+        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
+      ) {
+        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
+          // push a new row
+          rowTags.push([]);
+        }
+        // push the tag into the last row
+        rowTags[rowTags.length - 1].push(tag);
+      }
+    });
+    return rowTags;
+  }
+  // END TAGS SEARCH
+
   // photo upload
   $scope.changePhoto = function () {
     uploadcare.openDialog().done(function(file) {
@@ -92,22 +179,15 @@ angular.module('starter.controllers', [])
     $scope.user.gender.female = true;
   };
 
-  // interests
-  $scope.allTags = tagsFactory.all();
-  console.log($scope.allTags);
-
-  // tagger
-  $scope.maxTags = 10;
-  $scope.showTagName = function (tag) {
-    return tag.name;
-  };
-  $scope.createTagName = function (name) {
-    return {name: name};
-  };
-
   // submit
   // implement
   $scope.onSubmit = function () {
+    // tags
+    $scope.user.interests = [];
+    angular.forEach($scope.tags.selected, function (tag_id, key) {
+      $scope.user.interests.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    });
+
     // change gender radio buttons into user object
     if ($scope.user.gender.male === true) {
       $scope.user.gender = 1;
