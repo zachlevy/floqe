@@ -69,7 +69,7 @@ angular.module('starter.controllers', [])
   });
 
   // get all suggested tags
-  appApi.post('tags', {user_id : 1}).then(function(result) {
+  appApi.post('tags', {user_id : current_user.id}).then(function(result) {
     $scope.tags.suggested = result;
     console.log('$scope.tags.suggested');
     console.log($scope.tags.suggested);
@@ -147,7 +147,7 @@ angular.module('starter.controllers', [])
   };
 
   // $scope.user = current_user;
-  appApi.post('user', {user_id : 1}).then(function(result) {
+  appApi.post('user', {user_id : current_user.id}).then(function(result) {
     $scope.user = result;
     $scope.user.user_id = $scope.user.id;
      // birthdate
@@ -285,7 +285,7 @@ angular.module('starter.controllers', [])
   });
 
   // get all suggested tags
-  appApi.post('tags', {user_id : 1}).then(function(result) {
+  appApi.post('tags', {user_id : current_user.id}).then(function(result) {
     $scope.tags.suggested = result;
     console.log('$scope.tags.suggested');
     console.log($scope.tags.suggested);
@@ -374,7 +374,7 @@ angular.module('starter.controllers', [])
     // its an existing event
     $ionicNavBarDelegate.title("Edit event");
     // temp
-    appApi.post('event', {user_id : 1, event_id : parseInt($stateParams.event_id)}).then(function(result) {
+    appApi.post('event', {user_id : current_user.id, event_id : parseInt($stateParams.event_id)}).then(function(result) {
       console.log('post event');
       // tags
       angular.forEach(result.tags, function(tag, index) {
@@ -464,7 +464,7 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
+  appApi.post('event', {event_id : $stateParams.event_id, user_id : current_user.id}).then(function(result) {
     $scope.event = result;
   });
 
@@ -479,7 +479,7 @@ angular.module('starter.controllers', [])
   $scope.onJoinEvent = function () {
     console.log('onJoinEvent');
     // send to api
-    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : true}).then(function(result) {
+    appApi.post('event/join', {user_id : current_user.id, event_id : $stateParams.event_id, join : true}).then(function(result) {
       if (result === true) {
         console.log('joined event');
         $scope.event.me.joined = true;
@@ -491,7 +491,7 @@ angular.module('starter.controllers', [])
   $scope.onLeaveEvent = function () {
     console.log('onLeaveEvent');
     // send to api
-    appApi.post('event/join', {user_id : 1, event_id : $stateParams.event_id, join : false}).then(function(result) {
+    appApi.post('event/join', {user_id : current_user.id, event_id : $stateParams.event_id, join : false}).then(function(result) {
       if (result === true) {
         console.log('removed from event');
         $scope.event.me.joined = false;
@@ -519,7 +519,7 @@ angular.module('starter.controllers', [])
           if (result === true) {
             console.log('removed from event');
           }
-          appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
+          appApi.post('event', {event_id : $stateParams.event_id, user_id : current_user.id}).then(function(result) {
             $scope.event = result;
           });
         });
@@ -539,7 +539,7 @@ angular.module('starter.controllers', [])
 })
 
 // Event List Screen
-.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi) {
+.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi, current_user) {
   console.log('EventsListController');
 
   function pre () {
@@ -555,7 +555,7 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  appApi.post('events', {user_id : 1}).then(function (result) {
+  appApi.post('events', {user_id : current_user.id}).then(function (result) {
     $scope.events = result;
   });
   $scope.onEventSelect = function (event_id) {
@@ -641,7 +641,7 @@ angular.module('starter.controllers', [])
     console.log("Swiped Right");
     appHelper.addIfNotExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    appApi.post('match/me', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+    appApi.post('match/me', {user_id : current_user.id, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
       if (result === true) {
         console.log('matched with user');
       }
@@ -654,7 +654,7 @@ angular.module('starter.controllers', [])
     console.log("Swiped Left");
     appHelper.removeIfExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    appApi.post('match/me/remove', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+    appApi.post('match/me/remove', {user_id : current_user.id, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
       if (result === true) {
         console.log('unmatched with user');
       }
@@ -679,7 +679,7 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
@@ -697,14 +697,14 @@ angular.module('starter.controllers', [])
 
   // live
   // works
-  appApi.post('match/mine', {user_id : 1}).then(function(result){
+  appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
     $scope.matches = result;
   });
 
   // start the conversations checker
   // implement
   $rootScope.matchesRefresher = $interval(function(){
-    appApi.post('match/mine', {user_id : 1}).then(function(result){
+    appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
       $scope.matches = result;
     });
   }, 30000);
@@ -772,7 +772,7 @@ angular.module('starter.controllers', [])
   // works
   appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.conversation = result;
-    // debut navtitle not showing unless on refresh
+    // debug navtitle not showing unless on refresh
     $scope.navTitle = navTitle();
     $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
   });
@@ -803,7 +803,7 @@ angular.module('starter.controllers', [])
     console.log('sendMessage');
     console.log($scope.newMessage);
     // send to API
-    appApi.post('messages/send', {user_id : 1, conversation_id : $stateParams.conversation_id, text : $scope.newMessage}).then(function(result) {
+    appApi.post('messages/send', {user_id : current_user.id, conversation_id : $stateParams.conversation_id, text : $scope.newMessage}).then(function(result) {
       if (result === true) {
         console.log('message sent');
         $scope.newMessage = null;
@@ -819,7 +819,7 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -835,7 +835,7 @@ angular.module('starter.controllers', [])
   pre();
 
   console.log('InviteMatchesController');
-  appApi.post('invite', {conversation_id : 1, user_id : 1}).then(function (result) {
+  appApi.post('invite', {conversation_id : 1, user_id : current_user.id}).then(function (result) {
     $scope.matches = result;
   });
   
@@ -875,7 +875,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Details Screen
-.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, appApi) {
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, appApi, current_user) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -893,7 +893,7 @@ angular.module('starter.controllers', [])
   console.log('ConversationDetailsController');
   
   
-  appApi.post('conversation', {conversation_id : 1, user_id : 1}).then(function(result) {
+  appApi.post('conversation', {conversation_id : 1, user_id : current_user.id}).then(function(result) {
     $scope.users = result.users;
   });
   
@@ -959,7 +959,7 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Contacts Screen
-.controller('ContactsInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
+.controller('ContactsInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
   console.log('ContactsInviteController');
   console.log($stateParams.event_id);
   // before the view is loaded, add things here that involve switching between controllers
@@ -976,7 +976,7 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  appApi.post('contacts', {user_id : 1}).then(function (result) {
+  appApi.post('contacts', {user_id : current_user.id}).then(function (result) {
     $scope.contacts = result;
   });
   
@@ -1004,7 +1004,7 @@ angular.module('starter.controllers', [])
     $scope.selectedContactIds = $scope.selectedContactIds.map(Number);
     // send to API
     appApi.post('contacts/invite', {
-      user_id : 1,
+      user_id : current_user.id,
       event_id : parseInt($stateParams.event_id),
       contact_ids : $scope.selectedContactIds
     }).then(function(result) {
@@ -1016,7 +1016,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory) {
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory, current_user) {
   console.log('TagsSearchController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
@@ -1048,7 +1048,7 @@ angular.module('starter.controllers', [])
     console.log($scope.tags.all);
 
     // get all suggested tags
-    appApi.post('tags', {user_id : 1}).then(function(result) {
+    appApi.post('tags', {user_id : current_user.id}).then(function(result) {
       $scope.tags.suggested = result;
       console.log('$scope.tags.suggested');
       console.log($scope.tags.suggested);
