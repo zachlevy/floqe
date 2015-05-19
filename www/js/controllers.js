@@ -555,7 +555,7 @@ angular.module('starter.controllers', [])
     console.log("Swiped Left");
     appHelper.removeIfExists(swiped_user_id, $scope.swipedUserIds);
     // send to API 
-    appApi.post('match/me/delete', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
+    appApi.post('match/me/remove', {user_id : 1, target_user_id : swiped_user_id, search_id : $stateParams.search_id}).then(function(result) {
       if (result === true) {
         console.log('unmatched with user');
       }
