@@ -1011,6 +1011,7 @@ angular.module('starter.controllers', [])
 
   // watch for the search field to be updated to re-run the tag processor
   $scope.$watch('tags.search.name', function () {
+    console.log('watched tags.search.name');
     $scope.processedTags = processedTags();
   });
   
@@ -1022,7 +1023,7 @@ angular.module('starter.controllers', [])
       console.log('name: ' + tag.name);
       if (
         $scope.tags.selected.indexOf(tag.id) !== -1 ||
-        angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name) != -1)
+        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
       ) {
         if ((numRows + 1) % (rowTags[rowTags.length - 1].length + 1) === 0) {
           // push a new row
