@@ -154,6 +154,11 @@ angular.module('starter.controllers', [])
     // convert from date string to js date object
     $scope.user.birthdate = new Date($scope.user.birthdate);
 
+    // tags
+    angular.forEach(result.interests, function(tag, index) {
+      $scope.tags.selected.push(tag.id);
+    });
+
     // gender
     // change user object gender into radio button
     if ($scope.user.gender === 1) {
