@@ -132,6 +132,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.inviteContacts', {
+    url: "/contacts/invite/{event_id}",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/invite_contacts.html",
+        controller: 'ContactsInviteController'
+      }
+    }
+  })
 
   // FLOQUE END
 

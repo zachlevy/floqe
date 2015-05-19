@@ -10366,6 +10366,14 @@ a.button {
     display: block;
     float: left; }
 
+.invite-contacts-screen .contacts-list .options {
+  float: right;
+  padding-top: 1em; }
+  .invite-contacts-screen .contacts-list .options i {
+    color: #666; }
+    .invite-contacts-screen .contacts-list .options i.icon-unchecked {
+      margin-right: 2px; }
+
 .edit-event-screen .edit-event-list input {
   color: #666; }
 .edit-event-screen .edit-event-list .item-event-tags {

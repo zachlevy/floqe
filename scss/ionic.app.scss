@@ -167,6 +167,31 @@ $i: 1;
   }
 }
 // USER EDIT END
+// INVITE CONTACTS START
+.invite-contacts-screen {
+  .contacts-list {
+    .name {
+
+    }
+    .number {
+
+    }
+    .options {
+      float: right;
+      padding-top: 1em;
+      i {
+        color: $medium-grey;
+        &.icon-checked {
+
+        }
+        &.icon-unchecked {
+          margin-right: 2px;
+        }
+      }
+    }
+  }
+}
+// INVITE CONTACTS END
 // EVENT EDIT START
 .edit-event-screen {
   .edit-event-list {

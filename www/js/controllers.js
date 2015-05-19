@@ -141,7 +141,7 @@ angular.module('starter.controllers', [])
   };
 })
 
-
+// view/show user
 .controller('UserController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi, post_api_user) {
   console.log("UserController");
   function pre () {
@@ -157,14 +157,10 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  // implement
-  $scope.user = post_api_user;
-
-  /*
+  //$scope.user = post_api_user;
   appApi.post('user', {user_id : $stateParams.user_id}).then(function(result) {
     $scope.user = result;
   });
-  */
 
 })
 
@@ -263,7 +259,7 @@ angular.module('starter.controllers', [])
     // send to api
     // implement
     appApi.put('event', {
-      event_id : $stateParams.evend_id,
+      event_id : $stateParams.event_id,
       name : $scope.event.name,
       start : $scope.event.start,
       end : $scope.event.end,
@@ -358,6 +354,13 @@ angular.module('starter.controllers', [])
         console.log('cancelled onRemoveUser');
       }
     });
+  };
+
+  // inviting contacts from contact book
+  $scope.onInviteContacts = function () {
+    console.log('onInviteContacts');
+    console.log('$stateParams.event_id: ' + $stateParams.event_id);
+    $state.go('app.inviteContacts', {'event_id' : $stateParams.event_id});
   };
 
 })
@@ -885,7 +888,63 @@ angular.module('starter.controllers', [])
   };
 })
 
+// Invite Contacts Screen
+.controller('ContactsInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
+  console.log('ContactsInviteController');
+  console.log($stateParams.event_id);
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
+  appApi.post('contacts', {user_id : 1}).then(function (result) {
+    $scope.contacts = result;
+  });
+  
+  // swiping
+  $scope.selectedContactIds = [];
+
+  // when contact selected
+  $scope.onContactSelect = function(contact_id){
+    console.log('contact selected');
+    if ($scope.selectedContactIds.indexOf(contact_id) == -1) {
+      $scope.selectedContactIds.push(contact_id);
+    } else if ($scope.selectedContactIds.indexOf(contact_id) > -1) {
+      $scope.selectedContactIds.splice($scope.selectedContactIds.indexOf(contact_id), 1);
+    }
+    console.log($scope.selectedContactIds);
+  };
+
+  // when invite button clicked
+  $scope.onInvite = function(){
+    console.log('onInvite');
+    // go back to convo screen
+    console.log($stateParams.event_id);
+    console.log($scope.selectedContactIds);
+    // prep array
+    $scope.selectedContactIds = $scope.selectedContactIds.map(Number);
+    // send to API
+    appApi.post('contacts/invite', {
+      user_id : 1,
+      event_id : parseInt($stateParams.event_id),
+      contact_ids : $scope.selectedContactIds
+    }).then(function(result) {
+      if (result === true) {
+        console.log('invite successful');
+      }
+    });
+    $state.go('app.showEvent', {'event_id' : $stateParams.event_id});
+  };
+})
 
 
 ; // ends chaining
