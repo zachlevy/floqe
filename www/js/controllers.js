@@ -40,6 +40,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -147,6 +148,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -230,6 +232,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -314,6 +317,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -341,6 +345,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -441,6 +446,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -554,6 +560,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -564,9 +571,17 @@ angular.module('starter.controllers', [])
 
   // live
   // works
-  appApi.post('match/mine', {'user_id' : 1}).then(function(result){
+  appApi.post('match/mine', {user_id : 1}).then(function(result){
     $scope.matches = result;
   });
+
+  // start the conversations checker
+  // implement
+  $rootScope.matchesRefresher = $interval(function(){
+    appApi.post('match/mine', {user_id : 1}).then(function(result){
+      $scope.matches = result;
+    });
+  }, 30000);
 
   // $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
@@ -583,6 +598,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // multilined header bar, make sure to turn this off on all screens visited after
     $rootScope.multiBar = true;
     // convoinvite
@@ -695,6 +711,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
@@ -751,6 +768,7 @@ angular.module('starter.controllers', [])
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
     // convoinvite
     $rootScope.showInvite = false;
     $rootScope.showOptions = false;
