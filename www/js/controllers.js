@@ -86,7 +86,7 @@ angular.module('starter.controllers', [])
       $scope.tags.fullSelected.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
     });
     console.log($scope.tags.fullSelected);
-    appApi.post('search', {'user_id' : 1, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
       console.log(result.search_id);
       $state.go('app.tagsResults', {search_id: result.search_id});
     });
@@ -302,7 +302,7 @@ angular.module('starter.controllers', [])
       $scope.tags.fullSelected.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
     });
     console.log($scope.tags.fullSelected);
-    appApi.post('search', {'user_id' : 1, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
       console.log(result.search_id);
       $state.go('app.tagsResults', {search_id: result.search_id});
     });
@@ -733,7 +733,7 @@ angular.module('starter.controllers', [])
   pre();
 
 
-  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+  appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
     $scope.messages = result;
     // start the messages checker
     // implement
@@ -741,7 +741,7 @@ angular.module('starter.controllers', [])
       appApi.post('messages/check', {'conversation_id' : 1, 'messages_count' : $scope.messages.length}).then(function(result){
         if (result.new_messages === true) {
           // get new messages
-          appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+          appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
             $scope.messages = result;
           });
         }
@@ -771,7 +771,7 @@ angular.module('starter.controllers', [])
   // live
   // works
   $timeout(function(){
-    appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+    appApi.post('conversation', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
       $scope.conversation = result;
       // debug navtitle not showing unless on refresh
       $scope.navTitle = navTitle();
@@ -814,7 +814,7 @@ angular.module('starter.controllers', [])
         console.log('message sent');
         $scope.newMessage = null;
         // refresh conversation
-        appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+        appApi.post('messages', {user_id : current_user.id, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
           $scope.messages = result;
           $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
         });
@@ -1077,7 +1077,7 @@ angular.module('starter.controllers', [])
       $scope.tags.fullSelected.push({"id" : tag_id});
     });
     console.log($scope.tags.fullSelected);
-    appApi.post('search', {'user_id' : 1, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
       console.log(result.search_id);
       $state.go('app.tagsResults', {search_id: result.search_id});
     });
