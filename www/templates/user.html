@@ -5,7 +5,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <h3 class="distance">{{ user.distance }}km</h3>
+        <!--<h3 class="distance">{{ user.distance }}km</h3>-->
         <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend" data-ng-if="{{ user.friend }}"></i></h2>
         <p class="gender-age">{{ user.gender | genderFilter }}, {{ user.age }}</p>
         <h4 class="interests">Interests</h4>
@@ -13,7 +13,7 @@
     </div>
     <div class="row">
       <div class="col">
-        <span class="interest" data-ng-repeat="interest in user.interests">{{ interest.name }}</span>
+        <span class="button button-calm interest" data-ng-repeat="interest in user.interests">{{ interest.name }}</span>
       </div>
     </div>
   </ion-content>

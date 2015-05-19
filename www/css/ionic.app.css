@@ -10342,6 +10342,10 @@ a.button {
     color: #333; }
   .user-show-screen .interests {
     color: #333; }
+  .user-show-screen .interest {
+    margin: 2px; }
+    .user-show-screen .interest:hover, .user-show-screen .interest:focus, .user-show-screen .interest:active .user-show-screen .interest.button.button-calm.activated {
+      background: #11c1f3; }
 
 .user-edit-screen .edit-user-list .photo-wrapper {
   position: relative; }

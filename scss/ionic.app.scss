@@ -126,6 +126,15 @@ $i: 1;
   .interests {
     color: $dark-grey;
   }
+  .interest {
+    margin: 2px;
+    &:hover,
+    &:focus,
+    &:active
+    &.button.button-calm.activated {
+      background: $calm;
+    }
+  }
 }
 // USER SHOW END
 // USER EDIT START
