@@ -142,7 +142,7 @@ angular.module('starter.controllers', [])
 })
 
 // New/Edit Event Screen
-.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, post_api_event, appApi) {
+.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
   console.log("EventEditController");
   function pre () {
     // cancel the refresher
@@ -252,7 +252,7 @@ angular.module('starter.controllers', [])
   };
 })
 // Show Event Screen
-.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, post_api_event, current_user, appApi) {
+.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, current_user, appApi) {
   console.log('EventShowController');
 
   function pre () {
@@ -268,7 +268,6 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  //$scope.event = post_api_event.result;
   appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
     $scope.event = result;
   });
@@ -337,7 +336,7 @@ angular.module('starter.controllers', [])
 })
 
 // Event List Screen
-.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, post_api_events, appApi) {
+.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi) {
   console.log('EventsListController');
 
   function pre () {
@@ -353,7 +352,6 @@ angular.module('starter.controllers', [])
   }
   pre();
 
-  // $scope.events = post_api_events.result;
   appApi.post('events', {user_id : 1}).then(function (result) {
     $scope.events = result;
   });
@@ -366,7 +364,7 @@ angular.module('starter.controllers', [])
 
 
 // Tags Search Screen
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper, post_api_tags_suggested) {
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, appApi, tagsFactory, allTags, $timeout, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -427,9 +425,10 @@ angular.module('starter.controllers', [])
   // default tags
   $scope.searchTags = [];
   // get all tags
-  // $scope.suggestedTags = tagsFactory.suggestedTags
-  $scope.suggestedTags = post_api_tags_suggested.result;
-  //console.log($scope.suggestedTags);
+  appApi.post('tags', {user_id : 1}).then (function(result) {
+    $scope.suggestedTags = result;
+  });
+
   $scope.allTags = tagsFactory.all();
 
   // tagger
@@ -467,7 +466,7 @@ angular.module('starter.controllers', [])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, post_api_search, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -580,7 +579,7 @@ angular.module('starter.controllers', [])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, appApi) {
+.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
@@ -610,7 +609,6 @@ angular.module('starter.controllers', [])
     });
   }, 30000);
 
-  // $scope.matches = post_api_match_mine.result;
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
     console.log(conversation_id);
@@ -619,7 +617,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, post_api_messages, post_api_conversation, current_user, $ionicNavBarDelegate, appHelper, appApi) {
+.controller('ConversationController', function($ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, current_user, $ionicNavBarDelegate, appHelper, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -652,17 +650,6 @@ angular.module('starter.controllers', [])
   });
 
   console.log($stateParams.conversation_id);
-
-  // devleopment
-  // $scope.messages = post_api_messages.result.messages;
-
-  // live
-  // works
-  /*
-  appApi.post('messages', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
-    $scope.messages = result;
-  });
-  */
 
   // build the nav title
   function navTitle () {
@@ -732,7 +719,7 @@ angular.module('starter.controllers', [])
 })
 
 // Invite Matches Screen
-.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, post_api_match_mine, post_api_conversations_invite, appApi) {
+.controller('MatchesInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -751,7 +738,6 @@ angular.module('starter.controllers', [])
   appApi.post('invite', {conversation_id : 1, user_id : 1}).then(function (result) {
     $scope.matches = result;
   });
-  // $scope.matches = post_api_conversations_invite.result;
   
   // for match
   console.log();
@@ -789,7 +775,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Details Screen
-.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, post_api_conversation, appApi) {
+.controller('ConversationDetailsController', function($scope, $rootScope, $interval, $state, $stateParams, $ionicPopup, usersFactory, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
