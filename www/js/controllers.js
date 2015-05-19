@@ -376,6 +376,10 @@ angular.module('starter.controllers', [])
     // temp
     appApi.post('event', {user_id : 1, event_id : parseInt($stateParams.event_id)}).then(function(result) {
       console.log('post event');
+      // tags
+      angular.forEach(result.tags, function(tag, index) {
+        $scope.tags.selected.push(tag.id);
+      });
 
       $scope.event = result;
 
