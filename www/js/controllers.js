@@ -717,7 +717,7 @@ angular.module('starter.controllers', [])
 })
 
 // Conversation Screen
-.controller('ConversationController', function($ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, current_user, $ionicNavBarDelegate, appHelper, appApi) {
+.controller('ConversationController', function($timeout, $ionicScrollDelegate, $scope, $rootScope, $interval, $state, $stateParams, current_user, $ionicNavBarDelegate, appHelper, appApi) {
   // before the view is loaded, add things here that involve switching between controllers
   function pre () {
     // cancel the refresher
@@ -770,12 +770,18 @@ angular.module('starter.controllers', [])
 
   // live
   // works
-  appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
-    $scope.conversation = result;
-    // debug navtitle not showing unless on refresh
-    $scope.navTitle = navTitle();
-    $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
-  });
+  $timeout(function(){
+    appApi.post('conversation', {'user_id' : 1, 'conversation_id' : parseInt($stateParams.conversation_id)}).then(function(result){
+      $scope.conversation = result;
+      // debug navtitle not showing unless on refresh
+      $scope.navTitle = navTitle();
+      $ionicScrollDelegate.$getByHandle('userMessageScroll').scrollBottom();
+    });
+  }, 2000);
+
+
+
+  
 
   // $scope.messages = $scope.result.messages;
 
