@@ -155,6 +155,13 @@ angular.module('starter.services', [])
       });
       return results[0];
     },
+    // get tag object from tag id
+    getTagFromTags: function (id, tags) {
+      var results = tags.filter(function(tag) {
+        return tag.id == id;
+      });
+      return results[0];
+    },
     // returns tag ids like "1,2,3,4" from tag objects
     idsList: function (tags) {
       text = [];

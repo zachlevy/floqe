@@ -92,6 +92,19 @@ $i: 1;
           border-radius: $radius;
 }
 // HELPER END
+
+// TAGS START
+.tags-wrap {
+  .button {
+    border: 2px solid $calm;
+    &.unselected {
+      background: none;
+      color: $medium-grey;
+    }
+  }
+}
+// TAGS END
+
 // USER SHOW START
 .user-show-screen {
   color: $medium-grey;
@@ -109,14 +122,6 @@ $i: 1;
   }
   .interests {
     color: $dark-grey;
-  }
-  .interest {
-    background: $calm;
-    padding: 5px;
-    margin: 1px;
-    display: inline-block;
-    color: white;
-    border-radius: 2px;
   }
 }
 // USER SHOW END
@@ -492,6 +497,34 @@ $i: 1;
 
 }
 // CONVERSATION DETAILS SCREEN END
+
+// TAG TYPEAHEAD START
+.tags-screen {
+  .ion-scroll .tag-button {
+    margin: 5px 5px 0px 5px;
+  }
+
+  .tag-container {
+    white-space: normal;
+  }
+
+  .tag-small {
+    background: #4a87ee;
+    color: white;
+    padding: 2px 12px;
+    border-radius: .5em;
+    margin: 1px 3px;
+    display: inline-block;
+  }
+}
+// TAG TYPEAHEAD END
+
+// SEARCH TAGS SCREEN START
+.search-tags-screen {
+
+}
+// SEARCH TAGS SCREEN END
+
 
 // ANGULAR TAGGER START
 .angular-tagger {

@@ -10320,6 +10320,12 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.tags-wrap .button {
+  border: 2px solid #11c1f3; }
+  .tags-wrap .button.unselected {
+    background: none;
+    color: #666; }
+
 .user-show-screen {
   color: #666; }
   .user-show-screen .name {
@@ -10333,13 +10339,6 @@ a.button {
     color: #333; }
   .user-show-screen .interests {
     color: #333; }
-  .user-show-screen .interest {
-    background: #11c1f3;
-    padding: 5px;
-    margin: 1px;
-    display: inline-block;
-    color: white;
-    border-radius: 2px; }
 
 .user-edit-screen .edit-user-list .photo-wrapper {
   position: relative; }
@@ -10532,6 +10531,18 @@ a.button {
   padding-left: 0.5em;
   color: #666;
   margin-bottom: 1em; }
+
+.tags-screen .ion-scroll .tag-button {
+  margin: 5px 5px 0px 5px; }
+.tags-screen .tag-container {
+  white-space: normal; }
+.tags-screen .tag-small {
+  background: #4a87ee;
+  color: white;
+  padding: 2px 12px;
+  border-radius: .5em;
+  margin: 1px 3px;
+  display: inline-block; }
 
 .angular-tagger {
   border: 1px solid #ccc;

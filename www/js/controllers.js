@@ -946,5 +946,93 @@ angular.module('starter.controllers', [])
   };
 })
 
+.controller('TagsCtrl', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory) {
+  console.log('TagsCtrl');
+  // before the view is loaded, add things here that involve switching between controllers
+  function pre () {
+    // cancel the refresher
+    $interval.cancel($rootScope.tagRefresher);
+    $interval.cancel($rootScope.messagesRefresher);
+    $interval.cancel($rootScope.matchesRefresher);
+    // convoinvite
+    $rootScope.showInvite = false;
+    $rootScope.showOptions = false;
+    // multilined header bar
+    $rootScope.multiBar = false;
+  }
+  pre();
 
+  // prep the tags object
+  $scope.tags = {};
+  // tags that the user has selected
+  $scope.tags.selected = [];
+  // max number of tags teh user can serach
+  $scope.tags.max = 2;
+  $scope.tags.search = {};
+  $scope.tags.search.name = "c";
+
+  // get all tags
+  appApi.get('tags').then(function(result) {
+    $scope.tags.all = result;
+    console.log('$scope.tags.all');
+    console.log($scope.tags.all);
+
+    $scope.processedTags = processedTags();
+  });
+
+  // get all suggested tags
+  appApi.post('tags', {user_id : 1}).then(function(result) {
+    $scope.tags.suggested = result;
+    console.log('$scope.tags.suggested');
+    console.log($scope.tags.suggested);
+  });
+
+  // when search button is pressed
+  $scope.onSearch = function () {
+    console.log('onSearch');
+    console.log($scope.tags.selected);
+  };
+
+  // when a tag is selected
+  $scope.onTagSelect = function(tag_id) {
+    if ($scope.tags.selected.indexOf(tag_id) == -1) {
+      if ($scope.tags.selected.length < $scope.tags.max) {
+        $scope.tags.selected.push(tag_id);
+      }
+    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+    }
+    // $scope.tags.selected.push(tag_id);
+    console.log('tagsFactory.getTag(tag_id)');
+    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+    console.log('$scope.tags.selected');
+    console.log($scope.tags.selected);
+  };
+
+  // watch for the search field to be updated to re-run the tag processor
+  $scope.$watch('tags.search.name', function () {
+    $scope.processedTags = processedTags();
+  });
+  
+  function processedTags () {
+    numRows = 4;
+    rowTags = [[]];
+    angular.forEach($scope.tags.all, function(tag, index) {
+      // if the tag is selected or it contains the search string
+      console.log('name: ' + tag.name);
+      if (
+        $scope.tags.selected.indexOf(tag.id) !== -1 ||
+        angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name) != -1)
+      ) {
+        if ((numRows + 1) % (rowTags[rowTags.length - 1].length + 1) === 0) {
+          // push a new row
+          rowTags.push([]);
+        }
+        // push the tag into the last row
+        rowTags[rowTags.length - 1].push(tag);
+      }
+    });
+    return rowTags;
+  }
+})
 ; // ends chaining

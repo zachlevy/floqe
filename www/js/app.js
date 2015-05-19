@@ -141,10 +141,19 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.tags', {
+    url: '/tags',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/tags.html',
+        controller: 'TagsCtrl'
+      }
+    }
+  })
 
   // FLOQUE END
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/search');
+  $urlRouterProvider.otherwise('/app/tags');
 });
