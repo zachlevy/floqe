@@ -142,7 +142,7 @@ angular.module('starter.controllers', [])
 })
 
 // New/Edit Event Screen
-.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, post_api_event) {
+.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, post_api_event, appApi) {
   console.log("EventEditController");
   function pre () {
     // cancel the refresher
@@ -179,17 +179,22 @@ angular.module('starter.controllers', [])
     // its an existing event
     $ionicNavBarDelegate.title("Edit event");
     // temp
-    $scope.event = post_api_event.result;
-    // build date objects from api
-    start = new Date($scope.event.start);
-    end = new Date($scope.event.end);
-    // break down dates in scope between date and time for pickers
-    $scope.event.start = {};
-    $scope.event.end = {};
-    $scope.event.start.date = start;
-    $scope.event.start.time = start;
-    $scope.event.end.date = end;
-    $scope.event.end.time = end;
+    appApi.post('event', {user_id : 1, event_id : parseInt($stateParams.event_id)}).then(function(result) {
+      console.log('post event');
+
+      $scope.event = result;
+
+      // build date objects from api
+      start = new Date($scope.event.start);
+      end = new Date($scope.event.end);
+      // break down dates in scope between date and time for pickers
+      $scope.event.start = {};
+      $scope.event.end = {};
+      $scope.event.start.date = start;
+      $scope.event.start.time = start;
+      $scope.event.end.date = end;
+      $scope.event.end.time = end;
+    });
   }
   // temp
   $scope.allTags = tagsFactory.all();
@@ -221,7 +226,29 @@ angular.module('starter.controllers', [])
       $scope.event.end.time.getHours(),
       $scope.event.end.time.getMinutes()
     );
+
+    // strip tags of extra param
+    angular.forEach($scope.event.tags, function (tag, key) {
+      delete tag.$$hashKey;
+    });
+
     console.log($scope.event);
+    // send to api
+    // implement
+    appApi.put('event', {
+      event_id : $stateParams.evend_id,
+      name : $scope.event.name,
+      start : $scope.event.start,
+      end : $scope.event.end,
+      location : $scope.event.location,
+      tags : $scope.event.tags,
+      private : $scope.event.private
+    }).then(function(result) {
+      if (result === true) {
+        console.log('updated event');
+        $state.go('app.showEvent', {'event_id' : $stateParams.event_id});
+      }
+    });
   };
 })
 // Show Event Screen
@@ -252,13 +279,6 @@ angular.module('starter.controllers', [])
   $scope.onRemoveUser = function (target_user_id) {
     console.log('onRemoveUser: ' + target_user_id);
     $scope.confirmRemoveUser(target_user_id);
-    // send to api
-    appApi.post('event/join', {user_id : target_user_id, event_id : $stateParams.event_id, join : false}).then(function(result) {
-      if (result === true) {
-        console.log('removed from event');
-      }
-      $state.go('app.eventList');
-    });
   };
 
   $scope.onJoinEvent = function () {
@@ -291,16 +311,23 @@ angular.module('starter.controllers', [])
   };
 
   // popup for admins removing users from event
-  $scope.confirmRemoveUser = function(user_id) {
+  $scope.confirmRemoveUser = function(target_user_id) {
     var confirmRemoveUserPopup = $ionicPopup.confirm({
       title: 'Remove User',
-      template: 'Are you sure you want to remove ' + usersFactory.getUser(user_id, $scope.event.users).name + ' from the conversation?'
+      template: 'Are you sure you want to remove ' + usersFactory.getUser(target_user_id, $scope.event.users).name + ' from the conversation?'
     });
     confirmRemoveUserPopup.then(function(res) {
       if(res) {
         console.log('confirmed onRemoveUser');
         // send to API
-        // implement
+        appApi.post('event/join', {user_id : target_user_id, event_id : $stateParams.event_id, join : false}).then(function(result) {
+          if (result === true) {
+            console.log('removed from event');
+          }
+          appApi.post('event', {event_id : $stateParams.event_id, user_id : 1}).then(function(result) {
+            $scope.event = result;
+          });
+        });
       } else {
         console.log('cancelled onRemoveUser');
       }
