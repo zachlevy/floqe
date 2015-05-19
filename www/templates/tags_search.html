@@ -2,14 +2,12 @@
   <ion-content class="tags-search-screen has-footer-button">
     <h1 class="search-title">What do you want to do?</h1>
     <input class="search-box" type="text" data-ng-model="tags.search.name" placeholder="search..."/>
-    <div class="tags-wrap">
-      <div class="row" data-ng-repeat="row in processedTags">
-        <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
-          <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
-            {{ tag.name }}
-          </button>
-        </div>
-      </div>      
+    <div class="row tags-wrap" data-ng-repeat="row in processedTags">
+      <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
+        <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
+          {{ tag.name }}
+        </button>
+      </div>
     </div>
   </ion-content>
   <div class="footer-button-wrap">

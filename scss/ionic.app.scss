@@ -446,29 +446,32 @@ $i: 1;
 }
 // TAGS RESULTS SCREEN END
 
-// TAGS SEARCH SCREEN START
-.tags-search-screen {
-  .row {
-    padding: 7px 0;
-    .col {
-      padding: 0;
-      padding-right: 5px;
-      &:first-child {
-        padding-left: 5px;
-      }
-      &:last-child {
-        margin-right: 0;
-      }
+// TAGS SEARCH START
+.row.tags-wrap {
+  padding: 7px 0;
+  .col {
+    padding: 0;
+    padding-right: 5px;
+    &:first-child {
+      padding-left: 5px;
     }
-    .button {
-      // font-size:0.9em;
-      padding-left: 0;
-      padding-right: 0;
-      @include border-radius(0px);
-      border: 2px solid #34c5de;
-      margin: 0;
+    &:last-child {
+      margin-right: 0;
     }
   }
+  .button {
+    // font-size:0.9em;
+    padding-left: 0;
+    padding-right: 0;
+    @include border-radius(0px);
+    border: 2px solid #34c5de;
+    margin: 0;
+  }
+}
+// TAGS SEARCH END
+
+// TAGS SEARCH SCREEN START
+.tags-search-screen {
   .search-title {
     color: $calm;
     text-align: center;
@@ -486,7 +489,7 @@ $i: 1;
     color: #666;
     //font-size: 3em;
     margin-bottom: 1em;
-  }
+  } 
 }
 // TAGS SEARCH SCREEN END
 

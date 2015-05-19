@@ -146,5 +146,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/search');
+  $urlRouterProvider.otherwise('/app/events/edit/1');
 });

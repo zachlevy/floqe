@@ -10501,16 +10501,16 @@ a.button {
 .tags-results-screen .swiped {
   background-color: #E5FFE5; }
 
-.tags-search-screen .row {
+.row.tags-wrap {
   padding: 7px 0; }
-  .tags-search-screen .row .col {
+  .row.tags-wrap .col {
     padding: 0;
     padding-right: 5px; }
-    .tags-search-screen .row .col:first-child {
+    .row.tags-wrap .col:first-child {
       padding-left: 5px; }
-    .tags-search-screen .row .col:last-child {
+    .row.tags-wrap .col:last-child {
       margin-right: 0; }
-  .tags-search-screen .row .button {
+  .row.tags-wrap .button {
     padding-left: 0;
     padding-right: 0;
     -webkit-border-radius: 0px;
@@ -10519,6 +10519,7 @@ a.button {
     border-radius: 0px;
     border: 2px solid #34c5de;
     margin: 0; }
+
 .tags-search-screen .search-title {
   color: #11c1f3;
   text-align: center;
