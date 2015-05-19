@@ -53,6 +53,7 @@ angular.module('starter.controllers', [])
     uploadcare.openDialog().done(function(file) {
       file.promise().done(function(fileInfo) {
         $scope.user.photo = fileInfo.cdnUrl;
+        $scope.$apply();
       });
     });
   };
@@ -60,6 +61,7 @@ angular.module('starter.controllers', [])
   // $scope.user = current_user;
   appApi.post('user', {user_id : 1}).then(function(result) {
     $scope.user = result;
+    $scope.user.user_id = $scope.user.id;
      // birthdate
     // convert from date string to js date object
     $scope.user.birthdate = new Date($scope.user.birthdate);
@@ -130,6 +132,10 @@ angular.module('starter.controllers', [])
       gender : $scope.user.gender,
       birthdate : $scope.user.birthdate,
       interests : $scope.user.interests
+    }).then(function (result) {
+      if (result === true) {
+        $state.go('app.tagsSearch');
+      }
     });
   };
 })

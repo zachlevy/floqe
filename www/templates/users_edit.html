@@ -24,8 +24,12 @@
       </label>
       <label class="item item-input">
         <span class="input-label">Upload Photo</span>
-        <button class="button button-calm button-small" data-ng-click="changePhoto()">Change Photo</button>
+        <button class="button button-calm button-small hidden" data-ng-click="changePhoto()">Change Photo</button>
         <input type="hidden" role="uploadcare-uploader" />
+        <div class="photo-wrapper">
+          <i class="fa fa-pencil"></i>
+          <img data-ng-src="{{ user.photo }}-/scale_crop/100x100/" />
+        </div>
       </label>
       <div class="item item-interests">
         <span class="input-label">Interests</span>

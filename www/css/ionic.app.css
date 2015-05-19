@@ -10315,6 +10315,16 @@ a.button {
   flex: 0 0 99%;
   max-width: 99%; }
 
+.user-edit-screen .edit-user-list .photo-wrapper {
+  position: relative; }
+  .user-edit-screen .edit-user-list .photo-wrapper i {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin-bottom: 5px;
+    margin-right: 0px;
+    background: #fff;
+    padding: 0.2em; }
 .user-edit-screen .edit-user-list .item-gender .checkbox-button input {
   display: none; }
 .user-edit-screen .edit-user-list .item-birthdate input, .user-edit-screen .edit-user-list .item-name input {
