@@ -1,0 +1,20 @@
+<ion-view view-title="{{ user.name }}">
+  <ion-content class="user-show-screen">
+    <div class="photo-wrap">
+      <img class="img-responsive" data-ng-src="{{ user.photo }}-/scale_crop/500x500/" />
+    </div>
+    <div class="row">
+      <div class="col">
+        <!--<h3 class="distance">{{ user.distance }}km</h3>-->
+        <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend" data-ng-if="{{ user.friend }}"></i></h2>
+        <p class="gender-age">{{ user.gender | genderFilter }}, {{ user.age }}</p>
+        <h4 class="interests">Interests</h4>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col">
+        <span class="button button-calm interest" data-ng-repeat="interest in user.interests">{{ interest.name }}</span>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

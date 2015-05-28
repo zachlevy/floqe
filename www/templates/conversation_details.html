@@ -1,0 +1,26 @@
+<ion-view view-title="Details">
+  <ion-content class="conversation-details-screen has-footer-button">
+    <div class="list details-user-list user-list">
+      <div class="item item-avatar user" data-ng-repeat="user in users">
+        <img class="photo" data-ng-src="{{ user.photo }}-/scale_crop/100x100/">
+        <div class="options">
+          <button class="button button-assertive" data-ng-if="user.removable" data-ng-click="onRemoveUser(user.id)">
+            <i class="fa fa-trash-o"></i>
+          </button>
+          <!--
+          <button class="button button-calm" data-ng-click="onUserView(user.id)">
+            <i class="fa fa-eye"></i>
+          </button>
+          -->
+        </div>
+        <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend"></i></h2>
+        <p>{{ user.description }}</p>
+      </div>
+    </div>
+  </ion-content>
+  <div class="footer-button-wrap">
+    <button class="button button-block button-assertive footer-button" data-ng-click="onLeave()">
+        Leave Conversation
+    </button>
+  </div>
+</ion-view>

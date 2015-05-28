@@ -1,0 +1,48 @@
+<ion-view view-title="Event" cache-view="false">
+  <ion-content class="show-event-screen">
+    <h3 class="event-name text-center">{{ event.name }}</h3>
+    <div class="row event-details">
+      <div class="col">
+        <p><i class="fa fa-calendar"></i> {{ event.start | amDateFormat:'dddd, MMMM Do, YYYY' }}</p>
+        <p><i class="fa fa-clock-o"></i> {{ event.start | amDateFormat:'h:mm a' }} to {{ event.end | amDateFormat:'h:mm a' }}</p>
+        <p><i class="fa fa-map-marker"></i> {{ event.location }}</p>
+        <p><i class="fa fa-tags"></i> {{ event.tags | namesFilter }}</p>
+        <p><i class="fa fa-eye"></i> {{ event.private | privateFilter }} event</p>
+      </div>
+    </div>
+    <div class="row event-options">
+      <div class="col col-50">
+        <button class="button button-block button-calm" data-ng-click="onChat()">
+          Group Chat
+        </button>
+      </div>
+      <div class="col col-50">
+        <button class="button button-block button-calm" data-ng-click="onInviteContacts()">
+          Invite Contacts
+        </button>
+      </div>
+    </div>
+    <div class="row event-options">
+      <div class="col">
+        <button class="button button-block button-calm" data-ng-click="onJoinEvent()" on-swipe-right="onJoinEvent()" data-ng-if="!event.me.joined">
+          Join Event
+        </button>
+        <button class="button button-block button-assertive" data-ng-click="onLeaveEvent()" on-swipe-left="onLeaveEvent()" data-ng-if="event.me.joined">
+          Leave Event
+        </button>
+      </div>
+    </div>
+    <div class="list search-results-list user-list">
+      <div class="item item-avatar user" data-ng-repeat="user in event.users">
+        <img class="photo" data-ng-src="{{ user.photo }}-/scale_crop/100x100/">
+        <div class="options">
+          <button class="button button-assertive" data-ng-if="event.me.admin" data-ng-click="onRemoveUser(user.id)">
+            <i class="fa fa-trash-o"></i>
+          </button>
+        </div>
+        <h2 class="name">{{ user.name }} <i class="fa fa-user friend" data-ng-if="user.friend"></i></h2>
+        <p>{{ user.admin | adminFilter }}</p>
+      </div>
+    </div>
+  </ion-content>
+</ion-view>

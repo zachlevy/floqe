@@ -1,0 +1,41 @@
+<ion-view view-title="{{navTitle}}" cache-view="false" class="conversation-screen-wrapper">
+  <ion-content has-bouncing="true" class="conversation-screen has-header has-footer" delegate-handle="userMessageScroll">
+    <div ng-repeat="message in messages" class="message-wrapper">
+      <div ng-if="current_user.id !== message.user.user_id">
+        <img class="profile-pic left" ng-src="{{message.user.photo}}-/scale_crop/100x100/" />
+        <div class="chat-bubble left">
+          <div class="message" ng-bind-html="message.text | nl2br" >
+          </div>
+          <div class="message-detail">
+            <span class="bold">{{message.user.name}}</span>,
+            <span am-time-ago="message.time"></span>
+          </div>
+        </div>
+      </div>
+      <div ng-if="current_user.id === message.user.user_id">
+        <img class="profile-pic right" ng-src="{{message.user.photo}}-/scale_crop/100x100/" />
+        <div class="chat-bubble right">
+          <div class="message" ng-bind-html="message.text | nl2br" >
+          </div>
+          <div class="message-detail">
+            <span class="bold">{{message.user.name}}</span>, 
+            <span am-time-ago="message.time"></span>
+          </div>
+        </div>
+      </div>
+      <div class="cf"></div>
+    </div>
+  </ion-content>
+
+  <form name="sendMessageForm" ng-submit="sendMessage(sendMessageForm)" novalidate>
+    <ion-footer-bar class="bar-stable item-input-inset message-footer" keyboard-attach>
+      <label class="item-input-wrapper">
+        <textarea ng-model="newMessage" value="" placeholder="Send a message..." required minlength="1" maxlength="1500" msd-elastic></textarea>
+      </label>
+      <div class="footer-btn-wrap">
+        <button class="button button-icon icon ion-android-send footer-btn" type="submit" ng-disabled="!newMessage || newMessage === ''">
+        </button>
+      </div>
+    </ion-footer-bar>
+  </form>
+</ion-view>

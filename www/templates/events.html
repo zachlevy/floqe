@@ -1,0 +1,15 @@
+<ion-view view-title="Events">
+  <ion-content class="events-screen">
+    <div class="list events-list">
+      <a class="item event" href="#" data-ng-repeat="event in events" data-ng-click="onEventSelect(event.id)">
+        <div class="users-count">
+          <h2 class="users-all"><i class="fa fa-user"></i> {{ event.users.length }}</h2>
+        </div>
+        <h2 class="event-name">{{ event.name }}</h2>
+        <p class="event-start">{{ event.start | amDateFormat:'MMMM Do, YYYY' }} at {{ event.start | amDateFormat:'h:mm a' }}</p>
+        <p class="event-tags">{{ event.tags | namesFilter }}</p>
+        <p class="event-location">{{ event.location }}</p>
+      </a>
+    </div>
+  </ion-content>
+</ion-view>

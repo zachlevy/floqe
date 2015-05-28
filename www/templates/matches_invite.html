@@ -1,0 +1,21 @@
+<ion-view view-title="Matches">
+  <ion-content class="matches-screen has-footer-button">
+    <div class="list matches-list user-list">
+      <a class="item item-avatar user" href="#" data-ng-repeat="match in matches" data-ng-click="onMatchSelect(match.id)">
+        <img class="photo" data-ng-src="{{ match.photo }}-/scale_crop/100x100/">
+        <div class="time">
+          <h2>{{ match.matched_for.time | date:'yyyy-MM-ddTHH:mm:ssZ' | date:'shortDate' }}</h2>
+          <i class="fa fa-check-square-o pull-right icon-checked" data-ng-if="(selectedMatchIds.indexOf(match.id) > -1)"></i>
+          <i class="fa fa-square-o pull-right icon-unchecked" data-ng-if="(selectedMatchIds.indexOf(match.id) == -1)"></i>
+        </div>
+        <h2 class="name">{{ match.name }} <i class="fa fa-user friend" data-ng-if="match.friend"></i></h2>
+        <p>Matched for {{ match.matched_for.tags | namesFilter }}</p>
+      </a>
+    </div>
+  </ion-content>
+  <div class="footer-button-wrap">
+    <button class="button button-block button-calm footer-button" data-ng-click="onInvite()">
+        Invite Users
+    </button>
+  </div>
+</ion-view>
