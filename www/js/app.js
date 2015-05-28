@@ -4,7 +4,7 @@
 // 'starter' is the name of this angular module example (also set in a <body> attribute in index.html)
 // the 2nd parameter is an array of 'requires'
 // 'starter.controllers' is found in controllers.js
-angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 'starter.filters'])
+angular.module('starter', ['ionic', 'starter.controllers'])
 
 .run(function($ionicPlatform) {
   $ionicPlatform.ready(function() {
@@ -29,45 +29,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
     templateUrl: "templates/menu.html",
     controller: 'AppCtrl'
   })
-  
-  // FLOQE START
-  .state('app.tagsSearch', {
-    url: "/tags/search",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/tags_search.html",
-        controller: 'TagsSearchController'
-      }
-    }
-  })
-  .state('app.tagsResults', {
-    url: "/tags/results/{tag_ids}",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/tags_results.html",
-        controller: 'TagsResultsController'
-      }
-    }
-  })
-  .state('app.matches', {
-    url: "/matches",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/matches.html",
-        controller: 'MatchesController'
-      }
-    }
-  })
-  .state('app.matchesInvite', {
-    url: "/matches/invite/{match_id}",
-    views: {
-      'menuContent': {
-        templateUrl: "templates/matches_invite.html",
-        controller: 'MatchesInviteController'
-      }
-    }
-  })
-  // FLOQUE END
 
   .state('app.search', {
     url: "/search",
@@ -104,9 +65,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.factories', 
         controller: 'PlaylistCtrl'
       }
     }
-  })
-
-  ; // end chaining
+  });
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/search');
+  $urlRouterProvider.otherwise('/app/playlists');
 });
