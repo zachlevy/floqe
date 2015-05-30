@@ -33,6 +33,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   })
   
   // FLOQE START
+  .state('app.login', {
+    url: '/fb/login',
+    views: {
+      'menuContent': {
+        templateUrl: 'templates/fb_login.html',
+        controller: 'LoginController'
+      }
+    }
+  })
   .state('app.tagsSearch', {
     url: '/tags/search',
     views: {
@@ -146,5 +155,5 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/events/edit/1');
+  $urlRouterProvider.otherwise('/app/tags/search');
 });
