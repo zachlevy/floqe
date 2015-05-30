@@ -1,4 +1,4 @@
-angular.module('starter.controllers', [])
+angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $ionicModal, $timeout) {
   // Form data for the login modal
@@ -30,6 +30,29 @@ angular.module('starter.controllers', [])
     $timeout(function() {
       $scope.closeLogin();
     }, 1000);
+  };
+})
+
+// Edit User Screen
+.controller('LoginController', function ($cordovaFacebook, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
+  console.log('LoginController');
+  $scope.login = function () {
+    console.log('login clicked');
+    $cordovaFacebook.login(["public_profile", "email"])
+    .then(function(success) {
+      $cordovaFacebook.api("me")
+      .then(function(success) {
+        $scope.response = success;
+        var userId = success.id;
+      }, function (error) {
+        console.log('facebook api error');
+        // error
+      });
+    }, function (error) {
+      console.log('facebook login error');
+      console.log(error);
+      $scope.response = error;
+    });
   };
 })
 
