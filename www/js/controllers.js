@@ -1160,6 +1160,35 @@ angular.module('starter.controllers', ['ngCordova'])
   }
 })
 
+// Get Contacts Controller
+.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaContacts) {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  $scope.contacts = {};
+  $scope.contacts.all = "sadfa";
+  
+  function onDeviceReady(){
+    $cordovaContacts.find({}).then(function(resp) {
+      console.log(resp);
+      $scope.contacts.all = resp;
+    });
+  }
+})
+
+// Get Geo Controller
+.controller('GetGeoController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaGeolocation) {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  $scope.geo = {};
+  $scope.geo.get = "sadfa";
+  
+  
+  function onDeviceReady(){
+    $cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
+      console.log(resp);
+      $scope.geo.get = resp;
+    });
+  }
+  
+})
 
 // Friends Controller
 .controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaContacts) {

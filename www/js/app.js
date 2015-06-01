@@ -159,6 +159,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.getGeo', {
+    url: "/geo/get",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/get_geo.html",
+        controller: 'GetGeoController'
+      }
+    }
+  })
 
   // FLOQUE END
 
