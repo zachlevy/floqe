@@ -1,5 +1,8 @@
 <ion-view view-title="Invite Contacts">
   <ion-content class="invite-contacts-screen has-footer-button">
+    <pre>
+      {{ contacts.all }}
+    </pre>
     <div class="list contacts-list user-list">
       <a class="item user" href="#" data-ng-repeat="contact in contacts" data-ng-click="onContactSelect(contact.id)">
         <div class="options">

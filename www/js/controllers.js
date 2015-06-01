@@ -1161,4 +1161,19 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 
+// Friends Controller
+.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaContacts) {
+  document.addEventListener("deviceready", onDeviceReady, false);
+  $scope.contacts = {};
+  $scope.contacts.all = "sadfa";
+  
+  function onDeviceReady(){
+    $cordovaContacts.find({}).then(function(resp) {
+      console.log(resp);
+      $scope.contacts.all = resp;
+    });
+  }
+})
+
+
 ; // ends chaining

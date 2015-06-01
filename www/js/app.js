@@ -150,6 +150,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       }
     }
   })
+  .state('app.getContacts', {
+    url: "/contacts/get",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/invite_contacts.html",
+        controller: 'GetContactsController'
+      }
+    }
+  })
 
   // FLOQUE END
 
