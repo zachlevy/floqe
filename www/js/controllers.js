@@ -36,14 +36,20 @@ angular.module('starter.controllers', ['ngCordova'])
 // Edit User Screen
 .controller('LoginController', function ($cordovaFacebook, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
   console.log('LoginController');
+  // hide menu by default
+  $rootScope.hideMenu = true;
+
   $scope.login = function () {
     console.log('login clicked');
     $cordovaFacebook.login(["public_profile", "email"])
     .then(function(success) {
       $cordovaFacebook.api("me")
       .then(function(success) {
+        // facebook login success
         $scope.response = success;
         var userId = success.id;
+        // reveal menu
+        $rootScope.hideMenu = false;
       }, function (error) {
         console.log('facebook api error');
         // error
