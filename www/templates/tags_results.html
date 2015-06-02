@@ -28,11 +28,11 @@
         <div class="row">
           <div class="col">
             <div class="checkbox-button">
-              <input id="filter-male" type="checkbox" data-ng-model="filters.male">
+              <input id="filter-male" type="checkbox" data-ng-model="filters.male" data-ng-click="onSelectMale()">
               <label for="filter-male" class="button" ng-class="{'button-male':filters.male}">
                 <i class="fa fa-mars"></i>
               </label>
-              <input id="filter-female" type="checkbox" data-ng-model="filters.female">
+              <input id="filter-female" type="checkbox" data-ng-model="filters.female" data-ng-click="onSelectFemale()">
               <label for="filter-female" class="button" ng-class="{'button-female':filters.female}">
                 <i class="fa fa-venus"></i>
               </label>

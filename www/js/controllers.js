@@ -630,6 +630,40 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.filters.male = true;
   $scope.filters.female = true;
 
+  $scope.onSelectFemale = function () {
+    console.log('onSelectFemale');
+    // if already on
+    if ($scope.filters.female === false) {
+      // skip if male is also turned off
+      if ($scope.filters.male === false) {
+        $scope.filters.female = true;
+        return;
+      }
+      // turn it off
+      $scope.filters.female = false;
+    } else {
+      // turn females on
+      $scope.filters.female = true;
+    }
+  };
+
+  $scope.onSelectMale = function () {
+    console.log('onSelectMale');
+    // if already on
+    if ($scope.filters.male === false) {
+      // skip if female is also turned off
+      if ($scope.filters.female === false) {
+        $scope.filters.male = true;
+        return;
+      }
+      // turn it off
+      $scope.filters.male = false;
+    } else {
+      // turn guys on
+      $scope.filters.male = true;
+    }
+  };
+
   // by default, hide the filter list
   $scope.hideFilter = true;
 
