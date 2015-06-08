@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters', 'tagger', 'ui.slider', 'angularMoment'])
 
-.run(function($ionicPlatform) {
+.run(function($ionicPlatform, $cordovaPush, appApi) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,64 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
   });
+  
+  // Push
+	document.addEventListener("deviceready", onDeviceReady, false);
+ 
+	function onDeviceReady(){
+		config = { "senderID": "276536771992", }
+
+		$cordovaPush.register(config).then(function(result) {
+		  // Success
+		}, function(err) {
+		  // Error
+		})
+	
+		$scope.$on('pushNotificationReceived', function (event, notification) {
+		  switch(notification.event) {
+			case 'registered':
+			  if (notification.regid.length > 0 ) {
+				alert(notification.regid)
+				//alert('registration ID = ' + notification.regid);
+				storeDeviceToken('android', notification.regid)
+			  }
+			  break;
+
+			case 'message':
+			  // this is the actual push notification. its format depends on the data model from the push server
+			  alert('message = ' + notification.message + ' param = ' + notification.param);
+			  break;
+			case 'the_message':
+			  // this is the actual push notification. its format depends on the data model from the push server
+			  alert('message = ' + notification.message + ' param = ' + notification.param);
+			  break;
+
+			case 'error':
+			  alert('GCM error = ' + notification.msg);
+			  break;
+
+			default:
+			  alert('An unknown GCM event has occurred');
+			  break;
+		  }
+		})
+	}
+
+	function storeDeviceToken(type,regid) {
+        // Create a random userid to store with it
+        var user = { user: 'user1', type: type, token: regid };
+        alert("Post token for registered device with data " + JSON.stringify(user))
+        appApi.post('gcm/subscribe', {'user' : user}).then(function(result) {
+            alert("Token stored, device is successfully subscribed to receive push notifications." + data)
+        }), function(err) {
+		  // Error
+		  alert('Error'+ err)
+		}
+    }
+  
+  
+  
+  
 })
 
 .config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
@@ -165,6 +223,15 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       'menuContent': {
         templateUrl: "templates/get_geo.html",
         controller: 'GetGeoController'
+      }
+    }
+  })
+  .state('app.getPush', {
+    url: "/push",
+    views: {
+      'menuContent': {
+        templateUrl: "templates/push.html",
+        controller: 'PushController'
       }
     }
   })

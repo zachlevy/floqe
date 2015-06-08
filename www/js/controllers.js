@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $ionicModal, $timeout) {
+.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, $cordovaFacebook, appApi) {
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -28,8 +28,27 @@ angular.module('starter.controllers', ['ngCordova'])
     // Simulate a login delay. Remove this and replace with your login
     // code if using a login system
     $timeout(function() {
-      $scope.closeLogin();
+      //$scope.closeLogin();
     }, 1000);
+  };
+  
+    $scope.fbLogin = function () {
+    console.log('login clicked');
+    $cordovaFacebook.login(["public_profile", "email"])
+    .then(function(success) {
+      $cordovaFacebook.api("me")
+      .then(function(success) {
+        $scope.response = success;
+        $rootScope.fb_id = success.id;
+		$scope.closeLogin();
+      }, function (error) {
+        alert('Facebook Login Error');
+        // error
+      });
+    }, function (error) {
+      alert('Facebook Login Error');
+
+    });
   };
 })
 
@@ -43,6 +62,7 @@ angular.module('starter.controllers', ['ngCordova'])
       $cordovaFacebook.api("me")
       .then(function(success) {
         $scope.response = success;
+		appApi.post('login',{'fb_object':success})
         var userId = success.id;
       }, function (error) {
         console.log('facebook api error');
@@ -78,7 +98,7 @@ angular.module('starter.controllers', ['ngCordova'])
   // tags that the user has selected
   $scope.tags.selected = [];
   // max number of tags teh user can serach
-  $scope.tags.max = 2;
+  $scope.tags.max = 3;
   $scope.tags.search = {};
   $scope.tags.search.name = "";
 

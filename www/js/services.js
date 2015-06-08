@@ -241,7 +241,9 @@ angular.module('starter.services', [])
 .value(
   'baseUrl',
   //'http://192.168.0.11:8100/api/v1/'
-  'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
+  //'http://127.0.0.1:5000/api/v1/'
+  'http://c34b8fa2.ngrok.io/api/v1/'
+  //'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
 // all tags preloaded, can be refreshed with tagsFactory.refreshTags()
 .value(
