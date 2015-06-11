@@ -19,30 +19,37 @@
   <ion-side-menu side="left" enable-menu-with-back-views="true">
     <ion-header-bar class="bar-calm">
       <h1 class="title">Floqe</h1>
+	  <a class="button icon ion-gear-a" menu-close href="#/app/users/1/edit"> </a>
     </ion-header-bar>
     <ion-content>
       <ion-list>
-        <ion-item nav-clear menu-close ng-click="login()">
+<!--         <ion-item nav-clear menu-close ng-click="login()">
           Login
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/contacts/invite/1">
-          Invite Contacts
-        </ion-item>
-        <ion-item nav-clear menu-close href="#/app/contacts/get">
+		<ion-item nav-clear menu-close href="#/app/contacts/get">
           Get Contacts
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/geo/get">
           Get Geo
+        </ion-item> 
+		<ion-item nav-clear menu-close href="#/app/users/1/edit">
+          Edit User
         </ion-item>
+		<ion-item nav-clear menu-close href="#/app/users/1">
+          View User
+        </ion-item>-->
+		
+        <ion-item nav-clear menu-close href="#/app/contacts/invite/1">
+          Invite Contacts
+        </ion-item>
+
         <ion-item nav-clear menu-close href="#/app/tags/search">
           Search Tags
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/matches">
           Matches
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/users/1/edit">
-          Edit User
-        </ion-item>
+
         <ion-item nav-clear menu-close href="#/app/events/edit/">
           Create Event
         </ion-item>
@@ -52,9 +59,7 @@
         <ion-item nav-clear menu-close href="#/app/events">
           Events List
         </ion-item>
-        <ion-item nav-clear menu-close href="#/app/users/1">
-          View User
-        </ion-item>
+
       </ion-list>
     </ion-content>
   </ion-side-menu>

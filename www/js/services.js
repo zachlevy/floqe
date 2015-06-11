@@ -1,6 +1,32 @@
 angular.module('starter.services', [])
 
 // any function related to accessing the api
+.factory('current_user', function($rootScope){
+	
+	if ($rootScope.user == undefined) {
+		$rootScope.user = {}
+		var user = {}
+	}
+
+	return {
+		"id" : 123,
+		"name" : 'Test',
+		"photo" : '',
+		"gender" : '1',
+		"age" : '19',
+		"birthdate" : "1991-06-17T01:11:21Z",
+		"interests" : [
+		  {
+			"id" : 1,
+			"name" : "Motor rallies"
+		  },
+		  {
+			"id" : 2,
+			"name" : "Motor"
+		  },
+		]
+	}
+})
 .factory('appApi', function ($http, $q, baseUrl) {
   // data is an object like {'foo':'bar'}
   // endpoint is a string
@@ -256,7 +282,7 @@ angular.module('starter.services', [])
 // development helpers
 // current_user
 .value(
-  'current_user',
+  'current_user1',
   {
     "id" : 2,
     "name" : "Boaz",

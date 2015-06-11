@@ -1,6 +1,9 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, $cordovaFacebook, appApi) {
+.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
+	
+	document.addEventListener("deviceready", onDeviceReady, false);
+	
   // Form data for the login modal
   $scope.loginData = {};
 
@@ -32,24 +35,45 @@ angular.module('starter.controllers', ['ngCordova'])
     }, 1000);
   };
   
+ 
+	var device = false
+	function onDeviceReady(){
+	  var device = true
+	}
+  
     $scope.fbLogin = function () {
     console.log('login clicked');
-    $cordovaFacebook.login(["public_profile", "email"])
-    .then(function(success) {
-      $cordovaFacebook.api("me")
-      .then(function(success) {
-        $scope.response = success;
-        $rootScope.fb_id = success.id;
-		$scope.closeLogin();
-      }, function (error) {
-        alert('Facebook Login Error');
-        // error
-      });
-    }, function (error) {
-      alert('Facebook Login Error');
+		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS() ) {
+			$cordovaFacebook.login(["public_profile", "email"])
+			.then(function(success) {
+			  $cordovaFacebook.api("me")
+			  .then(function(success) {
+				appApi.post('login',{'fb_object':success}).then(function(resp) {
+					var result = resp.result
+					current_user.id = result.id
+					current_user.gender = result.gender
+					current_user.age = result.age
+					current_user.name = result.name
+					current_user.photo = result.photo
+					$scope.modal.hide();
+				})
+				
+			  }, function (error) {
+				alert('Facebook Login Error');
+				// error
+			  });
+			}, function (error) {
+			  alert('Facebook Login Error');
 
-    });
-  };
+			});
+		}
+		else {
+			console.log('browser')
+			current_user.id = 'Heyyo'
+			alert(current_user.id )
+		}
+	};
+	
 })
 
 // Edit User Screen
@@ -314,7 +338,7 @@ angular.module('starter.controllers', ['ngCordova'])
   // tags that the user has selected
   $scope.tags.selected = [];
   // max number of tags teh user can serach
-  $scope.tags.max = 2;
+  $scope.tags.max = 3;
   $scope.tags.search = {};
   $scope.tags.search.name = "";
 
@@ -1065,9 +1089,67 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, tagsFactory, current_user) {
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
   console.log('TagsSearchController');
-  // before the view is loaded, add things here that involve switching between controllers
+  // Loads pop login screen
+	$ionicModal.fromTemplateUrl('templates/login.html', {
+		scope: $scope
+	}).then(function(modal) {
+		console.log(modal)
+		$scope.modal = modal;
+	});
+
+  // Triggered in the login modal to close it
+	$scope.closeLogin = function() {
+		$scope.modal.hide();
+	};
+
+  // Open the login modal
+	if ($rootScope.fb_id === undefined) {
+		$timeout(function() {
+      $scope.modal.show();
+		}, 100);
+	};
+	
+	$scope.fbLogin = function () {
+		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
+			$cordovaFacebook.login(["public_profile", "email"])
+			.then(function(success) {
+			  $cordovaFacebook.api("me")
+			  .then(function(success) {
+				$scope.response = success;
+				appApi.post('login',{'fb_object':success}).then(function(result) {
+					$scope.response = result
+					current_user.id = result.id
+					current_user.gender = result.gender
+					current_user.age = result.age
+					current_user.name = result.name
+					current_user.photo = result.photo
+					$scope.response = current_user
+					$scope.modal.hide();
+				})
+				
+			  }, function (error) {
+				alert('Facebook Login Error');
+				// error
+			  });
+			}, function (error) {
+			  alert('Facebook Login Error');
+
+			});
+		}
+		else {
+			alert('browser')
+			current_user.id = 1
+			current_user.gender = 1
+			current_user.age = 25
+			current_user.name = 'shazam'
+			current_user.photo = 21323
+			$scope.response = current_user
+			//$scope.modal.hide()
+		}
+	};
+	
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -1086,7 +1168,7 @@ angular.module('starter.controllers', ['ngCordova'])
   // tags that the user has selected
   $scope.tags.selected = [];
   // max number of tags teh user can serach
-  $scope.tags.max = 2;
+  $scope.tags.max = 3;
   $scope.tags.search = {};
   $scope.tags.search.name = "";
 
@@ -1104,13 +1186,12 @@ angular.module('starter.controllers', ['ngCordova'])
 
       $scope.processedTags = processedTags();
     });
-    
   });
 
-  
-
+ 
   // when search button is pressed
   $scope.onSearch = function () {
+	  
     console.log('onSearch');
     console.log($scope.tags.selected);
     console.log("submitTags");
