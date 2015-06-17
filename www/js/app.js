@@ -28,6 +28,7 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
 		$cordovaPush.register(config).then(function(result) {
 		  // Success
+		  console.log('Registered!')
 		}, function(err) {
 		  // Error
 		})

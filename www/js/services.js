@@ -1,19 +1,16 @@
 angular.module('starter.services', [])
 
 // any function related to accessing the api
-.factory('current_user', function($rootScope){
-	
-	if ($rootScope.user == undefined) {
-		$rootScope.user = {}
-		var user = {}
-	}
+.factory('current_user', function(){
+
+	user = this
 
 	return {
-		"id" : 123,
-		"name" : 'Test',
+		"id" : user.id,
+		"name" : user.name,
 		"photo" : '',
 		"gender" : '1',
-		"age" : '19',
+		"age" : user.age,
 		"birthdate" : "1991-06-17T01:11:21Z",
 		"interests" : [
 		  {
@@ -268,7 +265,7 @@ angular.module('starter.services', [])
   'baseUrl',
   //'http://192.168.0.11:8100/api/v1/'
   //'http://127.0.0.1:5000/api/v1/'
-  'http://c34b8fa2.ngrok.io/api/v1/'
+  'http://a8e74fbe.ngrok.io/api/v1/'
   //'http://backend-env-36mjm8eh3x.elasticbeanstalk.com/api/v1/'
 )
 // all tags preloaded, can be refreshed with tagsFactory.refreshTags()

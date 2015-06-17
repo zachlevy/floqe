@@ -28,8 +28,20 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
 
-    // Simulate a login delay. Remove this and replace with your login
-    // code if using a login system
+    appApi.post('login',{'psw_object':loginData}).then(function(resp) {
+		if (resp.error !== undefined) {
+			alert('User not found!')
+		}
+		else {
+			var result = resp.result
+			current_user.id = result.id
+			current_user.gender = result.gender
+			current_user.age = result.age
+			current_user.name = result.name
+			current_user.photo = result.photo
+			$scope.modal.hide();
+		}
+	})
     $timeout(function() {
       //$scope.closeLogin();
     }, 1000);
@@ -652,7 +664,6 @@ angular.module('starter.controllers', ['ngCordova'])
   console.log('TagsResultsController');
 
   appApi.post('search/results', {'search_id' : 1}).then(function(result){
-    console.log('search/results');
     console.log(result);
     $scope.result = result;
 
@@ -1091,6 +1102,9 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
   console.log('TagsSearchController');
+  $scope.loginData = {};
+  
+  console.log(current_user)
   // Loads pop login screen
 	$ionicModal.fromTemplateUrl('templates/login.html', {
 		scope: $scope
@@ -1105,10 +1119,30 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 
   // Open the login modal
-	if ($rootScope.fb_id === undefined) {
+	if (current_user.id === undefined) {
 		$timeout(function() {
       $scope.modal.show();
 		}, 100);
+	};
+	
+	$scope.doLogin = function() {
+		appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
+			if (resp.errors === undefined) {
+				current_user.id = resp.id
+				current_user.gender = resp.gender
+				current_user.age = resp.age
+				current_user.name = resp.name
+				current_user.photo = resp.photo
+				getTags()
+				$scope.modal.hide();
+			}
+			else {
+				alert(resp.errors.error)
+			}
+		})
+		$timeout(function() {
+		  //$scope.closeLogin();
+		}, 1000);
 	};
 	
 	$scope.fbLogin = function () {
@@ -1126,6 +1160,7 @@ angular.module('starter.controllers', ['ngCordova'])
 					current_user.name = result.name
 					current_user.photo = result.photo
 					$scope.response = current_user
+					getTags()
 					$scope.modal.hide();
 				})
 				
@@ -1150,115 +1185,121 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 	};
 	
-  function pre () {
-    // cancel the refresher
-    $interval.cancel($rootScope.tagRefresher);
-    $interval.cancel($rootScope.messagesRefresher);
-    $interval.cancel($rootScope.matchesRefresher);
-    // convoinvite
-    $rootScope.showInvite = false;
-    $rootScope.showOptions = false;
-    // multilined header bar
-    $rootScope.multiBar = false;
-  }
-  pre();
+	
+	  function pre () {
+		// cancel the refresher
+		$interval.cancel($rootScope.tagRefresher);
+		$interval.cancel($rootScope.messagesRefresher);
+		$interval.cancel($rootScope.matchesRefresher);
+		// convoinvite
+		$rootScope.showInvite = false;
+		$rootScope.showOptions = false;
+		// multilined header bar
+		$rootScope.multiBar = false;
+	  }
+	  pre();
 
-  // prep the tags object
-  $scope.tags = {};
-  // tags that the user has selected
-  $scope.tags.selected = [];
-  // max number of tags teh user can serach
-  $scope.tags.max = 3;
-  $scope.tags.search = {};
-  $scope.tags.search.name = "";
+	  // prep the tags object
+	  $scope.tags = {};
+	  // tags that the user has selected
+	  $scope.tags.selected = [];
+	  // max number of tags teh user can serach
+	  $scope.tags.max = 3;
+	  $scope.tags.search = {};
+	  $scope.tags.search.name = "";
 
-  // get all tags
-  appApi.get('tags').then(function(result) {
-    $scope.tags.all = result;
-    console.log('$scope.tags.all');
-    console.log($scope.tags.all);
+	  // get all tags
+	
+	function getTags(){
+		if (current_user.id !== undefined) {
+		  appApi.get('tags').then(function(result) {
+			$scope.tags.all = result;
+			console.log('$scope.tags.all');
+			console.log($scope.tags.all);
 
-    // get all suggested tags
-    appApi.post('tags', {user_id : current_user.id}).then(function(result) {
-      $scope.tags.suggested = result;
-      console.log('$scope.tags.suggested');
-      console.log($scope.tags.suggested);
+			// get all suggested tags
+			appApi.post('tags', {user_id : current_user.id}).then(function(result) {
+			  $scope.tags.suggested = result;
+			  console.log('$scope.tags.suggested');
+			  console.log($scope.tags.suggested);
 
-      $scope.processedTags = processedTags();
-    });
-  });
+			  $scope.processedTags = processedTags();
+			});
+		  });
+		}
+	}
+	getTags()
+	 
+	  // when search button is pressed
+	  $scope.onSearch = function () {
+		  
+		console.log('onSearch');
+		console.log($scope.tags.selected);
+		console.log("submitTags");
 
- 
-  // when search button is pressed
-  $scope.onSearch = function () {
+		$scope.tags.fullSelected = [];
+		angular.forEach($scope.tags.selected, function (tag_id, key) {
+		  $scope.tags.fullSelected.push({"id" : tag_id});
+		});
+		console.log($scope.tags.fullSelected);
+		appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
+		  console.log(result.search_id);
+		  $state.go('app.tagsResults', {search_id: result.search_id});
+		});
+	  };
+
+	  // when a tag is selected
+	  $scope.onTagSelect = function(tag_id) {
+		if ($scope.tags.selected.indexOf(tag_id) == -1) {
+		  if ($scope.tags.selected.length < $scope.tags.max) {
+			$scope.tags.selected.push(tag_id);
+		  }
+		} else if ($scope.tags.selected.indexOf(tag_id) > -1) {
+		  $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
+		}
+		// $scope.tags.selected.push(tag_id);
+		console.log('tagsFactory.getTag(tag_id)');
+		console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
+		console.log('$scope.tags.selected');
+		console.log($scope.tags.selected);
+	  };
+
+	  // watch for the search field to be updated to re-run the tag processor
+	  $scope.$watch('tags.search.name', function () {
+		console.log('watched tags.search.name');
+		$scope.processedTags = processedTags();
+	  });
 	  
-    console.log('onSearch');
-    console.log($scope.tags.selected);
-    console.log("submitTags");
-
-    $scope.tags.fullSelected = [];
-    angular.forEach($scope.tags.selected, function (tag_id, key) {
-      $scope.tags.fullSelected.push({"id" : tag_id});
-    });
-    console.log($scope.tags.fullSelected);
-    appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
-      console.log(result.search_id);
-      $state.go('app.tagsResults', {search_id: result.search_id});
-    });
-  };
-
-  // when a tag is selected
-  $scope.onTagSelect = function(tag_id) {
-    if ($scope.tags.selected.indexOf(tag_id) == -1) {
-      if ($scope.tags.selected.length < $scope.tags.max) {
-        $scope.tags.selected.push(tag_id);
-      }
-    } else if ($scope.tags.selected.indexOf(tag_id) > -1) {
-      $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
-    }
-    // $scope.tags.selected.push(tag_id);
-    console.log('tagsFactory.getTag(tag_id)');
-    console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
-    console.log('$scope.tags.selected');
-    console.log($scope.tags.selected);
-  };
-
-  // watch for the search field to be updated to re-run the tag processor
-  $scope.$watch('tags.search.name', function () {
-    console.log('watched tags.search.name');
-    $scope.processedTags = processedTags();
-  });
-  
-  function processedTags () {
-    numRows = 3;
-    rowTags = [[]];
-    availableTags = $scope.tags.all;
-    if ($scope.tags.search.name.length > 0) {
-      console.log("use tags.all");
-      availableTags = $scope.tags.all;
-    } else {
-      console.log($scope.tags.search.name);
-      console.log("use tags.suggested");
-      availableTags = $scope.tags.suggested;
-    }
-    
-    angular.forEach(availableTags, function(tag, index) {
-      // if the tag is selected or it contains the search string
-      console.log('name: ' + tag.name);
-      if (
-        $scope.tags.selected.indexOf(tag.id) !== -1 ||
-        (angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
-      ) {
-        if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
-          // push a new row
-          rowTags.push([]);
-        }
-        // push the tag into the last row
-        rowTags[rowTags.length - 1].push(tag);
-      }
-    });
-    return rowTags;
-  }
+	  function processedTags () {
+		numRows = 3;
+		rowTags = [[]];
+		availableTags = $scope.tags.all;
+		if ($scope.tags.search.name.length > 0) {
+		  console.log("use tags.all");
+		  availableTags = $scope.tags.all;
+		} else {
+		  console.log($scope.tags.search.name);
+		  console.log("use tags.suggested");
+		  availableTags = $scope.tags.suggested;
+		}
+		
+		angular.forEach(availableTags, function(tag, index) {
+		  // if the tag is selected or it contains the search string
+		  console.log('name: ' + tag.name);
+		  if (
+			$scope.tags.selected.indexOf(tag.id) !== -1 ||
+			(angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
+		  ) {
+			if ((rowTags[rowTags.length - 1].length) % numRows === 0) {
+			  // push a new row
+			  rowTags.push([]);
+			}
+			// push the tag into the last row
+			rowTags[rowTags.length - 1].push(tag);
+		  }
+		});
+		return rowTags;
+	  }
 })
 
 // Get Contacts Controller
