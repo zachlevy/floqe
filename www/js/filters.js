@@ -74,7 +74,7 @@ angular.module('starter.filters', [])
       if (column_total < 100) {
         tags[0].column_size += 100 - column_total;
       } else if (column_total > 100) {
-        tags[0].column_size -= Math.abs(100 - column_total);
+        tags[0].column_size -= abs(100 - column_total);
       }
     }
     return tags;
