@@ -1,6 +1,6 @@
 angular.module('starter.controllers', ['ngCordova'])
 
-.controller('AppCtrl', function($scope, $rootScope, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
+.controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
 	
 	document.addEventListener("deviceready", onDeviceReady, false);
 	
@@ -8,11 +8,11 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.loginData = {};
 
   // Create the login modal that we will use later
-  $ionicModal.fromTemplateUrl('templates/login.html', {
+  /* $ionicModal.fromTemplateUrl('templates/login.html', {
     scope: $scope
   }).then(function(modal) {
     $scope.modal = modal;
-  });
+  }); */
 
   // Triggered in the login modal to close it
   $scope.closeLogin = function() {
@@ -28,18 +28,20 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.doLogin = function() {
     console.log('Doing login', $scope.loginData);
 
-    appApi.post('login',{'psw_object':loginData}).then(function(resp) {
+    appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
 		if (resp.error !== undefined) {
 			alert('User not found!')
 		}
 		else {
-			var result = resp.result
-			current_user.id = result.id
-			current_user.gender = result.gender
-			current_user.age = result.age
-			current_user.name = result.name
-			current_user.photo = result.photo
-			$scope.modal.hide();
+			console.log('Result')
+			console.log(resp)
+			current_user.id = resp.id
+			current_user.gender = resp.gender
+			current_user.age = resp.age
+			current_user.name = resp.name
+			current_user.photo = resp.photo
+			$state.go('app.tagsSearch')
+			//$scope.modal.hide();
 		}
 	})
     $timeout(function() {
@@ -329,7 +331,7 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // New/Edit Event Screen
-.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
+.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
   console.log("EventEditController");
   function pre () {
     // cancel the refresher
@@ -447,8 +449,10 @@ angular.module('starter.controllers', ['ngCordova'])
     $scope.event.start.time = today; // new Date();
     $scope.event.end.date = today; // new Date();
     $scope.event.end.time = today; // new Date();
-    // tags
+    // fills in empty info
     $scope.event.tags = [];
+	$scope.event.private = false
+	$scope.event.location = ''
   } else {
     // its an existing event
     $ionicNavBarDelegate.title("Edit event");
@@ -484,8 +488,7 @@ angular.module('starter.controllers', ['ngCordova'])
     angular.forEach($scope.tags.selected, function (tag_id, key) {
       $scope.event.tags.push(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
     });
-
-
+	
     // rebuild dates from the separate date and time pickers
     $scope.event.start = new Date(
       $scope.event.start.date.getFullYear(),
@@ -494,36 +497,62 @@ angular.module('starter.controllers', ['ngCordova'])
       $scope.event.start.time.getHours(),
       $scope.event.start.time.getMinutes()
     );
-    $scope.event.end = new Date(
-      $scope.event.end.date.getFullYear(),
-      $scope.event.end.date.getMonth(),
-      $scope.event.end.date.getDay(),
-      $scope.event.end.time.getHours(),
-      $scope.event.end.time.getMinutes()
-    );
+	if ($scope.event.end.date != undefined) {
+		$scope.event.end = new Date(
+		  $scope.event.end.date.getFullYear(),
+		  $scope.event.end.date.getMonth(),
+		  $scope.event.end.date.getDay(),
+		  $scope.event.end.time.getHours(),
+		  $scope.event.end.time.getMinutes()
+		);
+	}
 
     // strip tags of extra param
     angular.forEach($scope.event.tags, function (tag, key) {
       delete tag.$$hashKey;
     });
 
-    console.log($scope.event);
     // send to api
     // implement
-    appApi.put('event', {
-      event_id : $stateParams.event_id,
-      name : $scope.event.name,
-      start : $scope.event.start,
-      end : $scope.event.end,
-      location : $scope.event.location,
-      tags : $scope.event.tags,
-      private : $scope.event.private
-    }).then(function(result) {
-      if (result === true) {
-        console.log('updated event');
-        $state.go('app.showEvent', {'event_id' : $stateParams.event_id});
-      }
-    });
+	var event_info = {};
+	event_info.user_id = current_user.id,
+    event_info.event_id = $stateParams.event_id,
+    event_info.name = $scope.event.name,
+    event_info.start = $scope.event.start,
+    event_info.end = $scope.event.end,
+    event_info.location = $scope.event.location,
+    event_info.tags = $scope.event.tags,
+    event_info.private = $scope.event.private
+
+	console.log(event_info)
+	console.log('User id:',current_user.id)
+	
+	if ($scope.event.name == "" || $scope.event.name == undefined ) {
+		$ionicPopup.alert({
+			 title: 'Problemo',
+			 template: 'Empty event name!'
+		});
+	}
+	else if ($scope.event.end == undefined || $scope.event.start == undefined) {
+		$ionicPopup.alert({
+			 title: 'Problemo',
+			 template: 'Empty date fields!'
+		});
+	}
+	else {
+		appApi.put('event', event_info ).then(function(result) {
+		  if (result === true) {
+			console.log('updated event');
+			$state.go('app.showEvent', {'event_id' : $stateParams.event_id});
+		  }
+		  else {
+			$ionicPopup.alert({
+			 title: 'Problemo',
+			 template: 'There was an error somewhere!'
+		}); 
+		  }
+		});
+	}
   };
 })
 // Show Event Screen
@@ -1109,7 +1138,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	$ionicModal.fromTemplateUrl('templates/login.html', {
 		scope: $scope
 	}).then(function(modal) {
-		console.log(modal)
 		$scope.modal = modal;
 	});
 
@@ -1133,7 +1161,7 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.age = resp.age
 				current_user.name = resp.name
 				current_user.photo = resp.photo
-				getTags()
+				getTags();
 				$scope.modal.hide();
 			}
 			else {
@@ -1186,7 +1214,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 	
 	
-	  function pre () {
+	function pre () {
 		// cancel the refresher
 		$interval.cancel($rootScope.tagRefresher);
 		$interval.cancel($rootScope.messagesRefresher);
@@ -1196,8 +1224,8 @@ angular.module('starter.controllers', ['ngCordova'])
 		$rootScope.showOptions = false;
 		// multilined header bar
 		$rootScope.multiBar = false;
-	  }
-	  pre();
+	  };
+	pre();
 
 	  // prep the tags object
 	  $scope.tags = {};
@@ -1228,7 +1256,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		  });
 		}
 	}
-	getTags()
+	//getTags()
 	 
 	  // when search button is pressed
 	  $scope.onSearch = function () {

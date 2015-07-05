@@ -1,1 +1,6 @@
 /* Empty. Add your own CSS if you like */
+.datefield {
+  border-color: #11c1f3 ;
+  border-style: solid;
+  border-width: thin;
+}
