@@ -48,8 +48,7 @@ angular.module('starter.controllers', ['ngCordova'])
       //$scope.closeLogin();
     }, 1000);
   };
-  
- 
+
 	var device = false
 	function onDeviceReady(){
 	  var device = true
@@ -83,7 +82,6 @@ angular.module('starter.controllers', ['ngCordova'])
 		}
 		else {
 			console.log('browser')
-			current_user.id = 'Heyyo'
 			alert(current_user.id )
 		}
 	};
@@ -331,8 +329,14 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // New/Edit Event Screen
-.controller('EventEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
+.controller('EventEditController', function ($scope, $window,$rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, $ionicNavBarDelegate, tagsFactory, current_user, appApi) {
   console.log("EventEditController");
+  
+	if (current_user.id == undefined) {	
+		//$state.go('app.tagsSearch',{},{reload: true}); 
+		$window.location.href = '#/app/tags/search'
+	}
+  
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -541,15 +545,17 @@ angular.module('starter.controllers', ['ngCordova'])
 	}
 	else {
 		appApi.put('event', event_info ).then(function(result) {
-		  if (result === true) {
-			console.log('updated event');
-			$state.go('app.showEvent', {'event_id' : $stateParams.event_id});
+		  if (result === false) {
+			console.log(result)
+			$ionicPopup.alert({
+			title: 'Problemo',
+			template: 'There was an error somewhere!'
+			}); 
 		  }
 		  else {
-			$ionicPopup.alert({
-			 title: 'Problemo',
-			 template: 'There was an error somewhere!'
-		}); 
+			console.log('updated event', result);
+			$state.go('app.showEvent', {'event_id' : result.event_id});
+			//$state.go('app.showEvent', {'event_id' : $stateParams.event_id});
 		  }
 		});
 	}
@@ -1129,11 +1135,10 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
+.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $cordovaGeolocation, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
   console.log('TagsSearchController');
   $scope.loginData = {};
   
-  console.log(current_user)
   // Loads pop login screen
 	$ionicModal.fromTemplateUrl('templates/login.html', {
 		scope: $scope
@@ -1147,11 +1152,24 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 
   // Open the login modal
+  console.log('Current user check',current_user.id )
+	console.log(current_user.id === undefined)
 	if (current_user.id === undefined) {
 		$timeout(function() {
+			console.log('Modal:',$scope.modal)
       $scope.modal.show();
 		}, 100);
 	};
+	
+	function getGeo() {
+		var posOptions = {timeout: 10000, enableHighAccuracy: false};
+		$cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
+		appApi.post('position',{'gps_object':resp.coords}).then(function(result) {
+			
+		})
+		$scope.geo.get = resp;
+		});
+	}
 	
 	$scope.doLogin = function() {
 		appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
@@ -1162,6 +1180,9 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.name = resp.name
 				current_user.photo = resp.photo
 				getTags();
+				
+				getGeo();
+				
 				$scope.modal.hide();
 			}
 			else {
@@ -1188,7 +1209,10 @@ angular.module('starter.controllers', ['ngCordova'])
 					current_user.name = result.name
 					current_user.photo = result.photo
 					$scope.response = current_user
-					getTags()
+					getTags();
+					
+					getGeo();
+					
 					$scope.modal.hide();
 				})
 				
@@ -1256,8 +1280,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		  });
 		}
 	}
-	//getTags()
-	 
+
 	  // when search button is pressed
 	  $scope.onSearch = function () {
 		  
@@ -1354,6 +1377,7 @@ angular.module('starter.controllers', ['ngCordova'])
   function onDeviceReady(){
     $cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
       console.log(resp);
+	  alert('Geo');
       $scope.geo.get = resp;
     });
   }
