@@ -43,7 +43,7 @@ angular.module('starter.services', [])
         },
         registerID: function (id) {
             var mobileType = "android";
-			appApi.post('gcm/subscribe', { 'user': current_user.id, 'type': mobileType, 'token': id }).then(function(result) {
+			appApi.post('gcm/subscribe', { 'user_id': current_user.id, 'type': mobileType, 'token': id }).then(function(result) {
 				console.log("Token stored, device is successfully subscribed to receive push notifications." + result)
 			})
         },

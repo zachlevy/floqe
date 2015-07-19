@@ -1212,10 +1212,8 @@ angular.module('starter.controllers', ['ngCordova'])
 					
 					PushProcessingService.initialize();
 					getTags();
-					
 					getGeo();
-					
-					
+				
 					$scope.modal.hide();
 				})
 				
