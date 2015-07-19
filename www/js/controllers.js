@@ -55,7 +55,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	}
   
     $scope.fbLogin = function () {
-    console.log('login clicked');
 		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS() ) {
 			$cordovaFacebook.login(["public_profile", "email"])
 			.then(function(success) {
@@ -1135,7 +1134,9 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('TagsSearchController', function($scope, $rootScope, $interval, $state, $cordovaGeolocation, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
+.controller('TagsSearchController', function($scope, $rootScope, $cordovaPush, $interval, $state, 
+	$cordovaGeolocation, PushProcessingService, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
+		
   console.log('TagsSearchController');
   $scope.loginData = {};
   
@@ -1162,13 +1163,11 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 	
 	function getGeo() {
-		var posOptions = {timeout: 10000, enableHighAccuracy: false};
-		$cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
-		appApi.post('position',{'gps_object':resp.coords}).then(function(result) {
-			
-		})
-		$scope.geo.get = resp;
+		$cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
+			appApi.post('position',{'gps_object':resp}).then(function(reply) {
+			});
 		});
+		
 	}
 	
 	$scope.doLogin = function() {
@@ -1179,10 +1178,10 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.age = resp.age
 				current_user.name = resp.name
 				current_user.photo = resp.photo
+				
+				PushProcessingService.initialize();
 				getTags();
-				
 				getGeo();
-				
 				$scope.modal.hide();
 			}
 			else {
@@ -1196,6 +1195,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	
 	$scope.fbLogin = function () {
 		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
+			alert('login clicked');
 			$cordovaFacebook.login(["public_profile", "email"])
 			.then(function(success) {
 			  $cordovaFacebook.api("me")
@@ -1209,19 +1209,22 @@ angular.module('starter.controllers', ['ngCordova'])
 					current_user.name = result.name
 					current_user.photo = result.photo
 					$scope.response = current_user
+					
+					PushProcessingService.initialize();
 					getTags();
 					
 					getGeo();
+					
 					
 					$scope.modal.hide();
 				})
 				
 			  }, function (error) {
-				alert('Facebook Login Error');
+				alert('Facebook Login Error 1');
 				// error
 			  });
 			}, function (error) {
-			  alert('Facebook Login Error');
+			  alert('Facebook Login Error 2');
 
 			});
 		}
@@ -1236,6 +1239,8 @@ angular.module('starter.controllers', ['ngCordova'])
 			//$scope.modal.hide()
 		}
 	};
+	
+
 	
 	
 	function pre () {
@@ -1372,14 +1377,16 @@ angular.module('starter.controllers', ['ngCordova'])
   document.addEventListener("deviceready", onDeviceReady, false);
   $scope.geo = {};
   $scope.geo.get = "sadfa";
+  	
+  $scope.geo.get = navigator
   
   
   function onDeviceReady(){
     $cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
       console.log(resp);
-	  alert('Geo');
-      $scope.geo.get = resp;
+      
     });
+
   }
   
 })
