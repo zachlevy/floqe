@@ -26,22 +26,21 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
   $ionicConfigProvider.views.swipeBackEnabled(false);
   $stateProvider
 
-  .state('app', {
+
+  
+  // FLOQE START
+  .state('login', {
+    url: '/login',
+    templateUrl: 'templates/login.html',
+    controller: 'LoginController'
+
+  })
+  
+   .state('app', {
     url: "/app",
     abstract: true,
     templateUrl: "templates/menu.html",
     controller: 'AppCtrl'
-  })
-  
-  // FLOQE START
-  .state('app.login', {
-    url: '/fb/login',
-    views: {
-      'menuContent': {
-        templateUrl: 'templates/fb_login.html',
-        controller: 'LoginController'
-      }
-    }
   })
   .state('app.tagsSearch', {
     url: '/tags/search',
@@ -183,6 +182,6 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
 
   ; // end chaining
   // if none of the above states are matched, use this as the fallback
-  $urlRouterProvider.otherwise('/app/tags/search');
+  $urlRouterProvider.otherwise('/login');
   //$urlRouterProvider.otherwise('/app');
 });

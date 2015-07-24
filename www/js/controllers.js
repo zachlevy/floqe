@@ -88,27 +88,72 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Edit User Screen
-.controller('LoginController', function ($cordovaFacebook, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
+.controller('LoginController', function ($cordovaFacebook, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
   console.log('LoginController');
-  $scope.login = function () {
-    console.log('login clicked');
-    $cordovaFacebook.login(["public_profile", "email"])
-    .then(function(success) {
-      $cordovaFacebook.api("me")
-      .then(function(success) {
-        $scope.response = success;
-		appApi.post('login',{'fb_object':success})
-        var userId = success.id;
-      }, function (error) {
-        console.log('facebook api error');
-        // error
-      });
-    }, function (error) {
-      console.log('facebook login error');
-      console.log(error);
-      $scope.response = error;
-    });
-  };
+  $scope.loginData = {};
+	$scope.doLogin = function() {
+		appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
+			if (resp.errors === undefined) {
+				current_user.id = resp.id
+				current_user.gender = resp.gender
+				current_user.age = resp.age
+				current_user.name = resp.name
+				current_user.photo = resp.photo
+				current_user.photo = resp.photo
+
+				PushProcessingService.initialize();
+				$state.go('app.tagsSearch');
+			}
+			else {
+				alert(resp.errors.error)
+			}
+		})
+		$timeout(function() {
+		  //$scope.closeLogin();
+		}, 1000);
+	};
+	
+	$scope.fbLogin = function () {
+		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
+			alert($cordovaFacebook)
+			$cordovaFacebook.login(["public_profile", "email"])
+			.then(function(success) {
+			  $cordovaFacebook.api("me")
+			  .then(function(success) {
+				$scope.response = success;
+				appApi.post('login',{'fb_object':success}).then(function(result) {
+					$scope.response = result
+					current_user.id = result.id
+					current_user.gender = result.gender
+					current_user.age = result.age
+					current_user.name = result.name
+					current_user.photo = result.photo
+					$scope.response = current_user
+					
+					PushProcessingService.initialize();
+					$state.go('app.tagsSearch');
+				})
+				
+			  }, function (error) {
+				alert('Facebook Login Error 1');
+				// error
+			  });
+			}, function (error) {
+			  alert('Facebook Login Error 2');
+
+			});
+		}
+		else {
+			alert('browser')
+			current_user.id = 1
+			current_user.gender = 1
+			current_user.age = 25
+			current_user.name = 'shazam'
+			current_user.photo = 21323
+			$scope.response = current_user
+			//$scope.modal.hide()
+		}
+	};
 })
 
 // Edit User Screen
@@ -697,7 +742,7 @@ angular.module('starter.controllers', ['ngCordova'])
   tagsFactory.refreshTags(); // temp
   console.log('TagsResultsController');
 
-  appApi.post('search/results', {'search_id' : 1}).then(function(result){
+  appApi.post('search/results', {'search_id' : $stateParams.search_id,'user_id':current_user.id}).then(function(result){
     console.log(result);
     $scope.result = result;
 
@@ -779,7 +824,7 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.updateDescription = function() {
     console.log('updateDescription');
     // send to API
-    appApi.post('search/description', {search_id : 1, description : $scope.my.description}).then(function (result) {
+    appApi.post('search/description', {search_id : $stateParams.search_id, description : $scope.my.description}).then(function (result) {
       if (result === true) {
         console.log('description updated');
       }
@@ -1153,14 +1198,17 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 
   // Open the login modal
-  console.log('Current user check',current_user.id )
-	console.log(current_user.id === undefined)
+
 	if (current_user.id === undefined) {
 		$timeout(function() {
 			console.log('Modal:',$scope.modal)
       $scope.modal.show();
 		}, 100);
-	};
+	}
+	else {
+		getTags();
+		getGeo();
+	}
 	
 	function getGeo() {
 		$cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
@@ -1195,7 +1243,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	
 	$scope.fbLogin = function () {
 		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
-			alert('login clicked');
+			alert('FB Login is currently unavailable!');
 			$cordovaFacebook.login(["public_profile", "email"])
 			.then(function(success) {
 			  $cordovaFacebook.api("me")
@@ -1237,10 +1285,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			//$scope.modal.hide()
 		}
 	};
-	
 
-	
-	
 	function pre () {
 		// cancel the refresher
 		$interval.cancel($rootScope.tagRefresher);
@@ -1298,6 +1343,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		console.log($scope.tags.fullSelected);
 		appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
 		  console.log(result.search_id);
+		  $scope.tags.selected = [];
 		  $state.go('app.tagsResults', {search_id: result.search_id});
 		});
 	  };
