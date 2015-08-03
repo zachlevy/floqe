@@ -1,97 +1,49 @@
 angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
-	
-	document.addEventListener("deviceready", onDeviceReady, false);
-	
-  // Form data for the login modal
-  $scope.loginData = {};
-
-  // Create the login modal that we will use later
-  /* $ionicModal.fromTemplateUrl('templates/login.html', {
-    scope: $scope
-  }).then(function(modal) {
-    $scope.modal = modal;
-  }); */
-
-  // Triggered in the login modal to close it
-  $scope.closeLogin = function() {
-    $scope.modal.hide();
-  };
-
-  // Open the login modal
-  $scope.login = function() {
-    $scope.modal.show();
-  };
-
-  // Perform the login action when the user submits the login form
-  $scope.doLogin = function() {
-    console.log('Doing login', $scope.loginData);
-
-    appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
-		if (resp.error !== undefined) {
-			alert('User not found!')
+	$scope.tags = [{"name":"None", "id":0}] 
+	function load(){
+		appApi.post('tags/me',{'user_id':current_user.id}).then(function(resp) {
+			if (resp !== undefined){
+				$scope.tags = resp
+			}
+		})
+		$scope.search_id = 0
+		appApi.post('search/last',{'user_id':current_user.id}).then(function(resp) {
+			if (resp !== undefined){
+				$scope.search_id = resp.search_id
+			}
+		})
+		$scope.viewSearch = function(){
+			if ($scope.search_id != 0){
+				$state.go('app.tagsResults', {search_id: $scope.search_id});
+			}
 		}
-		else {
-			console.log('Result')
-			console.log(resp)
-			current_user.id = resp.id
-			current_user.gender = resp.gender
-			current_user.age = resp.age
-			current_user.name = resp.name
-			current_user.photo = resp.photo
-			$state.go('app.tagsSearch')
-			//$scope.modal.hide();
-		}
-	})
-    $timeout(function() {
-      //$scope.closeLogin();
-    }, 1000);
-  };
-
-	var device = false
-	function onDeviceReady(){
-	  var device = true
 	}
-  
-    $scope.fbLogin = function () {
-		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS() ) {
-			$cordovaFacebook.login(["public_profile", "email"])
-			.then(function(success) {
-			  $cordovaFacebook.api("me")
-			  .then(function(success) {
-				appApi.post('login',{'fb_object':success}).then(function(resp) {
-					var result = resp.result
-					current_user.id = result.id
-					current_user.gender = result.gender
-					current_user.age = result.age
-					current_user.name = result.name
-					current_user.photo = result.photo
-					$scope.modal.hide();
-				})
-				
-			  }, function (error) {
-				alert('Facebook Login Error');
-				// error
-			  });
-			}, function (error) {
-			  alert('Facebook Login Error');
-
-			});
-		}
-		else {
-			console.log('browser')
-			alert(current_user.id )
-		}
-	};
+	load();
 	
+	$scope.$on('search:updated', function(event) {
+        load();
+    });
 })
 
 // Edit User Screen
-.controller('LoginController', function ($cordovaFacebook, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
+.controller('LoginController', function ($cordovaFacebook,$ionicLoading, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
   console.log('LoginController');
+  
+    $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
+  
   $scope.loginData = {};
 	$scope.doLogin = function() {
+		$scope.show();
 		appApi.post('login',{'psw_object':$scope.loginData}).then(function(resp) {
 			if (resp.errors === undefined) {
 				current_user.id = resp.id
@@ -102,9 +54,11 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.photo = resp.photo
 
 				PushProcessingService.initialize();
+				$scope.hide();
 				$state.go('app.tagsSearch');
 			}
 			else {
+				$scope.hide();
 				alert(resp.errors.error)
 			}
 		})
@@ -114,33 +68,33 @@ angular.module('starter.controllers', ['ngCordova'])
 	};
 	
 	$scope.fbLogin = function () {
+		$scope.show();
 		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
-			alert($cordovaFacebook)
 			$cordovaFacebook.login(["public_profile", "email"])
 			.then(function(success) {
 			  $cordovaFacebook.api("me")
 			  .then(function(success) {
 				$scope.response = success;
 				appApi.post('login',{'fb_object':success}).then(function(result) {
-					$scope.response = result
 					current_user.id = result.id
 					current_user.gender = result.gender
 					current_user.age = result.age
 					current_user.name = result.name
 					current_user.photo = result.photo
-					$scope.response = current_user
 					
 					PushProcessingService.initialize();
+					$scope.hide();
 					$state.go('app.tagsSearch');
 				})
 				
 			  }, function (error) {
+				  $scope.hide();
 				alert('Facebook Login Error 1');
 				// error
 			  });
 			}, function (error) {
+				$scope.hide();
 			  alert('Facebook Login Error 2');
-
 			});
 		}
 		else {
@@ -157,8 +111,17 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Edit User Screen
-.controller('UserEditController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi) {
+.controller('UserEditController', function ($scope, $rootScope, $ionicLoading, $interval, $state, $stateParams, $timeout, tagsFactory, current_user, appApi) {
   console.log("UserEditController");
+  
+  $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -182,6 +145,7 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.tags.search = {};
   $scope.tags.search.name = "";
 
+  $scope.show();
   // get all tags
   appApi.get('tags').then(function(result) {
     $scope.tags.all = result;
@@ -197,7 +161,9 @@ angular.module('starter.controllers', ['ngCordova'])
     console.log('$scope.tags.suggested');
     console.log($scope.tags.suggested);
   });
-
+  
+  $scope.hide();
+  
   // when search button is pressed
   $scope.onSearch = function () {
     console.log('onSearch');
@@ -284,7 +250,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
     // gender
     // change user object gender into radio button
-    if ($scope.user.gender === 1) {
+    if ($scope.user.gender === 0) {
       $scope.user.gender = {};
       $scope.user.gender.male = true;
     } else {
@@ -697,9 +663,18 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Event List Screen
-.controller('EventsListController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi, current_user) {
+.controller('EventsListController', function ($scope, $rootScope, $ionicLoading, $interval, $state, $stateParams, $timeout, tagsFactory, usersFactory, appApi, current_user) {
   console.log('EventsListController');
 
+  $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -713,8 +688,10 @@ angular.module('starter.controllers', ['ngCordova'])
   }
   pre();
 
+  $scope.show()
   appApi.post('events', {user_id : current_user.id}).then(function (result) {
     $scope.events = result;
+	$scope.hide()
   });
   $scope.onEventSelect = function (event_id) {
     console.log('onEventSelect');
@@ -790,7 +767,7 @@ angular.module('starter.controllers', ['ngCordova'])
       return user;
     }
   };
-
+  
   // swiping
   $scope.swipedUserIds = [];
 
@@ -802,6 +779,12 @@ angular.module('starter.controllers', ['ngCordova'])
       if (result === true) {
         console.log('matched with user');
       }
+	  if (result.matched === true) {
+		  $ionicPopup.alert({
+			 title: 'Bingo!',
+			 template: 'You have a new match!'
+		});
+	  }
     });
     console.log($scope.swipedUserIds);
     console.log($stateParams.search_id);
@@ -836,9 +819,19 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
+.controller('MatchesController', function($scope, $rootScope, $ionicLoading, $interval, $state, $stateParams, appApi, current_user) {
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
+  
+    $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -854,8 +847,10 @@ angular.module('starter.controllers', ['ngCordova'])
 
   // live
   // works
+  $scope.show()
   appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
     $scope.matches = result;
+	$scope.hide()
   });
 
   // start the conversations checker
@@ -1122,10 +1117,21 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Invite Contacts Screen
-.controller('ContactsInviteController', function($scope, $rootScope, $interval, $state, $stateParams, appApi, current_user) {
+.controller('ContactsInviteController', function($scope, $rootScope, $ionicLoading, $cordovaContacts, $interval, $state, $stateParams, appApi, current_user) {
   console.log('ContactsInviteController');
   console.log($stateParams.event_id);
   // before the view is loaded, add things here that involve switching between controllers
+  $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	};
+	
+	$scope.show();
+	
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -1138,10 +1144,14 @@ angular.module('starter.controllers', ['ngCordova'])
     $rootScope.multiBar = false;
   }
   pre();
+  
 
-  appApi.post('contacts', {user_id : current_user.id}).then(function (result) {
-    $scope.contacts = result;
-  });
+    $cordovaContacts.find({}).then(function(resp) {
+		appApi.put('contacts', {'user_id' : current_user.id, 'contacts':resp}).then(function (result) {
+			$scope.contacts = result;
+			$scope.hide();
+		})
+    });
   
   // swiping
   $scope.selectedContactIds = [];
@@ -1179,10 +1189,20 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 
-.controller('TagsSearchController', function($scope, $rootScope, $cordovaPush, $interval, $state, 
+.controller('TagsSearchController', function($scope, $rootScope, $cordovaPush, $interval, $state, $ionicPopup,  $ionicLoading,
 	$cordovaGeolocation, PushProcessingService, $stateParams,$ionicModal,$timeout, appApi, tagsFactory, current_user, $cordovaFacebook ) {
 		
   console.log('TagsSearchController');
+  
+    $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
   $scope.loginData = {};
   
   // Loads pop login screen
@@ -1208,14 +1228,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	else {
 		getTags();
 		getGeo();
-	}
-	
-	function getGeo() {
-		$cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
-			appApi.post('position',{'gps_object':resp}).then(function(reply) {
-			});
-		});
-		
 	}
 	
 	$scope.doLogin = function() {
@@ -1261,7 +1273,6 @@ angular.module('starter.controllers', ['ngCordova'])
 					PushProcessingService.initialize();
 					getTags();
 					getGeo();
-				
 					$scope.modal.hide();
 				})
 				
@@ -1314,36 +1325,45 @@ angular.module('starter.controllers', ['ngCordova'])
 		if (current_user.id !== undefined) {
 		  appApi.get('tags').then(function(result) {
 			$scope.tags.all = result;
-			console.log('$scope.tags.all');
-			console.log($scope.tags.all);
-
 			// get all suggested tags
 			appApi.post('tags', {user_id : current_user.id}).then(function(result) {
 			  $scope.tags.suggested = result;
-			  console.log('$scope.tags.suggested');
-			  console.log($scope.tags.suggested);
-
 			  $scope.processedTags = processedTags();
 			});
 		  });
 		}
 	}
 
+	function getGeo() {
+		$scope.show();
+		var posOptions = {timeout: 10000, enableHighAccuracy: true};
+		$cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
+			console.log("geolocation fired!");
+			appApi.post('position',{'gps_object':resp, "user_id": current_user.id}).then(function(reply) {
+				if (reply.status !== undefined) {
+					$scope.hide();
+					$ionicPopup.alert({
+						 title: 'Problemo',
+						 template: 'No GPS data was found! Setting location settings to last known.'
+					});
+				};
+				
+			});
+		});
+		
+	}
+	
+	
 	  // when search button is pressed
 	  $scope.onSearch = function () {
-		  
-		console.log('onSearch');
-		console.log($scope.tags.selected);
-		console.log("submitTags");
-
 		$scope.tags.fullSelected = [];
 		angular.forEach($scope.tags.selected, function (tag_id, key) {
 		  $scope.tags.fullSelected.push({"id" : tag_id});
 		});
 		console.log($scope.tags.fullSelected);
 		appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
-		  console.log(result.search_id);
 		  $scope.tags.selected = [];
+		  $rootScope.$broadcast('search:updated');
 		  $state.go('app.tagsResults', {search_id: result.search_id});
 		});
 	  };
@@ -1357,11 +1377,6 @@ angular.module('starter.controllers', ['ngCordova'])
 		} else if ($scope.tags.selected.indexOf(tag_id) > -1) {
 		  $scope.tags.selected.splice($scope.tags.selected.indexOf(tag_id), 1);
 		}
-		// $scope.tags.selected.push(tag_id);
-		console.log('tagsFactory.getTag(tag_id)');
-		console.log(tagsFactory.getTagFromTags(tag_id, $scope.tags.all));
-		console.log('$scope.tags.selected');
-		console.log($scope.tags.selected);
 	  };
 
 	  // watch for the search field to be updated to re-run the tag processor
@@ -1375,17 +1390,13 @@ angular.module('starter.controllers', ['ngCordova'])
 		rowTags = [[]];
 		availableTags = $scope.tags.all;
 		if ($scope.tags.search.name.length > 0) {
-		  console.log("use tags.all");
 		  availableTags = $scope.tags.all;
 		} else {
-		  console.log($scope.tags.search.name);
-		  console.log("use tags.suggested");
 		  availableTags = $scope.tags.suggested;
 		}
 		
 		angular.forEach(availableTags, function(tag, index) {
 		  // if the tag is selected or it contains the search string
-		  console.log('name: ' + tag.name);
 		  if (
 			$scope.tags.selected.indexOf(tag.id) !== -1 ||
 			(angular.lowercase(tag.name).indexOf(angular.lowercase($scope.tags.search.name)) != -1)
@@ -1408,6 +1419,9 @@ angular.module('starter.controllers', ['ngCordova'])
   $scope.contacts = {};
   $scope.contacts.all = "sadfa";
   
+	
+
+  
   function onDeviceReady(){
     $cordovaContacts.find({}).then(function(resp) {
       console.log(resp);
@@ -1417,17 +1431,19 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Get Geo Controller
-.controller('GetGeoController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaGeolocation) {
+.controller('GetGeoController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaGeolocation, appApi) {
   document.addEventListener("deviceready", onDeviceReady, false);
   $scope.geo = {};
-  $scope.geo.get = "sadfa";
-  	
-  $scope.geo.get = navigator
-  
+  $scope.geo.get = "sadfa";  
   
   function onDeviceReady(){
-    $cordovaGeolocation.getCurrentPosition({}).then(function(resp) {
-      console.log(resp);
+	var posOptions = {timeout: 10000, enableHighAccuracy: true};
+	console.log("geo start")
+    $cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
+		$scope.geo.get = resp
+		appApi.post('position', {"data" : resp, "user_id":current_user.id}).then(function(result) {
+			
+		})
       
     });
 

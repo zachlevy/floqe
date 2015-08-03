@@ -1,6 +1,6 @@
 <ion-side-menus enable-menu-with-back-views="true">
   <ion-side-menu-content drag-content="false">
-    <ion-nav-bar class="bar-calm" data-ng-class="{'multi-bar':multiBar}" no-tap-scroll="true">
+    <ion-nav-bar class="bar-assertive" data-ng-class="{'multi-bar':multiBar}" no-tap-scroll="true">
       <ion-nav-back-button>Back</ion-nav-back-button>
       <ion-nav-buttons side="right">
         <button class="button button-icon button-clear" data-ng-if="showOptions" ng-click="optionsClick()">
@@ -17,8 +17,8 @@
   </ion-side-menu-content>
 
   <ion-side-menu side="left" enable-menu-with-back-views="true">
-    <ion-header-bar class="bar-calm">
-      <h1 class="title">Floqe</h1>
+    <ion-header-bar class="bar-assertive">
+      <h1 class="title">Spry</h1>
 	  <a class="button icon ion-gear-a" menu-close href="#/app/users/1/edit"> </a>
     </ion-header-bar>
     <ion-content>
@@ -47,25 +47,35 @@
 		-->	
 		<ion-item nav-clear menu-close href="#/app/tags/search">
 			<i style="font-size: 1.25em;" class="icon ion-ios-search-strong"></i>
-			<b>Search<b>
+			<b>Search</b>
 			<p>Look for activities</p>
         </ion-item>
 		<ion-item nav-clear menu-close href="#/app/matches">
           <i style="font-size: 1.25em;" class="icon ion-eye"></i>
-			<b>Matches<b>
+			<b>Matches</b>
 			<p>Browse your matches</p>
         </ion-item>
 		<ion-item nav-clear menu-close href="#/app/events">
 			<i style="font-size: 1.25em;" class="icon ion-star"></i>
-			<b>Events<b>
+			<b>Events</b>
 			<p>Browse events</p>
         </ion-item>
         <ion-item nav-clear menu-close href="#/app/contacts/invite/1">
 		  <i style="font-size: 1.25em;" class="icon ion-person-stalker"></i>
-			<b>Contacts<b>
+			<b>Contacts</b>
 			<p>Invite friends</p>
         </ion-item>
+		<ion-item nav-clear menu-close data-ng-click="viewSearch()">
+			<b>Last search:</b>
+			<div data-ng-repeat="tag in tags">
+				<button class="button button-outline button-assertive"  >
+				  {{ tag.name }}
+				</button>
+			</div>
+		</ion-item>
       </ion-list>
+	  
+	  
     </ion-content>
   </ion-side-menu>
 </ion-side-menus>

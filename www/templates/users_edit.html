@@ -24,7 +24,7 @@
       </label>
       <label class="item item-input">
         <span class="input-label">Upload Photo</span>
-        <button class="button button-calm button-small hidden" data-ng-click="changePhoto()">Change Photo</button>
+        <button class="button button-assertive button-small hidden" data-ng-click="changePhoto()">Change Photo</button>
         <input type="hidden" role="uploadcare-uploader" />
         <div class="photo-wrapper">
           <i class="fa fa-pencil"></i>
@@ -39,7 +39,7 @@
 
       <div class="row tags-wrap" data-ng-repeat="row in processedTags">
         <div class="col col-{{ tag.column_size }}" data-ng-repeat="tag in row | tagColumns">
-          <button class="button button-block button-calm" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
+          <button class="button button-block button-assertive" data-ng-click="onTagSelect(tag.id)" data-ng-class="{unselected:(tags.selected.indexOf(tag.id) == -1)}">
             {{ tag.name }}
           </button>
         </div>
@@ -48,7 +48,7 @@
     </div>
   </ion-content>
   <div class="footer-button-wrap">
-    <button class="button button-block button-calm footer-button" data-ng-click="onSubmit()">
+    <button class="button button-block button-assertive footer-button" data-ng-click="onSubmit()">
       Submit
     </button>
   </div>
