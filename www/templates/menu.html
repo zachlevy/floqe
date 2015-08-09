@@ -65,7 +65,7 @@
 			<b>Contacts</b>
 			<p>Invite friends</p>
         </ion-item>
-		<ion-item nav-clear menu-close data-ng-click="viewSearch()">
+		<ion-item ng-if='tags.length > 0' nav-clear menu-close data-ng-click="viewSearch()">
 			<b>Last search:</b>
 			<div data-ng-repeat="tag in tags">
 				<button class="button button-outline button-assertive"  >

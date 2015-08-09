@@ -102,7 +102,7 @@ angular.module('starter.services', [])
       .success(function(res, status) {
         if (res.success === true) {
           // success
-          console.log('http success');
+          console.log(baseUrl + endpoint);
           if ( res.hasOwnProperty('result')) {
             deferred.resolve(res.result);
           } else {
@@ -140,7 +140,7 @@ angular.module('starter.services', [])
       .success(function(res, status) {
         if (res.success === true) {
           // success
-          console.log('http success');
+          console.log(baseUrl + endpoint);
           if ( res.hasOwnProperty('result')) {
             deferred.resolve(res.result);
           } else {
@@ -176,7 +176,7 @@ angular.module('starter.services', [])
         console.log(status);
         if (res.success === true) {
           // success
-          console.log('http success');
+          console.log(baseUrl + endpoint);
           deferred.resolve(res.result);
         } else if (res.success === false) {
           // bad params

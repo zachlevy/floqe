@@ -36,9 +36,9 @@ angular.module('starter.controllers', ['ngCordova'])
       template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
 		});
 	  };
-	  $scope.hide = function(){
+	$scope.hide = function(){
 		$ionicLoading.hide();
-	  };
+	};
   
   
   $scope.loginData = {};
@@ -859,7 +859,7 @@ angular.module('starter.controllers', ['ngCordova'])
     appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
       $scope.matches = result;
     });
-  }, 30000);
+  }, 10000);
 
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');
@@ -993,12 +993,9 @@ angular.module('starter.controllers', ['ngCordova'])
   pre();
 
   console.log('InviteMatchesController');
-  appApi.post('invite', {conversation_id : 1, user_id : current_user.id}).then(function (result) {
-    $scope.matches = result;
+  appApi.post('invite', {conversation_id : $stateParams.conversation_id, user_id : current_user.id}).then(function (result) {
+    $scope.matches = result.users;
   });
-  
-  // for match
-  console.log();
 
   // swiping
   $scope.selectedMatchIds = [];
@@ -1049,9 +1046,8 @@ angular.module('starter.controllers', ['ngCordova'])
   pre();
 
   console.log('ConversationDetailsController');
-  
-  
-  appApi.post('conversation', {conversation_id : 1, user_id : current_user.id}).then(function(result) {
+
+  appApi.post('conversation', {conversation_id :  $stateParams.conversation_id, user_id : current_user.id}).then(function(result) {
     $scope.users = result.users;
   });
   
@@ -1103,7 +1099,7 @@ angular.module('starter.controllers', ['ngCordova'])
         console.log('confirmed Leave');
         console.log($stateParams.conversation_id);
         // send to API
-        appApi.post('conversations/remove', {conversation_id : $stateParams.conversation_id, remove_user : 1}).then(function(result) {
+        appApi.post('conversations/remove', {conversation_id : $stateParams.conversation_id, remove_user : current_user.id}).then(function(result) {
           if (result === true) {
             console.log('removed from conversation');
           }
@@ -1335,27 +1331,41 @@ angular.module('starter.controllers', ['ngCordova'])
 	}
 
 	function getGeo() {
-		$scope.show();
-		var posOptions = {timeout: 10000, enableHighAccuracy: true};
-		$cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
-			console.log("geolocation fired!");
-			appApi.post('position',{'gps_object':resp, "user_id": current_user.id}).then(function(reply) {
+		$scope.show();		
+		navigator.geolocation.getCurrentPosition(
+            function(positionGPS){
+				appApi.post('position',{'gps_object':resp, "user_id": current_user.id}).then(function(reply) {
+				$scope.hide()
 				if (reply.status !== undefined) {
-					$scope.hide();
 					$ionicPopup.alert({
 						 title: 'Problemo',
 						 template: 'No GPS data was found! Setting location settings to last known.'
 					});
 				};
-				
-			});
-		});
-		
-	}
+			}
+			, function(err) {
+				$scope.hide()
+				$ionicPopup.alert({
+						 title: 'Problemo',
+						 template: 'No GPS data was found! Setting location settings to last known.'
+				});
+			  });
+			},
+            function(){
+				console.log('no gps')
+				$scope.hide()
+				$ionicPopup.alert({
+						 title: 'Problemo',
+						 template: 'No GPS data was found! Setting location settings to last known.'
+				});;},
+            {enableHighAccuracy:false,maximumAge:Infinity, timeout:60000}
+        );  
+	};
 	
 	
 	  // when search button is pressed
 	  $scope.onSearch = function () {
+		$scope.show();
 		$scope.tags.fullSelected = [];
 		angular.forEach($scope.tags.selected, function (tag_id, key) {
 		  $scope.tags.fullSelected.push({"id" : tag_id});
@@ -1364,6 +1374,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
 		  $scope.tags.selected = [];
 		  $rootScope.$broadcast('search:updated');
+		  $scope.hide();
 		  $state.go('app.tagsResults', {search_id: result.search_id});
 		});
 	  };
