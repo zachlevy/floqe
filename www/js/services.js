@@ -1,6 +1,32 @@
 angular.module('starter.services', [])
 
 // any function related to accessing the api
+.factory('eventListening', function ($window, $state, $ionicPopup, eventNotification, current_user) {
+	$rootScope.$on("newMatch", eventNotification.match())
+})
+.factory('eventNotification', function ($window, $state, $ionicPopup, current_user) {
+	return {
+        match: function () {
+			$ionicPopup.show({
+			  title: 'Match', 
+			  template: '', // String (optional). The html template to place in the popup body.
+			  subTitle: 'You got a new match!',
+			  buttons: [{ // Array[Object] (optional). Buttons to place in the popup footer.
+				text: 'Continue',
+				type: 'button-default',
+				onTap: function(e) {}
+			  }, {
+				text: 'View Matches',
+				type: 'button-positive',
+				onTap: function(e) {
+				  // Returning a value will cause the promise to resolve with the given value.
+				  $state.go('app.matches');
+				}
+			  }]
+			})
+		}
+	}
+})
 .factory('PushProcessingService', function ($window, $ionicPopup, appApi, current_user) {
     function onDeviceReady() {
         var pushNotification = window.plugins.pushNotification;

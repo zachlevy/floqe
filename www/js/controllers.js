@@ -28,7 +28,7 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Edit User Screen
-.controller('LoginController', function ($cordovaFacebook,$ionicLoading, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
+.controller('LoginController', function ($cordovaFacebook,eventNotification,$ionicLoading, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
   console.log('LoginController');
   
     $scope.show = function() {
@@ -39,7 +39,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	$scope.hide = function(){
 		$ionicLoading.hide();
 	};
-  
   
   $scope.loginData = {};
 	$scope.doLogin = function() {
@@ -574,7 +573,16 @@ angular.module('starter.controllers', ['ngCordova'])
 // Show Event Screen
 .controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, current_user, appApi) {
   console.log('EventShowController');
-
+	$scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
+	$scope.show();
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -590,6 +598,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
   appApi.post('event', {event_id : $stateParams.event_id, user_id : current_user.id}).then(function(result) {
     $scope.event = result;
+	$scope.hide();
   });
 
   $scope.current_user = current_user;
@@ -819,7 +828,7 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Matches Screen
-.controller('MatchesController', function($scope, $rootScope, $ionicLoading, $interval, $state, $stateParams, appApi, current_user) {
+.controller('MatchesController', function($scope, eventNotification,$rootScope, $ionicLoading, $interval, $state, $stateParams, appApi, current_user) {
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   
@@ -857,7 +866,11 @@ angular.module('starter.controllers', ['ngCordova'])
   // implement
   $rootScope.matchesRefresher = $interval(function(){
     appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
+	  if ($scope.matches.length > result.length){
+		  eventNotification.match()
+	  }
       $scope.matches = result;
+	  
     });
   }, 10000);
 
@@ -1334,7 +1347,7 @@ angular.module('starter.controllers', ['ngCordova'])
 		$scope.show();		
 		navigator.geolocation.getCurrentPosition(
             function(positionGPS){
-				appApi.post('position',{'gps_object':resp, "user_id": current_user.id}).then(function(reply) {
+				appApi.post('position',{'gps_object':positionGPS, "user_id": current_user.id}).then(function(reply) {
 				$scope.hide()
 				if (reply.status !== undefined) {
 					$ionicPopup.alert({
@@ -1358,7 +1371,7 @@ angular.module('starter.controllers', ['ngCordova'])
 						 title: 'Problemo',
 						 template: 'No GPS data was found! Setting location settings to last known.'
 				});;},
-            {enableHighAccuracy:false,maximumAge:Infinity, timeout:60000}
+            {enableHighAccuracy:false,maximumAge:Infinity, timeout:6000}
         );  
 	};
 	
@@ -1429,10 +1442,7 @@ angular.module('starter.controllers', ['ngCordova'])
   document.addEventListener("deviceready", onDeviceReady, false);
   $scope.contacts = {};
   $scope.contacts.all = "sadfa";
-  
-	
 
-  
   function onDeviceReady(){
     $cordovaContacts.find({}).then(function(resp) {
       console.log(resp);
