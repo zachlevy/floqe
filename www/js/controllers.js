@@ -39,6 +39,18 @@ angular.module('starter.controllers', ['ngCordova'])
 	$scope.hide = function(){
 		$ionicLoading.hide();
 	};
+	
+	var cur_user = JSON.parse(window.localStorage.getItem("spry_user"));
+	if (cur_user != undefined ){
+		current_user.id = cur_user.id
+		current_user.gender = cur_user.gender
+		current_user.age = cur_user.age
+		current_user.name = cur_user.name
+		current_user.photo = cur_user.photo
+		current_user.photo = cur_user.photo
+		PushProcessingService.initialize();
+		$state.go('app.tagsSearch');
+	}
   
   $scope.loginData = {};
 	$scope.doLogin = function() {
@@ -51,7 +63,8 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.name = resp.name
 				current_user.photo = resp.photo
 				current_user.photo = resp.photo
-
+				
+				window.localStorage.setItem("spry_user", JSON.stringify(resp));
 				PushProcessingService.initialize();
 				$scope.hide();
 				$state.go('app.tagsSearch');
@@ -74,6 +87,7 @@ angular.module('starter.controllers', ['ngCordova'])
 			  $cordovaFacebook.api("me")
 			  .then(function(success) {
 				$scope.response = success;
+
 				appApi.post('login',{'fb_object':success}).then(function(result) {
 					current_user.id = result.id
 					current_user.gender = result.gender
@@ -81,6 +95,7 @@ angular.module('starter.controllers', ['ngCordova'])
 					current_user.name = result.name
 					current_user.photo = result.photo
 					
+					window.localStorage.setItem("spry_user", JSON.stringify(result));
 					PushProcessingService.initialize();
 					$scope.hide();
 					$state.go('app.tagsSearch');
@@ -571,7 +586,7 @@ angular.module('starter.controllers', ['ngCordova'])
   };
 })
 // Show Event Screen
-.controller('EventShowController', function ($scope, $rootScope, $interval, $state, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, current_user, appApi) {
+.controller('EventShowController', function ($scope, $rootScope, $interval, $state,$ionicLoading, $stateParams, $timeout, $ionicPopup, tagsFactory, usersFactory, current_user, appApi) {
   console.log('EventShowController');
 	$scope.show = function() {
     $ionicLoading.show({
@@ -710,8 +725,19 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Tags Search Results Screen
-.controller('TagsResultsController', function(appApi, $scope, $rootScope, $interval, $state, $stateParams, tagsFactory, usersFactory, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
+.controller('TagsResultsController', function(appApi, $scope, $rootScope, $ionicLoading, $interval, $state, $stateParams, tagsFactory, usersFactory, current_user, allTags, $ionicSideMenuDelegate, appHelper) {
   // before the view is loaded, add things here that involve switching between controllers
+  $scope.show = function() {
+    $ionicLoading.show({
+      template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
+		});
+	  };
+	  $scope.hide = function(){
+		$ionicLoading.hide();
+	  };
+  
+	$scope.show();
+  
   function pre () {
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
@@ -731,7 +757,7 @@ angular.module('starter.controllers', ['ngCordova'])
   appApi.post('search/results', {'search_id' : $stateParams.search_id,'user_id':current_user.id}).then(function(result){
     console.log(result);
     $scope.result = result;
-
+	$scope.hide();
     // init
     // hit API server for results
     $scope.me = current_user;
@@ -1138,7 +1164,6 @@ angular.module('starter.controllers', ['ngCordova'])
 	  $scope.hide = function(){
 		$ionicLoading.hide();
 	};
-	
 	$scope.show();
 	
   function pre () {
@@ -1153,12 +1178,13 @@ angular.module('starter.controllers', ['ngCordova'])
     $rootScope.multiBar = false;
   }
   pre();
-  
-
+	appApi.post('contacts', {'user_id' : current_user.id}).then(function (result) {
+			$scope.contacts = result;
+			$scope.hide();
+	})
     $cordovaContacts.find({}).then(function(resp) {
 		appApi.put('contacts', {'user_id' : current_user.id, 'contacts':resp}).then(function (result) {
 			$scope.contacts = result;
-			$scope.hide();
 		})
     });
   
@@ -1231,7 +1257,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	if (current_user.id === undefined) {
 		$timeout(function() {
 			console.log('Modal:',$scope.modal)
-      $scope.modal.show();
+			$scope.modal.show();
 		}, 100);
 	}
 	else {
@@ -1248,6 +1274,7 @@ angular.module('starter.controllers', ['ngCordova'])
 				current_user.name = resp.name
 				current_user.photo = resp.photo
 				
+				window.localStorage.setItem("spry_user", JSON.stringify(resp));
 				PushProcessingService.initialize();
 				getTags();
 				getGeo();
@@ -1271,7 +1298,6 @@ angular.module('starter.controllers', ['ngCordova'])
 			  .then(function(success) {
 				$scope.response = success;
 				appApi.post('login',{'fb_object':success}).then(function(result) {
-					$scope.response = result
 					current_user.id = result.id
 					current_user.gender = result.gender
 					current_user.age = result.age
@@ -1279,6 +1305,7 @@ angular.module('starter.controllers', ['ngCordova'])
 					current_user.photo = result.photo
 					$scope.response = current_user
 					
+					window.localStorage.setItem("spry_user", JSON.stringify(result));
 					PushProcessingService.initialize();
 					getTags();
 					getGeo();
@@ -1463,13 +1490,9 @@ angular.module('starter.controllers', ['ngCordova'])
     $cordovaGeolocation.getCurrentPosition(posOptions).then(function(resp) {
 		$scope.geo.get = resp
 		appApi.post('position', {"data" : resp, "user_id":current_user.id}).then(function(result) {
-			
 		})
-      
     });
-
   }
-  
 })
 
 // Friends Controller

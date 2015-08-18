@@ -9,7 +9,7 @@
           <i class="fa fa-check-square-o pull-right icon-checked" data-ng-if="(selectedContactIds.indexOf(contact.id) > -1)"></i>
           <i class="fa fa-square-o pull-right icon-unchecked" data-ng-if="(selectedContactIds.indexOf(contact.id) == -1)"></i>
         </div>
-        <h2 class="name">{{ contact.name }} <i class="fa fa-user friend"></i></h2>
+        <h2 class="name">{{ contact.name }} <i data-ng-if="contact.friend" class="fa fa-user friend"></i></h2>
         <p class="number">+{{ contact.number }}</p>
       </a>
     </div>
