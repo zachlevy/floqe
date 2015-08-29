@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
   // notifications
-  $rootScope.badge = 0;
+  $rootScope.badge = 1;
 
 	$scope.tags = [{"name":"None", "id":0}] 
 	function load(){
