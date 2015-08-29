@@ -4,7 +4,7 @@
       {{ contacts.all }}
     </pre>
     <div class="list contacts-list user-list">
-      <a class="item user" href="#" data-ng-repeat="contact in contacts" data-ng-click="onContactSelect(contact.id)">
+      <a class="item user" href="#" ng-if="contacts.length > 0" data-ng-repeat="contact in contacts" data-ng-click="onContactSelect(contact.id)">
         <div class="options">
           <i class="fa fa-check-square-o pull-right icon-checked" data-ng-if="(selectedContactIds.indexOf(contact.id) > -1)"></i>
           <i class="fa fa-square-o pull-right icon-unchecked" data-ng-if="(selectedContactIds.indexOf(contact.id) == -1)"></i>
@@ -15,7 +15,7 @@
     </div>
   </ion-content>
   <div class="footer-button-wrap">
-    <button class="button button-block button-assertive footer-button" data-ng-click="onInvite()">
+    <button ng-if="contacts.length > 0" class="button button-block button-assertive footer-button" data-ng-click="onInvite()">
         Invite Contacts
     </button>
   </div>

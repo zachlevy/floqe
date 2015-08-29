@@ -6,7 +6,7 @@
 // 'starter.controllers' is found in controllers.js
 angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', 'starter.filters', 'tagger', 'ui.slider', 'angularMoment'])
 
-.run(function($ionicPlatform,$cordovaPush, $rootScope) {
+.run(function($ionicPlatform,$cordovaPush, $window, $rootScope) {
   $ionicPlatform.ready(function() {
     // Hide the accessory bar by default (remove this to show the accessory bar above the keyboard
     // for form inputs)
@@ -19,6 +19,17 @@ angular.module('starter', ['ionic', 'starter.controllers', 'starter.services', '
       StatusBar.styleDefault();
     }
   });
+  
+  	$window.fbAsyncInit = function() {
+		FB.init({ 
+		  appId: '410577219067324',
+		  status: true, 
+		  cookie: true, 
+		  xfbml: true,
+		  version: 'v2.2'
+		});
+	};
+	
 
 })
 

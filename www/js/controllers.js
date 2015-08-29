@@ -28,9 +28,12 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Edit User Screen
-.controller('LoginController', function ($cordovaFacebook,eventNotification,$ionicLoading, PushProcessingService, $scope, $rootScope, $interval, $state, $stateParams, $timeout, current_user, appApi) {
+.controller('LoginController', function ($cordovaFacebook,eventNotification, $ionicLoading, PushProcessingService, $scope, 
+	$rootScope, $interval, $state, $stateParams, $timeout, $window, current_user, appApi) {
+		
   console.log('LoginController');
   
+	
     $scope.show = function() {
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
@@ -82,12 +85,13 @@ angular.module('starter.controllers', ['ngCordova'])
 	$scope.fbLogin = function () {
 		$scope.show();
 		if ( ionic.Platform.isAndroid() ||  ionic.Platform.isIOS()) {
-			$cordovaFacebook.login(["public_profile", "email"])
+			$cordovaFacebook.login(["public_profile", "email","user_friends"])
 			.then(function(success) {
-			  $cordovaFacebook.api("me")
+			  $cordovaFacebook.api("me",["public_profile"])
 			  .then(function(success) {
 				$scope.response = success;
-
+				console.log('Public Profile:')
+				console.log(success)
 				appApi.post('login',{'fb_object':success}).then(function(result) {
 					current_user.id = result.id
 					current_user.gender = result.gender
@@ -97,6 +101,7 @@ angular.module('starter.controllers', ['ngCordova'])
 					
 					window.localStorage.setItem("spry_user", JSON.stringify(result));
 					PushProcessingService.initialize();
+										
 					$scope.hide();
 					$state.go('app.tagsSearch');
 				})
@@ -1152,10 +1157,11 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Invite Contacts Screen
-.controller('ContactsInviteController', function($scope, $rootScope, $ionicLoading, $cordovaContacts, $interval, $state, $stateParams, appApi, current_user) {
+.controller('ContactsInviteController', function($scope, $rootScope, $ionicLoading, $cordovaFacebook, $cordovaContacts, $interval, $state, $stateParams, appApi, current_user) {
   console.log('ContactsInviteController');
   console.log($stateParams.event_id);
   // before the view is loaded, add things here that involve switching between controllers
+
   $scope.show = function() {
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
@@ -1178,15 +1184,11 @@ angular.module('starter.controllers', ['ngCordova'])
     $rootScope.multiBar = false;
   }
   pre();
-	appApi.post('contacts', {'user_id' : current_user.id}).then(function (result) {
-			$scope.contacts = result;
-			$scope.hide();
+  
+	appApi.post('invite', {'user_id' : current_user.id, 'event_id': $stateParams.event_id}).then(function (result) {
+		$scope.contacts = result;
+		$scope.hide();
 	})
-    $cordovaContacts.find({}).then(function(resp) {
-		appApi.put('contacts', {'user_id' : current_user.id, 'contacts':resp}).then(function (result) {
-			$scope.contacts = result;
-		})
-    });
   
   // swiping
   $scope.selectedContactIds = [];
@@ -1465,17 +1467,30 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Get Contacts Controller
-.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaContacts) {
+.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaFacebook) {
   document.addEventListener("deviceready", onDeviceReady, false);
   $scope.contacts = {};
   $scope.contacts.all = "sadfa";
-
-  function onDeviceReady(){
-    $cordovaContacts.find({}).then(function(resp) {
-      console.log(resp);
-      $scope.contacts.all = resp;
+  
+	$cordovaFacebook.api("me", ["user_friends"])
+    .then(function(success) {
+		appApi.post('contacts', {'user_id' : current_user.id, 'contacts':success}).then(function (result) {
+			$scope.contacts = result;
+			})
+      // success
+    }, function (error) {
+      // error
     });
-  }
+
+/*   	$cordovaFacebook.getAccessToken()
+		.then(function(success) {
+			appApi.put('contacts', {'user_id' : current_user.id, 'contacts':success}).then(function (result) {
+			$scope.contacts = result;
+			})
+		  console.log('Token:',success)
+		}, function (error) {
+		  // error
+		}); */
 })
 
 // Get Geo Controller
@@ -1491,20 +1506,6 @@ angular.module('starter.controllers', ['ngCordova'])
 		$scope.geo.get = resp
 		appApi.post('position', {"data" : resp, "user_id":current_user.id}).then(function(result) {
 		})
-    });
-  }
-})
-
-// Friends Controller
-.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaContacts) {
-  document.addEventListener("deviceready", onDeviceReady, false);
-  $scope.contacts = {};
-  $scope.contacts.all = "sadfa";
-  
-  function onDeviceReady(){
-    $cordovaContacts.find({}).then(function(resp) {
-      console.log(resp);
-      $scope.contacts.all = resp;
     });
   }
 })
