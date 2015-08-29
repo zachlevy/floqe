@@ -15,10 +15,7 @@
       <div class="input-label">
         Search for the next
       </div>
-      <select data-ng-model="tags.search.duration">
-        <option data-ng-repeat="duration in tags.durations" value="{{ duration.seconds }}">
-          {{ duration.name }}
-        </option>
+      <select data-ng-model="tags.search.duration" data-ng-init="tags.search.duration =  tags.search.duration || 86400" data-ng-options="duration.seconds as duration.name for duration in tags.durations">
       </select>
     </label>
     <button class="button button-block button-assertive footer-button" data-ng-click="onSearch()">
