@@ -11,6 +11,16 @@
     </div>
   </ion-content>
   <div class="footer-button-wrap">
+    <label class="item item-input item-select">
+      <div class="input-label">
+        Search for the next
+      </div>
+      <select data-ng-model="tags.search.duration">
+        <option data-ng-selected="{{ duration.seconds == 86400 }}" data-ng-repeat="duration in tags.durations" value="{{ duration.seconds }}">
+          {{ duration.name }}
+        </option>
+      </select>
+    </label>
     <button class="button button-block button-assertive footer-button" data-ng-click="onSearch()">
         Search
     </button>

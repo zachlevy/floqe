@@ -1350,12 +1350,47 @@ angular.module('starter.controllers', ['ngCordova'])
 
 	  // prep the tags object
 	  $scope.tags = {};
+    // development
+    $scope.tags.durations = [
+      {
+        "name" : "1 hour",
+        "seconds" : 3600
+      }, {
+        "name" : "2 hours",
+        "seconds" : 3600 * 2
+      }, {
+        "name" : "3 hours",
+        "seconds" : 3600 * 3
+      }, {
+        "name" : "4 hours",
+        "seconds" : 3600 * 4
+      }, {
+        "name" : "5 hours",
+        "seconds" : 3600 * 5
+      }, {
+        "name" : "6 hours",
+        "seconds" : 3600 * 6
+      }, {
+        "name" : "12 hours",
+        "seconds" : 3600 * 12
+      }, {
+        "name" : "1 day",
+        "seconds" : 86400
+      }, {
+        "name" : "2 days",
+        "seconds" : 86400 * 2
+      }, {
+        "name" : "1 week",
+        "seconds" : 86400 * 7
+      }
+    ];
 	  // tags that the user has selected
 	  $scope.tags.selected = [];
 	  // max number of tags teh user can serach
 	  $scope.tags.max = 3;
 	  $scope.tags.search = {};
 	  $scope.tags.search.name = "";
+
 
 	  // get all tags
 	
@@ -1369,6 +1404,14 @@ angular.module('starter.controllers', ['ngCordova'])
 			  $scope.processedTags = processedTags();
 			});
 		  });
+
+      // tag durations
+      // production
+      /*
+      appApi.get('tags/durations').then(function (result) {
+        $scope.tags.durations = result;
+      });
+      */
 		}
 	}
 
@@ -1410,7 +1453,10 @@ angular.module('starter.controllers', ['ngCordova'])
 		$scope.show();
 		$scope.tags.fullSelected = [];
 		angular.forEach($scope.tags.selected, function (tag_id, key) {
-		  $scope.tags.fullSelected.push({"id" : tag_id});
+		  $scope.tags.fullSelected.push({
+        "id" : tag_id,
+        "duration" : Number($scope.tags.search.duration)
+      });
 		});
 		console.log($scope.tags.fullSelected);
 		appApi.post('search', {user_id : current_user.id, 'tags' : $scope.tags.fullSelected}).then(function(result) {
