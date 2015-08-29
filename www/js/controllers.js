@@ -1350,40 +1350,6 @@ angular.module('starter.controllers', ['ngCordova'])
 
 	  // prep the tags object
 	  $scope.tags = {};
-    // development
-    $scope.tags.durations = [
-      {
-        "name" : "1 hour",
-        "seconds" : 3600
-      }, {
-        "name" : "2 hours",
-        "seconds" : 3600 * 2
-      }, {
-        "name" : "3 hours",
-        "seconds" : 3600 * 3
-      }, {
-        "name" : "4 hours",
-        "seconds" : 3600 * 4
-      }, {
-        "name" : "5 hours",
-        "seconds" : 3600 * 5
-      }, {
-        "name" : "6 hours",
-        "seconds" : 3600 * 6
-      }, {
-        "name" : "12 hours",
-        "seconds" : 3600 * 12
-      }, {
-        "name" : "1 day",
-        "seconds" : 86400
-      }, {
-        "name" : "2 days",
-        "seconds" : 86400 * 2
-      }, {
-        "name" : "1 week",
-        "seconds" : 86400 * 7
-      }
-    ];
 	  // tags that the user has selected
 	  $scope.tags.selected = [];
 	  // max number of tags teh user can serach
@@ -1406,12 +1372,9 @@ angular.module('starter.controllers', ['ngCordova'])
 		  });
 
       // tag durations
-      // production
-      /*
       appApi.get('tags/durations').then(function (result) {
         $scope.tags.durations = result;
       });
-      */
 		}
 	}
 
