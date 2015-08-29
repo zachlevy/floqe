@@ -1480,8 +1480,8 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Get Contacts Controller
-.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, $cordovaFacebook) {
-  document.addEventListener("deviceready", onDeviceReady, false);
+.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, appApi,current_user, $cordovaFacebook) {
+
   $scope.contacts = {};
   $scope.contacts.all = "sadfa";
   
