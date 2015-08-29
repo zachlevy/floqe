@@ -28,7 +28,15 @@ $ionicons-font-path: "../lib/ionic/fonts" !default;
 $light-grey: #999;
 $medium-grey: #666;
 $dark-grey: #333;
+$secondary: #f4ff69;
 // VARIABLES END
+
+// MENU START
+.button .badge.badge-notification {
+  top: -36px;
+  right: -6px;
+}
+// MENU END
 
 // HELPER START
 .img-responsive {

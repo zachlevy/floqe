@@ -7,6 +7,9 @@ angular.module('starter.services', [])
 .factory('eventNotification', function ($window, $state, $ionicPopup, current_user) {
 	return {
         match: function () {
+          // increment notification
+          $rootScope.badge += 1;
+          
 			$ionicPopup.show({
 			  title: 'Match', 
 			  template: '', // String (optional). The html template to place in the popup body.

@@ -10,6 +10,7 @@
           <i class="fa fa-user-plus"></i>
         </button>
         <button class="button button-icon button-clear ion-navicon" menu-toggle="right">
+          <span ng-if="(badge > 0)" class="badge badge-notification-menu badge-calm">{{ badge }}</span>
         </button>
       </ion-nav-buttons>
     </ion-nav-bar>
@@ -52,7 +53,7 @@
         </ion-item>
 		<ion-item nav-clear menu-close href="#/app/matches">
           <i style="font-size: 1.25em;" class="icon ion-eye"></i>
-			<b>Matches</b>
+			<b>Matches<span ng-if="(badge > 0)" class="badge badge-notification-menu badge-calm">{{ badge }}</span></b>
 			<p>Browse your matches</p>
         </ion-item>
 		<ion-item nav-clear menu-close href="#/app/events">

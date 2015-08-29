@@ -1,6 +1,9 @@
 angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
+  // notifications
+  $rootScope.badge = 0;
+
 	$scope.tags = [{"name":"None", "id":0}] 
 	function load(){
 		appApi.post('tags/me',{'user_id':current_user.id}).then(function(resp) {
@@ -873,6 +876,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	  };
   
   function pre () {
+    $rootScope.badge = 0;
     // cancel the refresher
     $interval.cancel($rootScope.tagRefresher);
     $interval.cancel($rootScope.messagesRefresher);
