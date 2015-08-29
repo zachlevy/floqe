@@ -1378,7 +1378,7 @@ angular.module('starter.controllers', ['ngCordova'])
       // tag durations
       appApi.get('tags/durations').then(function (result) {
         $scope.tags.durations = result;
-        $scope.tags.search.duration = 86400;
+        $scope.tags.search.duration = $scope.tags.durations[0];
       });
 		}
 	}
