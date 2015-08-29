@@ -16,7 +16,7 @@
         Search for the next
       </div>
       <select data-ng-model="tags.search.duration">
-        <option data-ng-selected="{{ duration.seconds == 86400 }}" data-ng-repeat="duration in tags.durations" value="{{ duration.seconds }}">
+        <option data-ng-repeat="duration in tags.durations" value="{{ duration.seconds }}">
           {{ duration.name }}
         </option>
       </select>
