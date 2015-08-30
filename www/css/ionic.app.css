@@ -9392,6 +9392,14 @@ a.button {
 .fa-medium:before {
   content: "\f23a"; }
 
+button.ion-navicon {
+  position: relative; }
+  button.ion-navicon span.ion-record {
+    position: absolute;
+    top: -7px;
+    right: -3px;
+    color: #11c1f3; }
+
 .img-responsive {
   display: block;
   width: 100%;
@@ -10879,3 +10887,8 @@ slider, [slider] {
     align-items: center; }
   .conversation-screen-wrapper .loader .ion-loading-c {
     font-size: 64px; }
+
+.datefield {
+  border-color: #11c1f3;
+  border-style: solid;
+  border-width: thin; }
