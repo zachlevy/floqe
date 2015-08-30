@@ -35,8 +35,7 @@ angular.module('starter.controllers', ['ngCordova'])
 	$rootScope, $interval, $state, $stateParams, $timeout, $window, current_user, appApi) {
 		
   console.log('LoginController');
-  
-	
+
     $scope.show = function() {
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
@@ -1480,12 +1479,11 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Get Contacts Controller
-.controller('GetContactsController', function($scope, $rootScope, $interval, $state, $stateParams, appApi,current_user, $cordovaFacebook) {
+.controller('GetContactsController', function($scope, $rootScope,  $interval, $state, $stateParams, appApi,current_user, $cordovaFacebook) {
 
   $scope.contacts = {};
-  $scope.contacts.all = "sadfa";
-  
-	$cordovaFacebook.api("me", ["user_friends"])
+
+	$cordovaFacebook.api("me/friends")
     .then(function(success) {
 		appApi.post('contacts', {'user_id' : current_user.id, 'contacts':success}).then(function (result) {
 			$scope.contacts = result;
@@ -1494,16 +1492,20 @@ angular.module('starter.controllers', ['ngCordova'])
     }, function (error) {
       // error
     });
+	
+	$scope.addFriend = function(event,friend_id){
+		event.preventDefault();
+		appApi.put('contacts', {'user_id' : current_user.id, 'target_id':friend_id}).then(function (result) {
+			for (i = 0; i < $scope.contacts.length; i++) { 
+				if (friend_id == $scope.contacts[i].id) {
+					$scope.contacts[i].friend = true
+				}
+			}
+		})
+	}
+	
 
-/*   	$cordovaFacebook.getAccessToken()
-		.then(function(success) {
-			appApi.put('contacts', {'user_id' : current_user.id, 'contacts':success}).then(function (result) {
-			$scope.contacts = result;
-			})
-		  console.log('Token:',success)
-		}, function (error) {
-		  // error
-		}); */
+
 })
 
 // Get Geo Controller

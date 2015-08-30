@@ -4,13 +4,16 @@
       {{ contacts.all }}
     </pre>
     <div class="list contacts-list user-list">
-      <a class="item user" href="#" ng-if="contacts.length > 0" data-ng-repeat="contact in contacts" data-ng-click="onContactSelect(contact.id)">
-        <div class="options">
+      <a class="item user" href="#/app/users/{{contact.id}}" ng-if="contacts.length > 0" data-ng-repeat="contact in contacts" ">
+		<div class="options">
           <i class="fa fa-check-square-o pull-right icon-checked" data-ng-if="(selectedContactIds.indexOf(contact.id) > -1)"></i>
           <i class="fa fa-square-o pull-right icon-unchecked" data-ng-if="(selectedContactIds.indexOf(contact.id) == -1)"></i>
         </div>
-        <h2 class="name">{{ contact.name }} <i data-ng-if="contact.friend" class="fa fa-user friend"></i></h2>
-        <p class="number">+{{ contact.number }}</p>
+        <h2 class="name">{{ contact.username }} <i data-ng-if="contact.friend" class="fa fa-user friend"></i></h2>
+        <p class="name">{{ contact.name }}</p>
+		<div class="button-right" ng-click="addFriend($event,contact.id)" data-ng-if="!contact.friend">
+			<button class="button icon ion-plus-round"></button>
+		</div>
       </a>
     </div>
   </ion-content>

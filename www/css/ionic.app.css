@@ -10444,6 +10444,12 @@ button.ion-navicon {
   color: #999;
   height: 19px;
   display: inline-block; }
+  
+ .user-list .user  .button-right {
+  position: absolute;
+  right:11px;
+  top: 11px;
+ }
 
 .tags-results-screen .search-filters-list {
   position: absolute;
