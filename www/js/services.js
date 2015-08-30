@@ -1,10 +1,10 @@
 angular.module('starter.services', [])
 
 // any function related to accessing the api
-.factory('eventListening', function ($window, $state, $ionicPopup, eventNotification, current_user) {
+.factory('eventListening', function ($window, $state, $ionicPopup, eventNotification, current_user, $rootScope) {
 	$rootScope.$on("newMatch", eventNotification.match())
 })
-.factory('eventNotification', function ($window, $state, $ionicPopup, current_user) {
+.factory('eventNotification', function ($window, $state, $ionicPopup, current_user, $rootScope) {
 	return {
         match: function () {
           // increment notification
