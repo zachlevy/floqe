@@ -2,7 +2,7 @@ angular.module('starter.controllers', ['ngCordova'])
 
 .controller('AppCtrl', function($scope, $rootScope, $state, $ionicModal, $timeout, $cordovaFacebook, appApi, current_user) {
   // notifications
-  $rootScope.badge = 1;
+  $rootScope.badge = 0;
 
 	$scope.tags = [{"name":"None", "id":0}] 
 	function load(){
@@ -865,6 +865,7 @@ angular.module('starter.controllers', ['ngCordova'])
   console.log('MatchesController');
   // before the view is loaded, add things here that involve switching between controllers
   
+	$scope.matches =[]
     $scope.show = function() {
     $ionicLoading.show({
       template: '<p>Loading...</p><ion-spinner icon="ripple"></ion-spinner>'
@@ -892,7 +893,12 @@ angular.module('starter.controllers', ['ngCordova'])
   // works
   $scope.show()
   appApi.post('match/mine', {user_id : current_user.id}).then(function(result){
-    $scope.matches = result;
+	if (result.length == 0 || result) {
+		$scope.matches = [];
+	}
+	else {
+		$scope.matches = result;
+	};
 	$scope.hide()
   });
 
@@ -903,10 +909,15 @@ angular.module('starter.controllers', ['ngCordova'])
 	  if ($scope.matches.length > result.length){
 		  eventNotification.match()
 	  }
-      $scope.matches = result;
+      if (result.length == 0 || result) {
+		$scope.matches = [];
+	  }
+	  else {
+		$scope.matches = result;
+	  };
 	  
     });
-  }, 10000);
+  }, 30000);
 
   $scope.onMatchSelect = function(conversation_id){
     console.log('match selected');

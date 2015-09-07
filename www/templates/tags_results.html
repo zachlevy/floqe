@@ -10,7 +10,7 @@
         </div>
       </a>
       <div class="item item-divider">
-        Others Interested
+        Swipe right on people you want to meet...
       </div>
       <a class="item item-avatar user" ng-href="#/app/users/{{user.id}}"  data-ng-repeat="user in users | filter:filterUsers" on-swipe-right="onSwipeRight(user.id)" on-swipe-left="onSwipeLeft(user.id)" data-ng-class="{swiped:(swipedUserIds.indexOf(user.id) > -1)}">
         <img class="photo" data-ng-src="{{ user.photo }}-/scale_crop/100x100/">

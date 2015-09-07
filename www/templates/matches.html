@@ -14,6 +14,10 @@
         <p data-ng-if="match.last_message == null">Matched for {{ match.matched_for.tags | namesFilter }}</p>
         <p data-ng-if="match.last_message != null">{{ match.last_message.message }}</p>
       </a>
+	  <div class='empty-list'>
+		<p data-ng-if="matches.length < 1">Seems like there are no matches yet, we'll update you when someone comes up!</p>
+	  </div>
+
     </div>
   </ion-content>
 </ion-view>

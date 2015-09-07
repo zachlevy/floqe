@@ -10898,3 +10898,17 @@ slider, [slider] {
   border-color: #11c1f3;
   border-style: solid;
   border-width: thin; }
+  
+  
+/* ################################################
+##############      Custom classes    #############
+###################################################*/
+
+
+ .user-list .empty-list p {
+	padding-top: 45%;
+    padding-right: 5%;
+    padding-left: 5%;
+	font-weight: bold;
+	font-size: 20px;
+}
