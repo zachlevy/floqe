@@ -31,7 +31,7 @@ angular.module('starter.controllers', ['ngCordova'])
 })
 
 // Edit User Screen
-.controller('LoginController', function ($cordovaFacebook,eventNotification, $ionicLoading, PushProcessingService, $scope, 
+.controller('LoginController', function ($cordovaFacebook,eventNotification, $ionicLoading, PushProcessingService, $scope, $ionicPopup,
 	$rootScope, $interval, $state, $stateParams, $timeout, $window, current_user, appApi) {
 		
   console.log('LoginController');
@@ -76,7 +76,10 @@ angular.module('starter.controllers', ['ngCordova'])
 			}
 			else {
 				$scope.hide();
-				alert(resp.errors.error)
+				$ionicPopup.alert({
+					 title: 'Problemo',
+					 template: resp.errors.error
+				});
 			}
 		})
 		$timeout(function() {
@@ -110,12 +113,18 @@ angular.module('starter.controllers', ['ngCordova'])
 				
 			  }, function (error) {
 				  $scope.hide();
-				alert('Facebook Login Error 1');
+				  $ionicPopup.alert({
+					 title: 'Problemo',
+					 template: 'Facebook login error!'
+				  });
 				// error
 			  });
 			}, function (error) {
 				$scope.hide();
-			  alert('Facebook Login Error 2');
+			    $ionicPopup.alert({
+					 title: 'Problemo',
+					 template: 'Facebook login error!'
+				  });
 			});
 		}
 		else {
